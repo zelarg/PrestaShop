@@ -1784,7 +1784,6 @@ class FrontControllerCore extends Controller
             'meta' => [
                 'title' => $meta_tags['meta_title'],
                 'description' => $meta_tags['meta_description'],
-                'keywords' => $meta_tags['meta_keywords'],
                 'robots' => 'index',
             ],
             'page_name' => $page_name,
