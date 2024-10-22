@@ -36,18 +36,23 @@ use PrestaShop\PrestaShop\Core\Exception\InvalidArgumentException;
 class AddAliasCommand
 {
     /**
-     * @var string[]
-     */
-    private $aliases;
-
-    /**
      * @var string
      */
     private $searchTerm;
 
     /**
-     * @param string[] $aliases
+     * @var array{
+     *   array{
+     *     alias: string,
+     *     active: bool,
+     *   }
+     * }
+     */
+    private $aliases;
+
+    /**
      * @param string $searchTerm
+     * @param array $aliases
      */
     public function __construct(array $aliases, string $searchTerm)
     {
@@ -59,7 +64,12 @@ class AddAliasCommand
     }
 
     /**
-     * @return string[]
+     * @return array{
+     *   array{
+     *     alias: string,
+     *     active: bool,
+     *   }
+     * }
      */
     public function getAliases(): array
     {

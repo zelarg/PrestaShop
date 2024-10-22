@@ -24,46 +24,17 @@
  * @license   https://opensource.org/licenses/OSL-3.0 Open Software License (OSL 3.0)
  */
 
-declare(strict_types=1);
+namespace PrestaShop\PrestaShop\Core\Domain\Alias\Query;
 
-namespace PrestaShop\PrestaShop\Core\Domain\Alias\Command;
-
-use PrestaShop\PrestaShop\Core\Domain\Alias\ValueObject\AliasId;
-
-/**
- * Toggles alias status
- */
-class UpdateAliasStatusCommand
+class GetAliasesBySearchTermForEditing
 {
-    private AliasId $aliasId;
-
-    private bool $enabled;
-
-    /**
-     * @param int $aliasId
-     * @param bool $enabled
-     */
     public function __construct(
-        int $aliasId,
-        bool $enabled
+        private readonly string $searchTerm
     ) {
-        $this->aliasId = new AliasId($aliasId);
-        $this->enabled = $enabled;
     }
 
-    /**
-     * @return AliasId
-     */
-    public function getAliasId(): AliasId
+    public function getSearchTerm(): string
     {
-        return $this->aliasId;
-    }
-
-    /**
-     * @return bool
-     */
-    public function isEnabled(): bool
-    {
-        return $this->enabled;
+        return $this->searchTerm;
     }
 }

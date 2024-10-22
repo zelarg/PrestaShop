@@ -26,38 +26,24 @@
 
 declare(strict_types=1);
 
-namespace PrestaShop\PrestaShop\Core\Domain\Alias\Command;
+namespace PrestaShop\PrestaShop\Adapter\Alias\CommandHandler;
 
-use PrestaShop\PrestaShop\Core\Domain\Alias\ValueObject\AliasId;
+use PrestaShop\PrestaShop\Adapter\Alias\Repository\AliasRepository;
+use PrestaShop\PrestaShop\Core\CommandBus\Attributes\AsCommandHandler;
+use PrestaShop\PrestaShop\Core\Domain\Alias\Command\UpdateAliasesBySearchTermCommand;
+use PrestaShop\PrestaShop\Core\Domain\Alias\CommandHandler\UpdateAliasesBySearchTermHandlerInterface;
 
-/**
- * Updates status of multiple aliases
- */
-class BulkUpdateAliasStatusCommand
+#[AsCommandHandler]
+class UpdateAliasesBySearchTermHandler implements UpdateAliasesBySearchTermHandlerInterface
 {
-    /**
-     * @var int[]
-     */
-    private $aliasIds;
-
-    /**
-     * @param int[] $aliasIds
-     * @param bool $enabled
-     */
     public function __construct(
-        array $aliasIds,
-        public readonly bool $enabled
+        protected AliasRepository $aliasRepository
     ) {
-        foreach ($aliasIds as $aliasId) {
-            $this->aliasIds[] = new AliasId($aliasId);
-        }
     }
 
-    /**
-     * @return int[]
-     */
-    public function getAliasIds(): array
+    public function handle(UpdateAliasesBySearchTermCommand $command): void
     {
-        return $this->aliasIds;
+        $this->aliasRepository->deleteAliasesBySearchTerm($command->getOldSearchTerm());
+        $this->aliasRepository->create($command->getNewSearchTerm()->getValue(), $command->getAliases());
     }
 }

@@ -28,60 +28,52 @@ declare(strict_types=1);
 
 namespace PrestaShop\PrestaShop\Core\Domain\Alias\Command;
 
-use PrestaShop\PrestaShop\Core\Domain\Alias\ValueObject\AliasId;
+use PrestaShop\PrestaShop\Core\Domain\Alias\ValueObject\SearchTerm;
 
-/**
- * Edits alias with given data
- */
-class UpdateAliasCommand
+class UpdateAliasesBySearchTermCommand
 {
-    private AliasId $aliasId;
+    private SearchTerm $oldSearchTerm;
+    private SearchTerm $newSearchTerm;
 
     /**
-     * @var string[]
-     */
-    private array $aliases;
-
-    private string $searchTerm;
-
-    /**
-     * @param int $aliasId
-     * @param string[] $aliases this input is array of string aliases that are returned from the form input
-     * @param string $searchTerm
+     * @param string $oldSearchTerm
+     * @param string $newSearchTerm
+     * @param array{
+     *   array{
+     *     alias: string,
+     *     active: bool,
+     *   }
+     * } $aliases
      */
     public function __construct(
-        int $aliasId,
-        array $aliases,
-        string $searchTerm,
+        string $oldSearchTerm,
+        string $newSearchTerm,
+        private array $aliases
     ) {
-        $this->aliasId = new AliasId($aliasId);
-        $this->aliases = $aliases;
-        $this->searchTerm = $searchTerm;
+        $this->oldSearchTerm = new SearchTerm($oldSearchTerm);
+        $this->newSearchTerm = new SearchTerm($newSearchTerm);
     }
 
-    /**
-     * @return AliasId
-     */
-    public function getAliasId(): AliasId
+    public function getOldSearchTerm(): SearchTerm
     {
-        return $this->aliasId;
+        return $this->oldSearchTerm;
+    }
+
+    public function getNewSearchTerm(): SearchTerm
+    {
+        return $this->newSearchTerm;
     }
 
     /**
-     * Returns array of string aliases that are used in the alias form input.
-     *
-     * @return string[]
+     * @return array{
+     *   array{
+     *     alias: string,
+     *     active: bool,
+     *   }
+     * }
      */
     public function getAliases(): array
     {
         return $this->aliases;
-    }
-
-    /**
-     * @return string
-     */
-    public function getSearchTerm(): string
-    {
-        return $this->searchTerm;
     }
 }

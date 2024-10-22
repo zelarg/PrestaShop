@@ -24,17 +24,29 @@
  * @license   https://opensource.org/licenses/OSL-3.0 Open Software License (OSL 3.0)
  */
 
-namespace PrestaShop\PrestaShop\Core\Domain\Alias\CommandHandler;
+namespace PrestaShop\PrestaShop\Adapter\Alias\QueryHandler;
 
-use PrestaShop\PrestaShop\Core\Domain\Alias\Command\UpdateAliasCommand;
+use PrestaShop\PrestaShop\Adapter\Alias\Repository\AliasRepository;
+use PrestaShop\PrestaShop\Core\CommandBus\Attributes\AsQueryHandler;
+use PrestaShop\PrestaShop\Core\Domain\Alias\Query\GetAliasesBySearchTermForEditing;
+use PrestaShop\PrestaShop\Core\Domain\Alias\QueryHandler\GetAliasesBySearchTermForEditingHandlerInterface;
+use PrestaShop\PrestaShop\Core\Domain\Alias\QueryResult\AliasForEditing;
 
 /**
- * Defines contract to handle @see UpdateAliasCommand
+ * Handle the query @see GetAliasesBySearchTermForEditing using legacy ObjectModel
  */
-interface UpdateAliasHandlerInterface
+#[AsQueryHandler]
+class GetAliasesBySearchTermForEditingHandler implements GetAliasesBySearchTermForEditingHandlerInterface
 {
-    /**
-     * @param UpdateAliasCommand $command
-     */
-    public function handle(UpdateAliasCommand $command): void;
+    public function __construct(
+        private readonly AliasRepository $aliasRepository
+    ) {
+    }
+
+    public function handle(GetAliasesBySearchTermForEditing $query): AliasForEditing
+    {
+        $aliases = $this->aliasRepository->getAliasesBySearchTerm($query->getSearchTerm());
+
+        return new AliasForEditing($aliases, $query->getSearchTerm());
+    }
 }
