@@ -218,8 +218,7 @@ describe('API : GET /module/{technicalName}', async () => {
 
       expect(jsonResponse).to.have.property('installed');
       expect(jsonResponse.installed).to.be.a('boolean');
-      // todo: https://github.com/PrestaShop/PrestaShop/issues/36953
-      // expect(jsonResponse.installed).to.be.equal(moduleInfo.installed);
+      expect(jsonResponse.installed).to.be.equal(moduleInfo.installed);
     });
   });
 
