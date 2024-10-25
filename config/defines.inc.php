@@ -42,7 +42,7 @@ if (!defined('_PS_DISPLAY_ONLY_ERRORS_')) {
     define('_PS_DISPLAY_ONLY_ERRORS_', false);
 }
 if (_PS_MODE_DEV_ === true) {
-    $errorReportingLevel = E_ALL | E_STRICT;
+    $errorReportingLevel = E_ALL;
     if (_PS_DISPLAY_COMPATIBILITY_WARNING_ === false) {
         $errorReportingLevel = $errorReportingLevel & ~E_DEPRECATED & ~E_USER_DEPRECATED;
     }
