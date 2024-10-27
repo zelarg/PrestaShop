@@ -203,6 +203,14 @@ class TranslationCatalogueExporter
         return $messageCatalogue;
     }
 
+    /**
+     * After export, our files are named with their domain only, FullDomainName.xlf for example.
+     * This method will append the locale name to the end of the file, so the result is something like
+     * FullDomainName.ab-AB.xlf
+     *
+     * @param string $locale Locale to append to filenames
+     * @param string $path Folder to work in
+     */
     protected function renameCatalogues(string $locale, string $path): void
     {
         $finder = Finder::create();
