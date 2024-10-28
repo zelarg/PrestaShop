@@ -33,9 +33,12 @@ use Module;
 use PHPUnit\Framework\Assert;
 use PrestaShop\PrestaShop\Core\Domain\Module\Command\BulkToggleModuleStatusCommand;
 use PrestaShop\PrestaShop\Core\Domain\Module\Command\BulkUninstallModuleCommand;
+use PrestaShop\PrestaShop\Core\Domain\Module\Command\InstallModuleCommand;
 use PrestaShop\PrestaShop\Core\Domain\Module\Command\ResetModuleCommand;
 use PrestaShop\PrestaShop\Core\Domain\Module\Command\UninstallModuleCommand;
 use PrestaShop\PrestaShop\Core\Domain\Module\Command\UpdateModuleStatusCommand;
+use PrestaShop\PrestaShop\Core\Domain\Module\Command\UploadModuleCommand;
+use PrestaShop\PrestaShop\Core\Domain\Module\Exception\AlreadyInstalledModuleException;
 use PrestaShop\PrestaShop\Core\Domain\Module\Exception\CannotResetModuleException;
 use PrestaShop\PrestaShop\Core\Domain\Module\Exception\ModuleException;
 use PrestaShop\PrestaShop\Core\Domain\Module\Exception\ModuleNotFoundException;
@@ -176,6 +179,46 @@ class ModuleFeatureContext extends AbstractDomainFeatureContext
                 false
             ));
         } catch (CannotResetModuleException $e) {
+            $this->setLastException($e);
+        }
+
+        // Clean the cache
+        Module::resetStaticCache();
+    }
+
+    /**
+     * @When I install module :technicalName
+     */
+    public function installModule(string $technicalName): void
+    {
+        try {
+            $this->getQueryBus()->handle(new InstallModuleCommand($technicalName));
+        } catch (AlreadyInstalledModuleException $e) {
+            $this->setLastException($e);
+        }
+        // Clean the cache
+        Module::resetStaticCache();
+    }
+
+    /**
+     * @When /^I upload module "(.+)" from "(zip|url)" "(.+)"$/
+     */
+    public function uploadModule(string $technicalName, string $sourceType, string $sourceGiven): void
+    {
+        switch ($sourceType) {
+            case 'zip':
+                $source = _PS_MODULE_DIR_ . $sourceGiven;
+                break;
+            case 'url':
+                $source = $sourceGiven;
+                break;
+            default:
+                $source = null;
+                break;
+        }
+        try {
+            $this->getQueryBus()->handle(new UploadModuleCommand($technicalName, $source));
+        } catch (ModuleNotFoundException $e) {
             $this->setLastException($e);
         }
 

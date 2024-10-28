@@ -104,6 +104,38 @@ Feature: Module
     When I uninstall module "ps_featuredproducts" with deleteFile false
     Then I should have an exception that module is not installed
 
+  Scenario: Install module
+    Given module ps_featuredproducts has following infos:
+      | technical_name | ps_featuredproducts |
+      | version        | 1.0.0               |
+      | enabled        | false                |
+      | installed      | false               |
+    When I install module "ps_featuredproducts"
+    Then module ps_featuredproducts has following infos:
+      | technical_name | ps_featuredproducts  |
+      | version        | 1.0.0                |
+      | enabled        | true                 |
+      | installed      | true                 |
+
+  Scenario: Upload module with zip file on disk
+    When I upload module "test_install_cqrs_command" from "zip" "test_install_cqrs_command.zip"
+    And I install module "test_install_cqrs_command"
+    Then module test_install_cqrs_command has following infos:
+      | technical_name | test_install_cqrs_command |
+      | version        | 1.0.0                     |
+      | enabled        | true                      |
+      | installed      | true                      |
+
+  Scenario: Upload module with zip file on remote
+    When I uninstall module "ps_featuredproducts" with deleteFile true
+    And I upload module "ps_featuredproducts" from "url" "https://github.com/PrestaShop/ps_featuredproducts/releases/download/v2.1.4/ps_featuredproducts.zip"
+    And I install module "ps_featuredproducts"
+    Then module ps_featuredproducts has following infos:
+      | technical_name | ps_featuredproducts |
+      | version        | 1.0.0               |
+      | enabled        | true                |
+      | installed      | true                |
+
   Scenario: Get module not present
     When module ps_notthere has following infos:
       | technical_name | ps_notthere |
