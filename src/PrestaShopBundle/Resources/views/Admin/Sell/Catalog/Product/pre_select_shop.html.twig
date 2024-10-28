@@ -27,14 +27,14 @@
 {% block content %}
 <div class="product-page-v2">
   <div class="header-toolbar d-print-none">
-    {{ multistoreProductHeader(productId) }}
+    {{ component('MultistoreProductHeader', {productId: productId}) }}
   </div>
 
   <div
     class="multi-shop-context-warning alert alert-warning d-print-none mt-4"
     role="alert"
     data-modal-title="{{ modalTitle }}"
-    data-shop-selector="{{ form_row(shopSelector.createView())|e('html_attr') }}"
+    data-shop-selector="{{ form_row(shopSelectorForm)|e('html_attr') }}"
     data-shop-ids="{{ productShopIds|join(',') }}"
     href="{{ path('admin_products_edit', {productId: productId}) }}"
   >
