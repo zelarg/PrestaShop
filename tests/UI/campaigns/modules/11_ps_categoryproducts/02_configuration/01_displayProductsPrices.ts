@@ -116,7 +116,7 @@ describe('Category products module - Display products\' prices', async () => {
   });
 
   it('should check if the price in the "Category Products" block is visible', async function () {
-    await testContext.addContextItem(this, 'testIdentifier', 'checkNotVisible', baseContext);
+    await testContext.addContextItem(this, 'testIdentifier', 'checkVisible', baseContext);
 
     page = await modPsCategoryProductsBoMain.changePage(browserContext, 1);
     await foClassicProductPage.reloadPage(page);
