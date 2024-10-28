@@ -1051,16 +1051,6 @@ parameters:
 			path: src/PrestaShopBundle/Controller/Admin/Improve/Design/MailThemeController.php
 
 		-
-			message: "#^Class Hook is forbidden, No legacy calls inside the prestashop bundle\\. Please create an interface and an adapter if you need to\\.$#"
-			count: 1
-			path: src/PrestaShopBundle/Controller/Admin/Improve/Design/PositionsController.php
-
-		-
-			message: "#^Namespace Hook is forbidden, No legacy calls inside the prestashop bundle\\. Please create an interface and an adapter if you need to\\.$#"
-			count: 1
-			path: src/PrestaShopBundle/Controller/Admin/Improve/Design/PositionsController.php
-
-		-
 			message: "#^Namespace Db is forbidden, No legacy calls inside the prestashop bundle\\. Please create an interface and an adapter if you need to\\.$#"
 			count: 2
 			path: src/PrestaShopBundle/Controller/Admin/Improve/ModuleController.php
@@ -1419,6 +1409,16 @@ parameters:
 			message: "#^Using _DB_PREFIX_ is forbidden, Use dependency injection instead$#"
 			count: 3
 			path: src/PrestaShopBundle/Translation/Loader/SqlTranslationLoader.php
+
+		-
+			message: "#^Class Link is forbidden, No legacy calls inside the prestashop bundle\\. Please create an interface and an adapter if you need to\\.$#"
+			count: 2
+			path: src/PrestaShopBundle/Twig/Component/AbstractMultistoreHeader.php
+
+		-
+			message: "#^Namespace Link is forbidden, No legacy calls inside the prestashop bundle\\. Please create an interface and an adapter if you need to\\.$#"
+			count: 1
+			path: src/PrestaShopBundle/Twig/Component/AbstractMultistoreHeader.php
 
 		-
 			message: "#^Namespace AdminController is forbidden, No legacy calls inside the prestashop bundle\\. Please create an interface and an adapter if you need to\\.$#"
