@@ -1,6 +1,13 @@
 services:
   _defaults:
     public: true
+  _instanceof:
+    PrestaShop\PrestaShop\Core\Grid\Position\PositionDefinitionInterface:
+      tags: [ 'core.grid_position_definition' ]
+
+  PrestaShop\PrestaShop\Core\Grid\Position\PositionDefinitionProvider:
+    arguments:
+      $positionDefinitions: !tagged_locator { tag: core.grid_position_definition }
 
   prestashop.core.grid.cms_page_category.position_definition:
     class: 'PrestaShop\PrestaShop\Core\Grid\Position\PositionDefinition'
