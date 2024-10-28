@@ -1,13 +1,10 @@
 // Import utils
 import testContext from '@utils/testContext';
 
-// Import pages
-// Import BO pages
-import boDesignPositionsPage from '@pages/BO/design/positions';
-
 import {expect} from 'chai';
 import {
   boDashboardPage,
+  boDesignPositionsPage,
   boLoginPage,
   boModuleManagerPage,
   type BrowserContext,

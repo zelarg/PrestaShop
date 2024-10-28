@@ -1,12 +1,10 @@
 // Import utils
 import testContext from '@utils/testContext';
 
-// Import pages
-import positionsPage from '@pages/BO/design/positions';
-
 import {expect} from 'chai';
 import {
   boDashboardPage,
+  boDesignPositionsPage,
   boLoginPage,
   type BrowserContext,
   type Page,
@@ -47,10 +45,10 @@ describe('BO - Design - Positions : Search for a hook', async () => {
       boDashboardPage.designParentLink,
       boDashboardPage.positionsLink,
     );
-    await positionsPage.closeSfToolBar(page);
+    await boDesignPositionsPage.closeSfToolBar(page);
 
-    const pageTitle = await positionsPage.getPageTitle(page);
-    expect(pageTitle).to.contains(positionsPage.pageTitle);
+    const pageTitle = await boDesignPositionsPage.getPageTitle(page);
+    expect(pageTitle).to.contains(boDesignPositionsPage.pageTitle);
   });
 
   const hooks: string[] = [
@@ -69,7 +67,7 @@ describe('BO - Design - Positions : Search for a hook', async () => {
         baseContext,
       );
 
-      const textResult = await positionsPage.searchHook(page, hook);
+      const textResult = await boDesignPositionsPage.searchHook(page, hook);
       expect(textResult).to.equal(hook);
     });
   });
