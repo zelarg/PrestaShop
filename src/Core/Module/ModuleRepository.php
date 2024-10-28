@@ -124,6 +124,13 @@ class ModuleRepository implements ModuleRepositoryInterface
         });
     }
 
+    public function getMustBeConfiguredModules(): ModuleCollection
+    {
+        return $this->getList()->filter(static function (Module $module) {
+            return $module->isConfigurable() && $module->isActive() && $module->hasValidInstance() && !empty($module->getInstance()->warning);
+        });
+    }
+
     /**
      * Returns an instance of a present module, if the module is not in the modules folder an exception is thrown.
      */
@@ -135,13 +142,6 @@ class ModuleRepository implements ModuleRepositoryInterface
         }
 
         return $module;
-    }
-
-    public function getMustBeConfiguredModules(): ModuleCollection
-    {
-        return $this->getList()->filter(static function (Module $module) {
-            return $module->isConfigurable() && $module->isActive() && $module->hasValidInstance() && !empty($module->getInstance()->warning);
-        });
     }
 
     public function getUpgradableModules(): ModuleCollection
