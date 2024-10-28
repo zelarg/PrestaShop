@@ -61,7 +61,7 @@ class MultistoreConfigurationDropdownRenderer
             return '';
         }
 
-        return $this->twig->render('@PrestaShop/Admin/Multistore/dropdown.html.twig', $dropdownData['templateData']);
+        return $this->twig->render('@PrestaShop/Admin/Component/MultiShop/dropdown.html.twig', $dropdownData['templateData']);
     }
 
     /**

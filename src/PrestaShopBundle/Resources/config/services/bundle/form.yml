@@ -14,7 +14,6 @@ services:
       $requestStack: '@request_stack'
       $locale: '@prestashop.core.localization.locale.context_locale'
       $validate: "@prestashop.adapter.validate"
-      $multiStoreContext: '@prestashop.adapter.shop.context'
       $themeRepository: '@prestashop.core.addon.theme.repository'
       $shopThemeName: '@=service("prestashop.adapter.legacy.context").getContext().shop.theme.getName()'
 

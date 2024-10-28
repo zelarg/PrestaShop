@@ -34,9 +34,9 @@
       <div class="header-multishop-top-bar"{% if this.contextColor is not empty %} style="background-color: {{this.contextColor}};"{% endif %}>
         <div class="header-multishop-center js-header-multishop-open-modal">
           {% if this.contextShopId %}
-            {% include '@PrestaShop/Admin/Multistore/shop_icon.html.twig' with { isTitleDark: this.isTitleDark } %}
+            {% include '@PrestaShop/Admin/Component/MultiShop/shop_icon.html.twig' with { isTitleDark: this.isTitleDark } %}
           {% else %}
-            {% include '@PrestaShop/Admin/Multistore/multi_shops_icon.html.twig' with { isTitleDark: this.isTitleDark } %}
+            {% include '@PrestaShop/Admin/Component/MultiShop/multi_shops_icon.html.twig' with { isTitleDark: this.isTitleDark } %}
           {% endif %}
 
           <h2 class="header-multishop-title">

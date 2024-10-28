@@ -27,7 +27,7 @@
 {% block multishop_header_right %}
   <a class="header-multishop-view-action product-shops-action" href="{{ url('admin_products_select_shops', {productId: this.productId}) }}" target="_blank" rel="nofollow">
     {{ "Select stores"|trans({}, 'Admin.Navigation.Header') }}
-    {% include '@PrestaShop/Admin/Component/Layout/shop_icon.html.twig' with { isTitleDark: this.isTitleDark } only %}
+    {% include '@PrestaShop/Admin/Component/MultiShop/shop_icon.html.twig' with { isTitleDark: this.isTitleDark } only %}
   </a>
   {{ parent() }}
 {% endblock %}
