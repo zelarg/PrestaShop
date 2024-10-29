@@ -4,15 +4,13 @@ import testContext from '@utils/testContext';
 // Import commonTests
 import {deleteAPIClientTest} from '@commonTests/BO/advancedParameters/authServer';
 
-// Import pages
-import positionsPage from '@pages/BO/design/positions';
-
 import {expect} from 'chai';
 import {
   type APIRequestContext,
   boApiClientsPage,
   boApiClientsCreatePage,
   boDashboardPage,
+  boDesignPositionsPage,
   boLoginPage,
   type BrowserContext,
   FakerAPIClient,
@@ -146,29 +144,29 @@ describe('API : GET /hooks/{id}', async () => {
         boDashboardPage.designParentLink,
         boDashboardPage.positionsLink,
       );
-      await positionsPage.closeSfToolBar(page);
+      await boDesignPositionsPage.closeSfToolBar(page);
 
-      const pageTitle = await positionsPage.getPageTitle(page);
-      expect(pageTitle).to.contains(positionsPage.pageTitle);
+      const pageTitle = await boDesignPositionsPage.getPageTitle(page);
+      expect(pageTitle).to.contains(boDesignPositionsPage.pageTitle);
     });
 
     it('should get the hook informations', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'getHookInformations', baseContext);
 
-      idHook = await positionsPage.getHookId(page, 0);
+      idHook = await boDesignPositionsPage.getHookId(page, 0);
       expect(idHook).to.be.gt(0);
 
-      statusHook = await positionsPage.getHookStatus(page, 0);
+      statusHook = await boDesignPositionsPage.getHookStatus(page, 0);
       expect(statusHook).to.be.equal(true);
 
-      nameHook = await positionsPage.getHookName(page, 0);
+      nameHook = await boDesignPositionsPage.getHookName(page, 0);
       expect(nameHook.length).to.be.gt(0);
 
       // @todo : https://github.com/PrestaShop/PrestaShop/issues/34552
-      //titleHook = await positionsPage.getHookStatus(page, 0);
+      //titleHook = await boDesignPositionsPage.getHookStatus(page, 0);
       //expect(titleHook.length).to.be.gt(0);
 
-      descriptionHook = await positionsPage.getHookDescription(page, 0);
+      descriptionHook = await boDesignPositionsPage.getHookDescription(page, 0);
       expect(descriptionHook.length).to.be.gt(0);
     });
   });
