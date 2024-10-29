@@ -596,24 +596,6 @@ class AdminControllerCore extends Controller
     }
 
     /**
-     * Gets the multistore header and assigns its html content to a smarty variable
-     *
-     * @see PrestaShopBundle\Controller\Admin\MultistoreController
-     *
-     * (the decision to display it or not is taken by the MultistoreController)
-     */
-    public function initMultistoreHeader(): void
-    {
-        if (!isset($this->lockedToAllShopContext)) {
-            return;
-        }
-
-        $this->context->smarty->assign([
-            'multistore_header' => $this->get('prestashop.core.admin.multistore')->header($this->lockedToAllShopContext)->getContent(),
-        ]);
-    }
-
-    /**
      * Set breadcrumbs array for the controller page.
      *
      * @param int|null $tab_id
@@ -2812,7 +2794,6 @@ class AdminControllerCore extends Controller
         Employee::setLastConnectionDate($this->context->employee->id);
 
         $this->initProcess();
-        $this->initMultistoreHeader();
         $this->initBreadcrumbs();
         $this->initModal();
         $this->initToolbarFlags();

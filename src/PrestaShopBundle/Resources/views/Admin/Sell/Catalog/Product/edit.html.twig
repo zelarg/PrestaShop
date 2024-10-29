@@ -42,7 +42,7 @@
   {% set forceDefaultActive = productForm.vars.force_default_active %}
 
   <div class="header-toolbar d-print-none">
-    {{ multistoreProductHeader(productId) }}
+    {{ component('MultistoreProductHeader', {productId: productId}) }}
   </div>
 
   {{ form_start(productForm, {'attr': {

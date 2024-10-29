@@ -24,25 +24,27 @@
  * @license   https://opensource.org/licenses/OSL-3.0 Open Software License (OSL 3.0)
  */
 
-declare(strict_types=1);
-
 namespace PrestaShopBundle\Twig\Component;
 
 use Doctrine\ORM\EntityManagerInterface;
 use PrestaShop\PrestaShop\Adapter\LegacyContext;
+use PrestaShop\PrestaShop\Adapter\Product\Repository\ProductRepository;
 use PrestaShop\PrestaShop\Core\Context\ShopContext;
+use PrestaShop\PrestaShop\Core\Domain\Product\ValueObject\ProductId;
+use PrestaShop\PrestaShop\Core\Domain\Shop\ValueObject\ShopId;
 use PrestaShop\PrestaShop\Core\Util\ColorBrightnessCalculator;
+use PrestaShopBundle\Entity\Shop;
 use PrestaShopBundle\Entity\ShopGroup;
-use PrestaShopBundle\Twig\Layout\MenuBuilder;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Symfony\UX\TwigComponent\Attribute\AsTwigComponent;
 
-#[AsTwigComponent(template: '@PrestaShop/Admin/Component/Layout/multistore_header.html.twig')]
-class MultistoreHeader extends AbstractMultistoreHeader
+#[AsTwigComponent(template: '@PrestaShop/Admin/Component/Layout/multistore_product_header.html.twig')]
+class MultistoreProductHeader extends AbstractMultistoreHeader
 {
+    private int $productId;
+
     public function __construct(
-        protected readonly MenuBuilder $menuBuilder,
-        protected readonly array $controllersLockedToAllShopContext,
+        protected readonly ProductRepository $productRepository,
         ShopContext $shopContext,
         EntityManagerInterface $entityManager,
         TranslatorInterface $translator,
@@ -58,25 +60,42 @@ class MultistoreHeader extends AbstractMultistoreHeader
         );
     }
 
-    public function mount(): void
+    public function mount(int $productId): void
     {
+        $this->productId = $productId;
         if (!$this->isMultistoreUsed()) {
             return;
         }
 
         parent::doMount();
-        if (!$this->isLockedToAllShopContext()) {
-            $this->groupList = array_filter(
-                $this->entityManager->getRepository(ShopGroup::class)->findBy(['active' => true]),
-                static fn (ShopGroup $shopGroup) => !$shopGroup->getShops()->isEmpty()
-            );
+        $this->groupList = [];
+        $groupList = $this->entityManager->getRepository(ShopGroup::class)->findBy(['active' => true]);
+
+        // Filter shops that are not associated to product
+        $productShops = $this->productRepository->getAssociatedShopIds(new ProductId($productId));
+
+        if (!empty($productShops)) {
+            $productShopIds = array_map(function (ShopId $shopId) {
+                return $shopId->getValue();
+            }, $productShops);
+
+            /** @var ShopGroup $shopGroup */
+            foreach ($groupList as $shopGroup) {
+                /** @var Shop $shop */
+                foreach ($shopGroup->getShops() as $shop) {
+                    if (!in_array($shop->getId(), $productShopIds)) {
+                        $shopGroup->getShops()->removeElement($shop);
+                    }
+                }
+                if (!$shopGroup->getShops()->isEmpty()) {
+                    $this->groupList[] = $shopGroup;
+                }
+            }
         }
     }
 
-    public function isLockedToAllShopContext(): bool
+    public function getProductId(): int
     {
-        $controllerName = $this->menuBuilder->getLegacyControllerClassName();
-
-        return in_array($controllerName, $this->controllersLockedToAllShopContext);
+        return $this->productId;
     }
 }

@@ -113,6 +113,20 @@ class ShopConstraint
     }
 
     /**
+     * Clone the constraint, you can specify a force $strict value, if not set the same value is kept.
+     *
+     * @param bool|null $strict
+     *
+     * @return static
+     *
+     * @throws ShopException
+     */
+    public function clone(?bool $strict = null): self
+    {
+        return new static($this->shopId?->getValue(), $this->shopGroupId?->getValue(), $strict !== null ? $strict : $this->strict);
+    }
+
+    /**
      * @return ShopId|null
      */
     public function getShopId(): ?ShopId

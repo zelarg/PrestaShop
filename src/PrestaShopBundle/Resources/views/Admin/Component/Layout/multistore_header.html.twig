@@ -34,9 +34,9 @@
       <div class="header-multishop-top-bar"{% if this.contextColor is not empty %} style="background-color: {{this.contextColor}};"{% endif %}>
         <div class="header-multishop-center js-header-multishop-open-modal">
           {% if this.contextShopId %}
-            {% include '@PrestaShop/Admin/Multistore/shop_icon.html.twig' with { isTitleDark: this.isTitleDark } %}
+            {% include '@PrestaShop/Admin/Component/MultiShop/shop_icon.html.twig' with { isTitleDark: this.isTitleDark } %}
           {% else %}
-            {% include '@PrestaShop/Admin/Multistore/multi_shops_icon.html.twig' with { isTitleDark: this.isTitleDark } %}
+            {% include '@PrestaShop/Admin/Component/MultiShop/multi_shops_icon.html.twig' with { isTitleDark: this.isTitleDark } %}
           {% endif %}
 
           <h2 class="header-multishop-title">
@@ -86,9 +86,9 @@
                 <li class="multishop-modal-group-item multishop-modal-item{% if loop.first %} first-group-item{% endif %}">
                   {% block shop_group_item %}
                     <span class="multishop-modal-color-container{% if this.contextShopGroupId and this.contextShopGroupId == group.id %} multishop-modal-color-check{% endif %}">
-                    <i class="material-icons">check</i>
-                    <a class="multishop-modal-color"{% if group.color is not empty %} style="background-color: {{group.color}};"{% endif %} href="{{ getAdminLink('AdminShopGroup', true, {'id_shop_group' : group.id, 'updateshop_group' : true}) }}" data-toggle="popover" data-trigger="hover" data-placement="top" data-content="{{ "Edit color"|trans({}, 'Admin.Global') }}" data-original-title="" title=""></a>
-                  </span>
+                      <i class="material-icons">check</i>
+                      <a class="multishop-modal-color"{% if group.color is not empty %} style="background-color: {{group.color}};"{% endif %} href="{{ getAdminLink('AdminShopGroup', true, {'id_shop_group' : group.id, 'updateshop_group' : true}) }}" data-toggle="popover" data-trigger="hover" data-placement="top" data-content="{{ "Edit color"|trans({}, 'Admin.Global') }}" data-original-title="" title=""></a>
+                    </span>
                     <a class="multishop-modal-group-name" href="{{ multistore_group_url(group) }}">{{ "Group"|trans({}, 'Admin.Global') ~ ' ' ~ group.name }}</a>
                   {% endblock %}
                 </li>
