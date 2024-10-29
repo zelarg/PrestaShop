@@ -203,7 +203,8 @@
         "symfony/browser-kit": "6.4.*",
         "symfony/css-selector": "6.4.*",
         "symfony/phpunit-bridge": "6.4.*",
-        "symfony/stopwatch": "6.4.*"
+        "symfony/stopwatch": "6.4.*",
+        "vincentlanglet/twig-cs-fixer": "^3.1"
     },
     "config": {
         "allow-plugins": {
@@ -302,6 +303,8 @@
             "@composer integration-tests",
             "@composer integration-behaviour-tests"
         ],
+        "twig": "@php ./vendor/bin/twig-cs-fixer lint \"src/PrestaShopBundle/Resources/views\"",
+        "twig:fix": "@php ./vendor/bin/twig-cs-fixer fix \"src/PrestaShopBundle/Resources/views\"",
         "unit-tests": [
             "@php -d date.timezone=UTC ./vendor/phpunit/phpunit/phpunit -c tests/Unit/phpunit.xml"
         ]
