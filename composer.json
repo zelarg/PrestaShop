@@ -319,6 +319,8 @@
         "phpstan:generate-baseline": "Launch a phpstan analyzis and generate a baseline file",
         "restore-test-db": "Restore the whole DB in a single dump",
         "restore-test-tables": "Restore all tables one by one, only when they have been modified",
-        "test-all": "Launch all PHPUnit test suites"
+        "test-all": "Launch all PHPUnit test suites",
+        "twig": "Launch Twig CS Fixer to check for coding standards",
+        "twig:fix": "Launch Twig CS Fixer to automatically fix coding standards issues"
     }
 }
