@@ -26,7 +26,7 @@
 
 use PrestaShopBundle\Form\Admin\Type\FormattedTextareaType;
 
- class CMSCategoryCore extends ObjectModel
+class CMSCategoryCore extends ObjectModel
 {
     public $id;
 
