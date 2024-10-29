@@ -46,7 +46,6 @@ describe('BO - Design - Image Settings - Image Generation on creation', async ()
     thumbnailImage: 'thumb.jpg',
   });
 
-  // before and after functions
   before(async function () {
     browserContext = await utilsPlaywright.createBrowserContext(this.browser);
     page = await utilsPlaywright.newTab(browserContext);
@@ -295,11 +294,8 @@ describe('BO - Design - Image Settings - Image Generation on creation', async ()
       expect(idCategory).to.be.gt(0);
     });
 
-    // @todo : https://github.com/PrestaShop/PrestaShop/issues/30520
     it('should check that images are generated', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'checkProductImagesFinal', baseContext);
-
-      this.skip();
 
       // Category Image
       const categoryImageExists = await utilsFile.doesFileExist(`${utilsFile.getRootPath()}/img/c/${idCategory}.jpg`);
@@ -315,10 +311,11 @@ describe('BO - Design - Image Settings - Image Generation on creation', async ()
         );
         expect(fileJpegExists, `File ${idCategory}-${imageTypeName}.jpg doesn't exist!`).to.eq(true);
 
-        const fileWebpExists = await utilsFile.doesFileExist(
-          `${utilsFile.getRootPath()}/img/c/${idCategory}-${imageTypeName}.webp`,
-        );
-        expect(fileWebpExists, `File ${idCategory}-${imageTypeName}.webp doesn't exist!`).to.eq(true);
+        // @todo : https://github.com/PrestaShop/PrestaShop/issues/37282
+        //const fileWebpExists = await utilsFile.doesFileExist(
+        //  `${utilsFile.getRootPath()}/img/c/${idCategory}-${imageTypeName}.webp`,
+        //);
+        //expect(fileWebpExists, `File ${idCategory}-${imageTypeName}.webp doesn't exist!`).to.eq(true);
       }));
     });
   });
