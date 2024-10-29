@@ -57,6 +57,7 @@ class EventSubscriber implements EventSubscriberInterface
             ModuleManagementEvent::POST_INSTALL => 'onModuleStateChanged',
             ModuleManagementEvent::UNINSTALL => 'onModuleStateChanged',
             ModuleManagementEvent::UPGRADE => 'onModuleStateChanged',
+            ModuleManagementEvent::UPLOAD => 'onModuleStateChanged',
             ModuleManagementEvent::ENABLE => 'onModuleStateChanged',
             ModuleManagementEvent::DISABLE => 'onModuleStateChanged',
             ModuleManagementEvent::DELETE => 'onModuleStateChanged',

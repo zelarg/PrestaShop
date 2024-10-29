@@ -28,45 +28,20 @@ declare(strict_types=1);
 
 namespace PrestaShop\PrestaShop\Core\Domain\Module\Command;
 
-use PrestaShop\PrestaShop\Core\Domain\Module\ValueObject\ModuleTechnicalName;
-
 /**
  * Upload module
  */
 class UploadModuleCommand
 {
     /**
-     * @var ModuleTechnicalName
+     * @param string $source Source for module
      */
-    private $technicalName;
-
-    /**
-     * @var string|null
-     */
-    private $source;
-
-    /**
-     * @param string $technicalName Technical name for module
-     * @param string $source source for module
-     */
-    public function __construct(string $technicalName, string $source)
-    {
-        $this->technicalName = new ModuleTechnicalName($technicalName);
-        $this->source = $source;
+    public function __construct(
+        private readonly string $source
+    ) {
     }
 
-    /**
-     * @return ModuleTechnicalName
-     */
-    public function getTechnicalName(): ModuleTechnicalName
-    {
-        return $this->technicalName;
-    }
-
-    /**
-     * @return string
-     */
-    public function getSource(): ?string
+    public function getSource(): string
     {
         return $this->source;
     }

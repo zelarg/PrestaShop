@@ -74,6 +74,7 @@ use Mail;
 use Manufacturer;
 use Message;
 use Meta;
+use Module;
 use ObjectModel;
 use OrderCartRule;
 use OrderHistory;
@@ -264,7 +265,15 @@ class CommonFeatureContext extends AbstractPrestaShopFeatureContext
     /**
      * @AfterFeature @reset-test-modules-after-feature
      */
-    public static function resetTestModules(): void
+    public static function resetTestModulesAfterFeature(): void
+    {
+        (new ResourceResetter())->resetTestModules();
+    }
+
+    /**
+     * @AfterFeature @reset-test-modules-before-feature
+     */
+    public static function resetTestModulesBeforeFeature(): void
     {
         (new ResourceResetter())->resetTestModules();
     }
@@ -684,6 +693,7 @@ class CommonFeatureContext extends AbstractPrestaShopFeatureContext
         Manufacturer::resetStaticCache();
         Message::resetStaticCache();
         Meta::resetStaticCache();
+        Module::resetStaticCache();
         Page::resetStaticCache();
         ProductDownload::resetStaticCache();
         ProductSupplier::resetStaticCache();

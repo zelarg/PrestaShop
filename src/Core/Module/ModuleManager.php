@@ -100,10 +100,11 @@ class ModuleManager implements ModuleManagerInterface
             ));
         }
 
-        if ($source !== null) {
-            $handler = $this->sourceFactory->getHandler($source);
-            $handler->handle($source);
-        }
+        $handler = $this->sourceFactory->getHandler($source);
+        $handler->handle($source);
+        $moduleName = $handler->getModuleName($source);
+        $module = $this->moduleRepository->getModule($moduleName);
+        $this->dispatch(ModuleManagementEvent::UPLOAD, $module);
     }
 
     public function install(string $name, $source = null): bool

@@ -45,7 +45,7 @@ class InstallModuleHandler implements InstallModuleHandlerInterface
 
     public function handle(InstallModuleCommand $command): void
     {
-        $module = $this->moduleRepository->getModule($command->getTechnicalName()->getValue());
+        $module = $this->moduleRepository->getPresentModule($command->getTechnicalName()->getValue());
         if ($module->isInstalled()) {
             throw new AlreadyInstalledModuleException('Cannot install a module already installed');
         }

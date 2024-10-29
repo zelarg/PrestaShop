@@ -60,16 +60,19 @@ class ModuleFeatureContext extends AbstractDomainFeatureContext
 
             $data = $tableNode->getRowsHash();
             if (isset($data['technical_name'])) {
-                Assert::assertEquals($data['technical_name'], $moduleInfos->getTechnicalName());
+                Assert::assertEquals($data['technical_name'], $moduleInfos->getTechnicalName(), 'Invalid technical name');
             }
-            if (isset($data['version'])) {
-                Assert::assertEquals($data['version'], $moduleInfos->getVersion());
+            if (isset($data['installed_version'])) {
+                Assert::assertEquals($data['installed_version'] ?: null, $moduleInfos->getInstalledVersion(), 'Invalid installed version');
+            }
+            if (isset($data['module_version'])) {
+                Assert::assertEquals($data['module_version'], $moduleInfos->getModuleVersion(), 'Invalid module_version version');
             }
             if (isset($data['enabled'])) {
-                Assert::assertEquals(PrimitiveUtils::castStringBooleanIntoBoolean($data['enabled']), $moduleInfos->isEnabled(), 'invalid enabled value');
+                Assert::assertEquals(PrimitiveUtils::castStringBooleanIntoBoolean($data['enabled']), $moduleInfos->isEnabled(), 'Invalid enabled value');
             }
             if (isset($data['installed'])) {
-                Assert::assertEquals(PrimitiveUtils::castStringBooleanIntoBoolean($data['installed']), $moduleInfos->isInstalled(), 'invalid installed value');
+                Assert::assertEquals(PrimitiveUtils::castStringBooleanIntoBoolean($data['installed']), $moduleInfos->isInstalled(), 'Invalid installed value');
             }
         } catch (ModuleNotFoundException $e) {
             $this->setLastException($e);
@@ -82,6 +85,14 @@ class ModuleFeatureContext extends AbstractDomainFeatureContext
     public function assertModuleNotFound(): void
     {
         $this->assertLastErrorIs(ModuleNotFoundException::class);
+    }
+
+    /**
+     * @Then I should have an exception that module is already installed
+     */
+    public function assertModuleIsAlreadyInstalled(): void
+    {
+        $this->assertLastErrorIs(AlreadyInstalledModuleException::class);
     }
 
     /**
@@ -193,7 +204,7 @@ class ModuleFeatureContext extends AbstractDomainFeatureContext
     {
         try {
             $this->getQueryBus()->handle(new InstallModuleCommand($technicalName));
-        } catch (AlreadyInstalledModuleException $e) {
+        } catch (ModuleException $e) {
             $this->setLastException($e);
         }
         // Clean the cache
@@ -201,9 +212,9 @@ class ModuleFeatureContext extends AbstractDomainFeatureContext
     }
 
     /**
-     * @When /^I upload module "(.+)" from "(zip|url)" "(.+)"$/
+     * @When /^I upload module from "(zip|url)" "(.+)"$/
      */
-    public function uploadModule(string $technicalName, string $sourceType, string $sourceGiven): void
+    public function uploadModule(string $sourceType, string $sourceGiven): void
     {
         switch ($sourceType) {
             case 'zip':
@@ -217,8 +228,8 @@ class ModuleFeatureContext extends AbstractDomainFeatureContext
                 break;
         }
         try {
-            $this->getQueryBus()->handle(new UploadModuleCommand($technicalName, $source));
-        } catch (ModuleNotFoundException $e) {
+            $this->getQueryBus()->handle(new UploadModuleCommand($source));
+        } catch (ModuleException $e) {
             $this->setLastException($e);
         }
 
