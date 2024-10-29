@@ -311,11 +311,10 @@ describe('BO - Design - Image Settings - Image Generation on creation', async ()
         );
         expect(fileJpegExists, `File ${idCategory}-${imageTypeName}.jpg doesn't exist!`).to.eq(true);
 
-        // @todo : https://github.com/PrestaShop/PrestaShop/issues/37282
-        //const fileWebpExists = await utilsFile.doesFileExist(
-        //  `${utilsFile.getRootPath()}/img/c/${idCategory}-${imageTypeName}.webp`,
-        //);
-        //expect(fileWebpExists, `File ${idCategory}-${imageTypeName}.webp doesn't exist!`).to.eq(true);
+        const fileWebpExists = await utilsFile.doesFileExist(
+          `${utilsFile.getRootPath()}/img/c/${idCategory}-${imageTypeName}.webp`,
+        );
+        expect(fileWebpExists, `File ${idCategory}-${imageTypeName}.webp doesn't exist!`).to.eq(true);
       }));
     });
   });
