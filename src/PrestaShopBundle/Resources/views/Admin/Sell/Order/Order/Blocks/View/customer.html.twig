@@ -1,4 +1,4 @@
-{#**
+{# **
  * Copyright since 2007 PrestaShop SA and Contributors
  * PrestaShop is an International Registered Trademark & Property of PrestaShop SA
  *
@@ -21,7 +21,7 @@
  * @author    PrestaShop SA and Contributors <contact@prestashop.com>
  * @copyright Since 2007 PrestaShop SA and Contributors
  * @license   https://opensource.org/licenses/OSL-3.0 Open Software License (OSL 3.0)
- *#}
+ * #}
 
 <div id="customerCard" class="customer card">
   <div class="card-header">
@@ -47,7 +47,7 @@
 
           </div>
           <div id="viewFullDetails" class="col-xxl-5 text-xxl-right">
-            <a class="d-print-none" href="{{ path('admin_customers_view', {'customerId': orderForViewing.customer.id }) }}">
+            <a class="d-print-none" href="{{ path('admin_customers_view', {customerId: orderForViewing.customer.id}) }}">
               {{ 'View full details'|trans({}, 'Admin.Actions') }}
             </a>
           </div>
@@ -79,21 +79,21 @@
             </a>
           </p>
 
-          {%  if orderForViewing.customer.isGuest is same as(false) %}
+          {% if orderForViewing.customer.isGuest is same as(false) %}
             <p class="mb-1">
               <strong>{{ 'Account registered:'|trans({}, 'Admin.Orderscustomers.Feature') }}</strong>
             </p>
             <p>{{ orderForViewing.customer.accountRegistrationDate|date_format_full }}</p>
           {% endif %}
 
-          {%  if orderForViewing.customer.siret is not empty %}
+          {% if orderForViewing.customer.siret is not empty %}
             <p class="mb-1">
               <strong>{{ 'SIRET'|trans({}, 'Admin.Orderscustomers.Feature') }}</strong>
             </p>
             <p>{{ orderForViewing.customer.siret }}</p>
           {% endif %}
 
-          {%  if orderForViewing.customer.ape is not empty %}
+          {% if orderForViewing.customer.ape is not empty %}
             <p class="mb-1 d-block d-md-none">
               <strong>{{ 'APE'|trans({}, 'Admin.Orderscustomers.Feature') }}</strong>
             </p>
@@ -108,7 +108,7 @@
             <span class="badge rounded badge-dark">{{ orderForViewing.customer.validOrdersPlaced }}</span>
           </p>
 
-          {%  if orderForViewing.customer.isGuest is same as(false) %}
+          {% if orderForViewing.customer.isGuest is same as(false) %}
             <p class="mb-1">
               <strong>{{ 'Total spent since registration:'|trans({}, 'Admin.Orderscustomers.Feature') }}</strong>
             </p>
@@ -117,7 +117,7 @@
             </p>
           {% endif %}
 
-          {%  if orderForViewing.customer.ape is not empty %}
+          {% if orderForViewing.customer.ape is not empty %}
             <p class="mb-1 d-none d-md-block">
               <strong>{{ 'APE'|trans({}, 'Admin.Orderscustomers.Feature') }}</strong>
             </p>
@@ -139,7 +139,7 @@
 
                 <div class="dropdown-menu dropdown-menu-right">
                   <a class="dropdown-item" id="js-delivery-address-edit-btn"
-                     href="{{ path('admin_order_addresses_edit', {'orderId': orderForViewing.id, 'addressType': 'delivery', 'liteDisplaying': 1, 'submitFormAjax': 1}) }}"
+                     href="{{ path('admin_order_addresses_edit', {orderId: orderForViewing.id, addressType: 'delivery', liteDisplaying: 1, submitFormAjax: 1}) }}"
                   >
                     {{ 'Edit existing address'|trans({}, 'Admin.Actions') }}
                   </a>
@@ -156,7 +156,7 @@
               {% endif %}
             </div>
 
-            {% for line in orderForViewing.shippingAddressFormatted|split("\n") %}
+            {% for line in orderForViewing.shippingAddressFormatted|split('\n') %}
               <p class="mb-0">{{ line }}</p>
             {% endfor %}
           </div>
@@ -172,7 +172,7 @@
 
               <div class="dropdown-menu dropdown-menu-right">
                 <a class="dropdown-item" id="js-invoice-address-edit-btn"
-                   href="{{ path('admin_order_addresses_edit', {'orderId': orderForViewing.id, 'addressType': 'invoice', 'liteDisplaying': 1, 'submitFormAjax': 1}) }}"
+                   href="{{ path('admin_order_addresses_edit', {orderId: orderForViewing.id, addressType: 'invoice', liteDisplaying: 1, submitFormAjax: 1}) }}"
                 >
                   {{ 'Edit existing address'|trans({}, 'Admin.Actions') }}
                 </a>
@@ -189,7 +189,7 @@
             {% endif %}
           </div>
 
-          {% for line in orderForViewing.invoiceAddressFormatted|split("\n") %}
+          {% for line in orderForViewing.invoiceAddressFormatted|split('\n') %}
             <p class="mb-0">{{ line }}</p>
           {% endfor %}
         </div>
@@ -202,7 +202,7 @@
           {% set isPrivateNoteOpen = not orderForViewing.customer.privateNote is empty %}
 
           <div class="col-md-6">
-            <h3 class="mb-0{{ not isPrivateNoteOpen ? ' d-print-none': '' }}">
+            <h3 class="mb-0{{ not isPrivateNoteOpen ? ' d-print-none' : '' }}">
               {{ 'Private note'|trans({}, 'Admin.Orderscustomers.Feature') }}
             </h3>
           </div>
@@ -220,9 +220,9 @@
 
           <div class="col-md-12 mt-3 js-private-note-block {% if not isPrivateNoteOpen %}d-none{% endif %}">
             {{ form_start(privateNoteForm, {
-              'action': path('admin_customers_set_private_note', {
-                'customerId': orderForViewing.customer.id,
-                'back': path('admin_orders_view', {'orderId': orderForViewing.id})
+              action: path('admin_customers_set_private_note', {
+                customerId: orderForViewing.customer.id,
+                back: path('admin_orders_view', {orderId: orderForViewing.id})
               })
               }) }}
 
