@@ -303,8 +303,8 @@
             "@composer integration-tests",
             "@composer integration-behaviour-tests"
         ],
-        "twig": "@php ./vendor/bin/twig-cs-fixer lint \"src/PrestaShopBundle/Resources/views\"",
-        "twig:fix": "@php ./vendor/bin/twig-cs-fixer fix \"src/PrestaShopBundle/Resources/views\"",
+        "twig": "@php ./vendor/bin/twig-cs-fixer lint ./src/PrestaShopBundle/Resources/views",
+        "twig:fix": "@php ./vendor/bin/twig-cs-fixer fix ./src/PrestaShopBundle/Resources/views",
         "unit-tests": [
             "@php -d date.timezone=UTC ./vendor/phpunit/phpunit/phpunit -c tests/Unit/phpunit.xml"
         ]
