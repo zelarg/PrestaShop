@@ -2,12 +2,12 @@
 import testContext from '@utils/testContext';
 
 // Import pages
-import employeesPage from '@pages/BO/advancedParameters/team';
 import rolesPage from '@pages/BO/advancedParameters/team/roles';
 
 import {expect} from 'chai';
 import {
   boDashboardPage,
+  boEmployeesPage,
   boLoginPage,
   type BrowserContext,
   type Page,
@@ -49,16 +49,16 @@ describe('BO - Advanced Parameters - Team : Help card in Roles page', async () =
       boDashboardPage.advancedParametersLink,
       boDashboardPage.teamLink,
     );
-    await employeesPage.closeSfToolBar(page);
+    await boEmployeesPage.closeSfToolBar(page);
 
-    const pageTitle = await employeesPage.getPageTitle(page);
-    expect(pageTitle).to.contains(employeesPage.pageTitle);
+    const pageTitle = await boEmployeesPage.getPageTitle(page);
+    expect(pageTitle).to.contains(boEmployeesPage.pageTitle);
   });
 
   it('should go to \'Roles\' page', async function () {
     await testContext.addContextItem(this, 'testIdentifier', 'goToRolesPage', baseContext);
 
-    await employeesPage.goToRolesPage(page);
+    await boEmployeesPage.goToRolesPage(page);
 
     const pageTitle = await rolesPage.getPageTitle(page);
     expect(pageTitle).to.contains(rolesPage.pageTitle);
