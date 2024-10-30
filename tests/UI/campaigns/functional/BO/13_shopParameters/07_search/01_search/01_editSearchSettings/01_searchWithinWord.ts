@@ -109,7 +109,7 @@ describe('BO - Shop Parameters - Search : Search within word', async () => {
 
       const titleTable = await foClassicSearchResultsPage.getAllProductsAttribute(page, 'title');
       expect(titleTable.length).to.equals(arg.numResults);
-      for (let nthTable = 0 ; nthTable < titleTable.length ; nthTable++) {
+      for (let nthTable = 0; nthTable < titleTable.length; nthTable++) {
         expect(arg.results[nthTable]).to.contains(titleTable[nthTable].replace('...', ''));
       }
     });
