@@ -30,13 +30,15 @@ namespace Tests\Integration\Behaviour\Features\Context\Domain;
 
 use Behat\Gherkin\Node\TableNode;
 use PHPUnit\Framework\Assert;
-use PrestaShop\PrestaShop\Core\Domain\Alias\Command\AddAliasCommand;
-use PrestaShop\PrestaShop\Core\Domain\Alias\Command\BulkDeleteAliasSearchTermCommand;
-use PrestaShop\PrestaShop\Core\Domain\Alias\Command\DeleteAliasSearchTermCommand;
-use PrestaShop\PrestaShop\Core\Domain\Alias\Command\UpdateAliasesBySearchTermCommand;
+use PrestaShop\PrestaShop\Core\Domain\Alias\Command\AddSearchTermAliasesCommand;
+use PrestaShop\PrestaShop\Core\Domain\Alias\Command\BulkDeleteSearchTermsAliasesCommand;
+use PrestaShop\PrestaShop\Core\Domain\Alias\Command\DeleteSearchTermAliasesCommand;
+use PrestaShop\PrestaShop\Core\Domain\Alias\Command\UpdateSearchTermAliasesCommand;
 use PrestaShop\PrestaShop\Core\Domain\Alias\Exception\AliasConstraintException;
 use PrestaShop\PrestaShop\Core\Domain\Alias\Exception\AliasException;
+use PrestaShop\PrestaShop\Core\Domain\Alias\Query\GetAliasesBySearchTermForEditing;
 use PrestaShop\PrestaShop\Core\Domain\Alias\Query\SearchForSearchTerm;
+use PrestaShop\PrestaShop\Core\Domain\Alias\QueryResult\AliasForEditing;
 use PrestaShop\PrestaShop\Core\Exception\InvalidArgumentException;
 use PrestaShop\PrestaShop\Core\Grid\Query\AliasQueryBuilder;
 use PrestaShop\PrestaShop\Core\Search\Filters;
@@ -66,9 +68,9 @@ class AliasFeatureContext extends AbstractDomainFeatureContext
             $alias['active'] = filter_var($alias['active'], FILTER_VALIDATE_BOOL);
         });
 
-        // Then, we create the AddAliasCommand and dispatch it
+        // Then, we create the AddSearchTermAliasesCommand and dispatch it
         try {
-            $this->getCommandBus()->handle(new AddAliasCommand($aliases, $searchTerm));
+            $this->getCommandBus()->handle(new AddSearchTermAliasesCommand($aliases, $searchTerm));
         } catch (InvalidArgumentException|AliasConstraintException $exception) {
             $this->setLastException($exception);
         }
@@ -106,14 +108,14 @@ class AliasFeatureContext extends AbstractDomainFeatureContext
         /** @var AliasQueryBuilder $aliasQueryBuilder */
         $aliasQueryBuilder = $this->getContainer()->get(AliasQueryBuilder::class);
         $aliases = $aliasQueryBuilder
-            ->getAliasQueryBuilder(new Filters([
+            ->getSearchQueryBuilder(new Filters([
                 'limit' => null,
                 'offset' => 0,
                 'orderBy' => 'a.id_alias',
                 'sortOrder' => 'asc',
                 'filters' => [],
             ]))
-            ->addSelect('a.search, a.alias, a.active')
+            ->select('a.search, a.alias, a.active')
             ->executeQuery()
             ->fetchAllAssociative();
 
@@ -132,18 +134,61 @@ class AliasFeatureContext extends AbstractDomainFeatureContext
         /** @var AliasQueryBuilder $aliasQueryBuilder */
         $aliasQueryBuilder = $this->getContainer()->get(AliasQueryBuilder::class);
         $aliases = $aliasQueryBuilder
-            ->getAliasQueryBuilder(new Filters([
+            ->getSearchQueryBuilder(new Filters([
                 'limit' => null,
                 'offset' => 0,
                 'orderBy' => 'a.id_alias',
                 'sortOrder' => 'asc',
                 'filters' => [],
             ]))
-            ->addSelect('a.search, a.alias, a.active')
+            ->select('a.search, a.alias, a.active')
             ->executeQuery()
             ->fetchAllAssociative();
 
         $this->assertNotExistAliasProperties($expectedAliases, $aliases);
+    }
+
+    /**
+     * @Then I should have the following aliases for search term :searchTerm:
+     *
+     * @param string $searchTerm
+     * @param TableNode $table
+     */
+    public function assertOneSearchTermWithAliases(string $searchTerm, TableNode $table): void
+    {
+        $expectedAliases = $table->getColumnsHash();
+
+        $command = new GetAliasesBySearchTermForEditing($searchTerm);
+        /** @var AliasForEditing $aliasForEditing */
+        $aliasForEditing = $this->getQueryBus()->handle($command);
+
+        $foundedAliases = $aliasForEditing->getAliases();
+
+        /** @var array $expectedAlias */
+        foreach ($expectedAliases as $index => $expectedAlias) {
+            /** @var array $foundedAlias */
+            $foundedAlias = $foundedAliases[$index];
+
+            Assert::assertEquals(
+                $expectedAlias['alias'],
+                $foundedAlias['alias'],
+                sprintf(
+                    'Invalid Alias, expected %s but got %s instead.',
+                    $expectedAlias['alias'],
+                    $foundedAlias['alias'],
+                )
+            );
+
+            Assert::assertEquals(
+                filter_var($expectedAlias['active'], FILTER_VALIDATE_BOOL),
+                filter_var($foundedAlias['active'], FILTER_VALIDATE_BOOL),
+                sprintf(
+                    'Invalid Alias Active, expected %s but got %s instead.',
+                    $expectedAlias['active'],
+                    $foundedAlias['active']
+                )
+            );
+        }
     }
 
     /**
@@ -180,13 +225,22 @@ class AliasFeatureContext extends AbstractDomainFeatureContext
 
     /**
      * @Then I should get error that alias cannot be empty
-     * @Then I should get error that search term cannot be empty
      *
      * @return void
      */
     public function assertLastErrorIsInvalidAliasConstraint(): void
     {
-        $this->assertLastErrorIs(InvalidArgumentException::class);
+        $this->assertLastErrorIs(AliasConstraintException::class, AliasConstraintException::INVALID_ALIAS);
+    }
+
+    /**
+     * @Then I should get error that search term cannot be empty
+     *
+     * @return void
+     */
+    public function assertLastErrorIsInvalidSearchTermConstraint(): void
+    {
+        $this->assertLastErrorIs(AliasConstraintException::class, AliasConstraintException::INVALID_SEARCH);
     }
 
     /**
@@ -218,7 +272,7 @@ class AliasFeatureContext extends AbstractDomainFeatureContext
 
         // Then, we create the UpdateAliasesBySearchTermCommand and dispatch it
         try {
-            $this->getCommandBus()->handle(new UpdateAliasesBySearchTermCommand($oldSearchTerm, $newSearchTerm, $aliases));
+            $this->getCommandBus()->handle(new UpdateSearchTermAliasesCommand($oldSearchTerm, $aliases, $newSearchTerm));
         } catch (InvalidArgumentException|AliasConstraintException $exception) {
             $this->setLastException($exception);
         }
@@ -279,7 +333,7 @@ class AliasFeatureContext extends AbstractDomainFeatureContext
     public function deleteSearchTerm(string $searchTerm): void
     {
         try {
-            $this->getCommandBus()->handle(new DeleteAliasSearchTermCommand($searchTerm));
+            $this->getCommandBus()->handle(new DeleteSearchTermAliasesCommand($searchTerm));
         } catch (AliasException $e) {
             $this->setLastException($e);
         }
@@ -294,7 +348,7 @@ class AliasFeatureContext extends AbstractDomainFeatureContext
     {
         try {
             $searchTerms = explode(',', $searchTerms);
-            $this->getCommandBus()->handle(new BulkDeleteAliasSearchTermCommand($searchTerms));
+            $this->getCommandBus()->handle(new BulkDeleteSearchTermsAliasesCommand($searchTerms));
         } catch (AliasException $e) {
             $this->setLastException($e);
         }

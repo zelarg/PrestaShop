@@ -24,23 +24,27 @@
  * @license   https://opensource.org/licenses/OSL-3.0 Open Software License (OSL 3.0)
  */
 
-namespace PrestaShop\PrestaShop\Core\Domain\Alias\CommandHandler;
+declare(strict_types=1);
 
-use PrestaShop\PrestaShop\Core\Domain\Alias\Command\AddAliasCommand;
-use PrestaShop\PrestaShop\Core\Domain\Alias\ValueObject\AliasId;
-use PrestaShop\PrestaShop\Core\Exception\CoreException;
+namespace PrestaShop\PrestaShop\Adapter\Alias\CommandHandler;
 
-/**
- * Interface for services that handle command which adds new alias
- */
-interface AddAliasHandlerInterface
+use PrestaShop\PrestaShop\Adapter\Alias\Repository\AliasRepository;
+use PrestaShop\PrestaShop\Core\CommandBus\Attributes\AsCommandHandler;
+use PrestaShop\PrestaShop\Core\Domain\Alias\Command\DeleteSearchTermAliasesCommand;
+use PrestaShop\PrestaShop\Core\Domain\Alias\CommandHandler\DeleteSearchTermAliasesHandlerInterface;
+
+#[AsCommandHandler]
+class DeleteSearchTermAliasesHandler implements DeleteSearchTermAliasesHandlerInterface
 {
+    public function __construct(private readonly AliasRepository $aliasRepository)
+    {
+    }
+
     /**
-     * @param AddAliasCommand $command
-     *
-     * @return AliasId[]
-     *
-     * @throws CoreException
+     * {@inheritdoc}
      */
-    public function handle(AddAliasCommand $command): array;
+    public function handle(DeleteSearchTermAliasesCommand $command): void
+    {
+        $this->aliasRepository->deleteAliasesBySearchTerm($command->getSearchTerm());
+    }
 }

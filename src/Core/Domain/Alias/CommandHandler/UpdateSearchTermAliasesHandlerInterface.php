@@ -26,15 +26,15 @@
 
 namespace PrestaShop\PrestaShop\Core\Domain\Alias\CommandHandler;
 
-use PrestaShop\PrestaShop\Core\Domain\Alias\Command\UpdateAliasesBySearchTermCommand;
+use PrestaShop\PrestaShop\Core\Domain\Alias\Command\UpdateSearchTermAliasesCommand;
 
 /**
- * Defines contract to handle @see UpdateAliasesBySearchTermCommand
+ * Defines contract to handle @see UpdateSearchTermAliasesCommand
  */
-interface UpdateAliasesBySearchTermHandlerInterface
+interface UpdateSearchTermAliasesHandlerInterface
 {
     /**
-     * @param UpdateAliasesBySearchTermCommand $command
+     * @param UpdateSearchTermAliasesCommand $command
      */
-    public function handle(UpdateAliasesBySearchTermCommand $command): void;
+    public function handle(UpdateSearchTermAliasesCommand $command): void;
 }

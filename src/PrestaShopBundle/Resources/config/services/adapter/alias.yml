@@ -19,14 +19,14 @@ services:
   PrestaShop\PrestaShop\Adapter\Alias\QueryHandler\GetAliasesBySearchTermForEditingHandler:
     autoconfigure: true
 
-  PrestaShop\PrestaShop\Adapter\Alias\CommandHandler\AddAliasHandler:
+  PrestaShop\PrestaShop\Adapter\Alias\CommandHandler\AddSearchTermAliasesHandler:
     autoconfigure: true
 
-  PrestaShop\PrestaShop\Adapter\Alias\CommandHandler\DeleteAliasSearchTermHandler:
+  PrestaShop\PrestaShop\Adapter\Alias\CommandHandler\DeleteSearchTermAliasesHandler:
     autoconfigure: true
 
-  PrestaShop\PrestaShop\Adapter\Alias\CommandHandler\BulkDeleteAliasSearchTermHandler:
+  PrestaShop\PrestaShop\Adapter\Alias\CommandHandler\BulkDeleteSearchTermsAliasesHandler:
     autoconfigure: true
 
-  PrestaShop\PrestaShop\Adapter\Alias\CommandHandler\UpdateAliasesBySearchTermHandler:
+  PrestaShop\PrestaShop\Adapter\Alias\CommandHandler\UpdateSearchTermAliasesHandler:
     autoconfigure: true

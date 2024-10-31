@@ -29,14 +29,13 @@ declare(strict_types=1);
 namespace PrestaShopBundle\Controller\Admin\Configure\ShopParameters;
 
 use Exception;
-use PrestaShop\PrestaShop\Core\Domain\Alias\Command\BulkDeleteAliasSearchTermCommand;
-use PrestaShop\PrestaShop\Core\Domain\Alias\Command\DeleteAliasSearchTermCommand;
+use PrestaShop\PrestaShop\Core\Domain\Alias\Command\BulkDeleteSearchTermsAliasesCommand;
+use PrestaShop\PrestaShop\Core\Domain\Alias\Command\DeleteSearchTermAliasesCommand;
 use PrestaShop\PrestaShop\Core\Domain\Alias\Exception\AliasConstraintException;
 use PrestaShop\PrestaShop\Core\Domain\Alias\Exception\AliasException;
 use PrestaShop\PrestaShop\Core\Domain\Alias\Exception\AliasNotFoundException;
 use PrestaShop\PrestaShop\Core\Domain\Alias\Exception\CannotDeleteAliasException;
 use PrestaShop\PrestaShop\Core\Domain\Alias\Query\GetAliasesBySearchTermForEditing;
-use PrestaShop\PrestaShop\Core\Domain\Alias\Query\SearchForSearchTerm;
 use PrestaShop\PrestaShop\Core\Domain\Alias\QueryResult\AliasForEditing;
 use PrestaShop\PrestaShop\Core\Form\IdentifiableObject\Builder\FormBuilderInterface;
 use PrestaShop\PrestaShop\Core\Form\IdentifiableObject\Handler\FormHandlerInterface;
@@ -45,7 +44,6 @@ use PrestaShop\PrestaShop\Core\Search\Filters\AliasFilters;
 use PrestaShopBundle\Controller\Admin\PrestaShopAdminController;
 use PrestaShopBundle\Security\Attribute\AdminSecurity;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -150,33 +148,11 @@ class SearchAliasController extends PrestaShopAdminController
         ]);
     }
 
-    #[AdminSecurity("is_granted('read', request.get('_legacy_controller'))")]
-    public function searchAliasesForAssociationAction(Request $request): JsonResponse
-    {
-        try {
-            /** @var string[] $searchTerms */
-            $searchTerms = $this->dispatchQuery(new SearchForSearchTerm(
-                $request->get('query', ''),
-                (int) $request->get('limit', SearchForSearchTerm::DEFAULT_LIMIT)
-            ));
-        } catch (AliasConstraintException $e) {
-            return $this->json([
-                'message' => $this->getErrorMessageForException($e, []),
-            ], Response::HTTP_BAD_REQUEST);
-        }
-
-        if (empty($searchTerms)) {
-            return $this->json(['searchTerms' => []], Response::HTTP_NOT_FOUND);
-        }
-
-        return $this->json(['searchTerms' => $searchTerms]);
-    }
-
     #[AdminSecurity("is_granted('delete', request.get('_legacy_controller'))", redirectRoute: 'admin_search_alias_index')]
     public function deleteAction(string $searchTerm): RedirectResponse
     {
         try {
-            $this->dispatchCommand(new DeleteAliasSearchTermCommand($searchTerm));
+            $this->dispatchCommand(new DeleteSearchTermAliasesCommand($searchTerm));
             $this->addFlash('success', $this->trans('Successful deletion.', [], 'Admin.Notifications.Success'));
         } catch (AliasException $e) {
             $this->addFlash('error', $this->getErrorMessageForException($e, $this->getErrorMessages($e)));
@@ -193,7 +169,7 @@ class SearchAliasController extends PrestaShopAdminController
         $searchTerms = $request->request->all('alias_term_bulk');
 
         try {
-            $this->dispatchCommand(new BulkDeleteAliasSearchTermCommand($searchTerms));
+            $this->dispatchCommand(new BulkDeleteSearchTermsAliasesCommand($searchTerms));
 
             $this->addFlash(
                 'success',

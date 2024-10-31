@@ -22,6 +22,10 @@ Feature: Add basic alias from Back Office (BO)
       | blouse | blues  | true    |
       | big    | large  | true    |
       | big    | small  | false   |
+    Then I should have the following aliases for search term "big":
+      | alias | active |
+      | large | true   |
+      | small | false  |
 
   Scenario: I add alises for one search term for the second time
     Given following aliases should exist:
@@ -36,6 +40,11 @@ Feature: Add basic alias from Back Office (BO)
       | big     | large   | true   |
       | big     | small   | false  |
       | big     | so biig | true   |
+    Then I should have the following aliases for search term "big":
+      | alias   | active |
+      | large   | true   |
+      | small   | false  |
+      | so biig | true   |
 
   Scenario: I add alias already used by another search term
     Given following aliases should exist:

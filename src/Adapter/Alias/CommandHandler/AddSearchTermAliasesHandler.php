@@ -30,11 +30,11 @@ namespace PrestaShop\PrestaShop\Adapter\Alias\CommandHandler;
 
 use PrestaShop\PrestaShop\Adapter\Alias\Repository\AliasRepository;
 use PrestaShop\PrestaShop\Core\CommandBus\Attributes\AsCommandHandler;
-use PrestaShop\PrestaShop\Core\Domain\Alias\Command\AddAliasCommand;
-use PrestaShop\PrestaShop\Core\Domain\Alias\CommandHandler\AddAliasHandlerInterface;
+use PrestaShop\PrestaShop\Core\Domain\Alias\Command\AddSearchTermAliasesCommand;
+use PrestaShop\PrestaShop\Core\Domain\Alias\CommandHandler\AddSearchTermAliasesHandlerInterface;
 
 #[AsCommandHandler]
-class AddAliasHandler implements AddAliasHandlerInterface
+class AddSearchTermAliasesHandler implements AddSearchTermAliasesHandlerInterface
 {
     /**
      * @var AliasRepository
@@ -53,9 +53,9 @@ class AddAliasHandler implements AddAliasHandlerInterface
     /**
      * {@inheritdoc}
      */
-    public function handle(AddAliasCommand $command): array
+    public function handle(AddSearchTermAliasesCommand $command): array
     {
-        return $this->aliasRepository->create(
+        return $this->aliasRepository->addAliases(
             $command->getSearchTerm(),
             $command->getAliases()
         );

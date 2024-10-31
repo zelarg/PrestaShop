@@ -17,14 +17,18 @@ Feature: Edit alias from Back Office (BO)
       | alias | active |
       | large | true   |
       | small | false  |
-    Then following aliases should exist:
-      | search | alias  | active |
-      | big    | large  | true   |
-      | big    | small  | false  |
+    Then I should have the following aliases for search term "big":
+      | alias   | active |
+      | large   | true   |
+      | small   | false  |
     When I update search term "big" with following aliases:
       | alias | active |
       | large | true   |
       | biig  | true   |
+    Then I should have the following aliases for search term "big":
+      | alias   | active |
+      | biig    | true   |
+      | large   | true   |
     Then following aliases should exist:
       | search | alias  | active |
       | big    | large  | true   |
@@ -40,6 +44,9 @@ Feature: Edit alias from Back Office (BO)
     When I add a search term "geant" with following aliases:
       | alias  | active |
       | biiig  | true   |
+    Then I should have the following aliases for search term "geant":
+      | alias | active |
+      | biiig | true   |
     Then following aliases should exist:
       | search | alias  | active |
       | big    | large  | true   |

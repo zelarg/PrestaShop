@@ -72,17 +72,16 @@ class AliasRepository extends AbstractObjectModelRepository
      *
      * @throws CoreException
      */
-    public function create(string $searchTerm, array $aliases): array
+    public function addAliases(string $searchTerm, array $aliases): array
     {
         // Get all aliases already in use for other search terms
-        $aliasesAlreadyUsed = $this->getAliasesAlreadyInUseNotForSearchTerm($searchTerm);
         $aliasesToAdd = array_column($aliases, 'alias');
+        $aliasesAlreadyUsed = $this->getAliasesAlreadyInUseNotForSearchTerm($searchTerm, $aliasesToAdd);
 
-        // Check if any of the aliases are already in use before adding them
-        $aliasesIntersect = array_intersect($aliasesAlreadyUsed, $aliasesToAdd);
-        if (count($aliasesIntersect) > 0) {
+        // If we have aliases already in use, we need to throw an exception
+        if (count($aliasesAlreadyUsed) > 0) {
             throw new AliasConstraintException(
-                implode(', ', $aliasesIntersect),
+                implode(', ', $aliasesAlreadyUsed),
                 AliasConstraintException::ALIAS_ALREADY_USED
             );
         }
@@ -274,17 +273,20 @@ class AliasRepository extends AbstractObjectModelRepository
 
     /**
      * @param string $searchTerm
+     * @param string[] $aliases
      *
      * @return string[]
      */
-    public function getAliasesAlreadyInUseNotForSearchTerm(string $searchTerm): array
+    private function getAliasesAlreadyInUseNotForSearchTerm(string $searchTerm, array $aliases): array
     {
         $qb = $this->connection->createQueryBuilder()
             ->addSelect('DISTINCT a.alias')
             ->from($this->dbPrefix . 'alias', 'a')
             ->addOrderBy('a.alias', 'ASC')
             ->where('a.search != :searchTerm')
+            ->andWhere('a.alias IN (:aliases)')
             ->setParameter('searchTerm', $searchTerm)
+            ->setParameter('aliases', $aliases, ArrayParameterType::STRING)
         ;
 
         return $qb->executeQuery()->fetchFirstColumn();

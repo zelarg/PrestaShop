@@ -60,7 +60,7 @@ class AliasQueryBuilder extends AbstractDoctrineQueryBuilder
     {
         $builder = $this->getAliasQueryBuilder($searchCriteria);
 
-        $builder->select('a.search')->groupBy('search');
+        $builder->select('DISTINCT a.search');
 
         $this->searchCriteriaApplicator
             ->applySorting($searchCriteria, $builder)
@@ -84,7 +84,7 @@ class AliasQueryBuilder extends AbstractDoctrineQueryBuilder
      *
      * @return QueryBuilder
      */
-    public function getAliasQueryBuilder(SearchCriteriaInterface $searchCriteria): QueryBuilder
+    private function getAliasQueryBuilder(SearchCriteriaInterface $searchCriteria): QueryBuilder
     {
         $builder = $this->connection->createQueryBuilder()
             ->from($this->dbPrefix . 'alias', 'a')

@@ -27,8 +27,8 @@
 namespace PrestaShop\PrestaShop\Core\Form\IdentifiableObject\DataHandler;
 
 use PrestaShop\PrestaShop\Core\CommandBus\CommandBusInterface;
-use PrestaShop\PrestaShop\Core\Domain\Alias\Command\AddAliasCommand;
-use PrestaShop\PrestaShop\Core\Domain\Alias\Command\UpdateAliasesBySearchTermCommand;
+use PrestaShop\PrestaShop\Core\Domain\Alias\Command\AddSearchTermAliasesCommand;
+use PrestaShop\PrestaShop\Core\Domain\Alias\Command\UpdateSearchTermAliasesCommand;
 
 class AliasFormDataHandler implements FormDataHandlerInterface
 {
@@ -42,7 +42,7 @@ class AliasFormDataHandler implements FormDataHandlerInterface
         $searchTerm = $data['search'];
         $aliases = $this->formatAliases($data['aliases']);
 
-        return $this->commandBus->handle(new AddAliasCommand($aliases, $searchTerm));
+        return $this->commandBus->handle(new AddSearchTermAliasesCommand($aliases, $searchTerm));
     }
 
     public function update($id, array $data)
@@ -50,7 +50,7 @@ class AliasFormDataHandler implements FormDataHandlerInterface
         $searchTerm = $data['search'];
         $aliases = $this->formatAliases($data['aliases']);
 
-        return $this->commandBus->handle(new UpdateAliasesBySearchTermCommand((string) $id, $searchTerm, $aliases));
+        return $this->commandBus->handle(new UpdateSearchTermAliasesCommand((string) $id, $aliases, $searchTerm));
     }
 
     protected function formatAliases(array $aliases)

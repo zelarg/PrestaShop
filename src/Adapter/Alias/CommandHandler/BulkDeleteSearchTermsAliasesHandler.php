@@ -31,8 +31,8 @@ namespace PrestaShop\PrestaShop\Adapter\Alias\CommandHandler;
 use PrestaShop\PrestaShop\Adapter\Alias\Repository\AliasRepository;
 use PrestaShop\PrestaShop\Core\CommandBus\Attributes\AsCommandHandler;
 use PrestaShop\PrestaShop\Core\Domain\AbstractBulkCommandHandler;
-use PrestaShop\PrestaShop\Core\Domain\Alias\Command\BulkDeleteAliasSearchTermCommand;
-use PrestaShop\PrestaShop\Core\Domain\Alias\CommandHandler\BulkDeleteAliasSearchTermHandlerInterface;
+use PrestaShop\PrestaShop\Core\Domain\Alias\Command\BulkDeleteSearchTermsAliasesCommand;
+use PrestaShop\PrestaShop\Core\Domain\Alias\CommandHandler\BulkDeleteSearchTermsAliasesHandlerInterface;
 use PrestaShop\PrestaShop\Core\Domain\Alias\Exception\AliasException;
 use PrestaShop\PrestaShop\Core\Domain\Alias\Exception\BulkAliasException;
 use PrestaShop\PrestaShop\Core\Domain\Alias\ValueObject\SearchTerm;
@@ -42,7 +42,7 @@ use PrestaShop\PrestaShop\Core\Domain\Exception\BulkCommandExceptionInterface;
  * Handles command which deletes aliases related to search term in bulk action
  */
 #[AsCommandHandler]
-class BulkDeleteAliasSearchTermHandler extends AbstractBulkCommandHandler implements BulkDeleteAliasSearchTermHandlerInterface
+class BulkDeleteSearchTermsAliasesHandler extends AbstractBulkCommandHandler implements BulkDeleteSearchTermsAliasesHandlerInterface
 {
     public function __construct(protected AliasRepository $aliasRepository)
     {
@@ -51,7 +51,7 @@ class BulkDeleteAliasSearchTermHandler extends AbstractBulkCommandHandler implem
     /**
      * {@inheritdoc}
      */
-    public function handle(BulkDeleteAliasSearchTermCommand $command): void
+    public function handle(BulkDeleteSearchTermsAliasesCommand $command): void
     {
         $this->handleBulkAction($command->getSearchTerms(), AliasException::class);
     }

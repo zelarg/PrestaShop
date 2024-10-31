@@ -26,54 +26,24 @@
 
 declare(strict_types=1);
 
-namespace PrestaShop\PrestaShop\Core\Domain\Alias\Command;
+namespace PrestaShop\PrestaShop\Adapter\Alias\CommandHandler;
 
-use PrestaShop\PrestaShop\Core\Domain\Alias\ValueObject\SearchTerm;
+use PrestaShop\PrestaShop\Adapter\Alias\Repository\AliasRepository;
+use PrestaShop\PrestaShop\Core\CommandBus\Attributes\AsCommandHandler;
+use PrestaShop\PrestaShop\Core\Domain\Alias\Command\UpdateSearchTermAliasesCommand;
+use PrestaShop\PrestaShop\Core\Domain\Alias\CommandHandler\UpdateSearchTermAliasesHandlerInterface;
 
-class UpdateAliasesBySearchTermCommand
+#[AsCommandHandler]
+class UpdateSearchTermAliasesHandler implements UpdateSearchTermAliasesHandlerInterface
 {
-    private SearchTerm $oldSearchTerm;
-    private SearchTerm $newSearchTerm;
-
-    /**
-     * @param string $oldSearchTerm
-     * @param string $newSearchTerm
-     * @param array{
-     *   array{
-     *     alias: string,
-     *     active: bool,
-     *   }
-     * } $aliases
-     */
     public function __construct(
-        string $oldSearchTerm,
-        string $newSearchTerm,
-        private array $aliases
+        protected AliasRepository $aliasRepository
     ) {
-        $this->oldSearchTerm = new SearchTerm($oldSearchTerm);
-        $this->newSearchTerm = new SearchTerm($newSearchTerm);
     }
 
-    public function getOldSearchTerm(): SearchTerm
+    public function handle(UpdateSearchTermAliasesCommand $command): void
     {
-        return $this->oldSearchTerm;
-    }
-
-    public function getNewSearchTerm(): SearchTerm
-    {
-        return $this->newSearchTerm;
-    }
-
-    /**
-     * @return array{
-     *   array{
-     *     alias: string,
-     *     active: bool,
-     *   }
-     * }
-     */
-    public function getAliases(): array
-    {
-        return $this->aliases;
+        $this->aliasRepository->deleteAliasesBySearchTerm($command->getOldSearchTerm());
+        $this->aliasRepository->addAliases($command->getNewSearchTerm()->getValue(), $command->getAliases());
     }
 }

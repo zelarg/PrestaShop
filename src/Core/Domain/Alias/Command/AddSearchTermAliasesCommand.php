@@ -28,12 +28,13 @@ declare(strict_types=1);
 
 namespace PrestaShop\PrestaShop\Core\Domain\Alias\Command;
 
+use PrestaShop\PrestaShop\Core\Domain\Alias\Exception\AliasConstraintException;
 use PrestaShop\PrestaShop\Core\Exception\InvalidArgumentException;
 
 /**
- * Adds new alias with given data
+ * Adds new search term with given aliases
  */
-class AddAliasCommand
+class AddSearchTermAliasesCommand
 {
     /**
      * @var string
@@ -87,7 +88,7 @@ class AddAliasCommand
     /**
      * @param string[] $array
      *
-     * @throws InvalidArgumentException
+     * @throws AliasConstraintException
      */
     private function assertArrayNotEmpty(array $array): void
     {
@@ -95,7 +96,10 @@ class AddAliasCommand
             return;
         }
 
-        throw new InvalidArgumentException('Alias parameter aliases must not be empty');
+        throw new AliasConstraintException(
+            'Alias parameter aliases must not be empty',
+            AliasConstraintException::INVALID_ALIAS
+        );
     }
 
     /**
@@ -109,6 +113,9 @@ class AddAliasCommand
             return;
         }
 
-        throw new InvalidArgumentException('Alias parameter search term must not be empty');
+        throw new AliasConstraintException(
+            'Alias parameter search term must not be empty',
+            AliasConstraintException::INVALID_SEARCH
+        );
     }
 }
