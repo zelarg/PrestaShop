@@ -24,33 +24,42 @@
  * @license   https://opensource.org/licenses/OSL-3.0 Open Software License (OSL 3.0)
  */
 
-namespace PrestaShop\PrestaShop\Core\Form\IdentifiableObject\Builder;
+declare(strict_types=1);
 
-use Symfony\Component\Form\FormInterface;
+namespace PrestaShop\PrestaShop\Core\Form\IdentifiableObject\DataProvider;
 
-/**
- * Defines contract for identifiable object form factories.
- */
-interface FormBuilderInterface
+use PrestaShop\PrestaShop\Core\CommandBus\CommandBusInterface;
+use PrestaShop\PrestaShop\Core\Domain\Alias\Query\GetAliasesBySearchTermForEditing;
+use PrestaShop\PrestaShop\Core\Domain\Alias\QueryResult\AliasForEditing;
+
+class AliasFormDataProvider implements FormDataProviderInterface
 {
-    /**
-     * Create new form.
-     *
-     * @param array $data
-     * @param array $options
-     *
-     * @return FormInterface
-     */
-    public function getForm(array $data = [], array $options = []);
+    public function __construct(
+        protected readonly CommandBusInterface $queryBus
+    ) {
+    }
 
     /**
-     * Create new form for given object.
-     *
-     * @param int|string $id
-     * @param array $data
-     * @param array $options
-     *
-     * @return FormInterface
+     * {@inheritdoc}
      */
-    public function getFormFor($id, array $data = [], array $options = []);
+    public function getData($searchTerm): array
+    {
+        /**
+         * @var AliasForEditing $aliases
+         */
+        $aliases = $this->queryBus->handle(new GetAliasesBySearchTermForEditing((string) $searchTerm));
+
+        return [
+            'search' => $aliases->getSearchTerm(),
+            'aliases' => $aliases->getAliases(),
+        ];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getDefaultData(): array
+    {
+        return [];
+    }
 }

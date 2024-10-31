@@ -1,4 +1,3 @@
-<?php
 /**
  * Copyright since 2007 PrestaShop SA and Contributors
  * PrestaShop is an International Registered Trademark & Property of PrestaShop SA
@@ -24,33 +23,12 @@
  * @license   https://opensource.org/licenses/OSL-3.0 Open Software License (OSL 3.0)
  */
 
-namespace PrestaShop\PrestaShop\Core\Form\IdentifiableObject\Builder;
+import AliasesCollectionManager from '@pages/alias/components/aliases-collection-manager';
+import FormSubmitButton from '@components/form-submit-button';
 
-use Symfony\Component\Form\FormInterface;
+const {$} = window;
 
-/**
- * Defines contract for identifiable object form factories.
- */
-interface FormBuilderInterface
-{
-    /**
-     * Create new form.
-     *
-     * @param array $data
-     * @param array $options
-     *
-     * @return FormInterface
-     */
-    public function getForm(array $data = [], array $options = []);
-
-    /**
-     * Create new form for given object.
-     *
-     * @param int|string $id
-     * @param array $data
-     * @param array $options
-     *
-     * @return FormInterface
-     */
-    public function getFormFor($id, array $data = [], array $options = []);
-}
+$(() => {
+  new FormSubmitButton();
+  new AliasesCollectionManager();
+});
