@@ -28,14 +28,18 @@ declare(strict_types=1);
 
 namespace PrestaShopBundle\Controller\Admin\Configure\ShopParameters;
 
+use Exception;
 use PrestaShop\PrestaShop\Core\Domain\Alias\Command\BulkDeleteAliasSearchTermCommand;
 use PrestaShop\PrestaShop\Core\Domain\Alias\Command\DeleteAliasSearchTermCommand;
 use PrestaShop\PrestaShop\Core\Domain\Alias\Exception\AliasConstraintException;
 use PrestaShop\PrestaShop\Core\Domain\Alias\Exception\AliasException;
 use PrestaShop\PrestaShop\Core\Domain\Alias\Exception\AliasNotFoundException;
 use PrestaShop\PrestaShop\Core\Domain\Alias\Exception\CannotDeleteAliasException;
+use PrestaShop\PrestaShop\Core\Domain\Alias\Query\GetAliasesBySearchTermForEditing;
 use PrestaShop\PrestaShop\Core\Domain\Alias\Query\SearchForSearchTerm;
+use PrestaShop\PrestaShop\Core\Domain\Alias\QueryResult\AliasForEditing;
 use PrestaShop\PrestaShop\Core\Form\IdentifiableObject\Builder\FormBuilderInterface;
+use PrestaShop\PrestaShop\Core\Form\IdentifiableObject\Handler\FormHandlerInterface;
 use PrestaShop\PrestaShop\Core\Grid\GridFactoryInterface;
 use PrestaShop\PrestaShop\Core\Search\Filters\AliasFilters;
 use PrestaShopBundle\Controller\Admin\PrestaShopAdminController;
@@ -53,6 +57,7 @@ class SearchAliasController extends PrestaShopAdminController
 {
     #[AdminSecurity("is_granted('read', request.get('_legacy_controller'))")]
     public function indexAction(
+        Request $request,
         AliasFilters $filters,
         #[Autowire(service: 'prestashop.core.grid.factory.alias')]
         GridFactoryInterface $aliasGridFactory,
@@ -61,6 +66,7 @@ class SearchAliasController extends PrestaShopAdminController
 
         return $this->render('@PrestaShop/Admin/Configure/ShopParameters/Search/index.html.twig', [
             'aliasGrid' => $this->presentGrid($aliasGrid),
+            'help_link' => $this->generateSidebarLink($request->attributes->get('_legacy_controller')),
             'layoutHeaderToolbarBtn' => [
                 'add' => [
                     'desc' => $this->trans('Add new alias', [], 'Admin.Shopparameters.Feature'),
@@ -68,6 +74,79 @@ class SearchAliasController extends PrestaShopAdminController
                     'href' => $this->generateUrl('admin_search_alias_create'),
                 ],
             ],
+        ]);
+    }
+
+    #[AdminSecurity("is_granted('create', request.get('_legacy_controller'))", redirectRoute: 'admin_search_alias_index', message: 'You need permission to create new aliases.')]
+    public function createAction(
+        Request $request,
+        #[Autowire(service: 'prestashop.core.form.identifiable_object.builder.alias_search_term_form_builder')]
+        FormBuilderInterface $formBuilder,
+        #[Autowire(service: 'prestashop.core.form.identifiable_object.builder.alias_search_term_form_handler')]
+        FormHandlerInterface $formHandler,
+    ): Response {
+        $form = $formBuilder->getForm();
+        $form->handleRequest($request);
+
+        try {
+            $formHandlerResult = $formHandler->handle($form);
+
+            if (null !== $formHandlerResult->getIdentifiableObjectId()) {
+                $this->addFlash('success', $this->trans('Successful creation.', [], 'Admin.Notifications.Success'));
+
+                return $this->redirectToRoute('admin_search_alias_index');
+            }
+        } catch (Exception $e) {
+            $this->addFlash('error', $this->getErrorMessageForException($e, $this->getErrorMessages($e)));
+        }
+
+        return $this->render('@PrestaShop/Admin/Configure/ShopParameters/Search/form.html.twig', [
+            'form' => $form->createView(),
+            'help_link' => $this->generateSidebarLink($request->attributes->get('_legacy_controller')),
+            'enableSidebar' => true,
+            'layoutTitle' => $this->trans('New aliases', [], 'Admin.Shopparameters.Feature'),
+        ]);
+    }
+
+    #[AdminSecurity("is_granted('update', request.get('_legacy_controller'))", redirectRoute: 'admin_search_alias_index', message: 'You need permission to edit this.')]
+    public function editAction(
+        string $searchTerm,
+        Request $request,
+        #[Autowire(service: 'prestashop.core.form.identifiable_object.builder.alias_search_term_form_builder')]
+        FormBuilderInterface $formBuilder,
+        #[Autowire(service: 'prestashop.core.form.identifiable_object.builder.alias_search_term_form_handler')]
+        FormHandlerInterface $formHandler,
+    ): Response {
+        try {
+            /**
+             * @var AliasForEditing $editableAlias
+             */
+            $editableAlias = $this->dispatchQuery(new GetAliasesBySearchTermForEditing($searchTerm));
+
+            $form = $formBuilder->getFormFor($searchTerm);
+            $form->handleRequest($request);
+            $result = $formHandler->handleFor($searchTerm, $form);
+
+            if ($result->isSubmitted() && $result->isValid()) {
+                $this->addFlash('success', $this->trans('Successful update', [], 'Admin.Notifications.Success'));
+
+                return $this->redirectToRoute('admin_search_alias_index');
+            }
+        } catch (Exception $e) {
+            $this->addFlash('error', $this->getErrorMessageForException($e, $this->getErrorMessages($e)));
+        }
+
+        return $this->render('@PrestaShop/Admin/Configure/ShopParameters/Search/form.html.twig', [
+            'form' => $form->createView(),
+            'help_link' => $this->generateSidebarLink($request->attributes->get('_legacy_controller')),
+            'enableSidebar' => true,
+            'layoutTitle' => $this->trans(
+                'Edit aliases for %s',
+                [
+                    $editableAlias->getSearchTerm(),
+                ],
+                'Admin.Shopparameters.Feature'
+            ),
         ]);
     }
 
@@ -100,7 +179,7 @@ class SearchAliasController extends PrestaShopAdminController
             $this->dispatchCommand(new DeleteAliasSearchTermCommand($searchTerm));
             $this->addFlash('success', $this->trans('Successful deletion.', [], 'Admin.Notifications.Success'));
         } catch (AliasException $e) {
-            $this->addFlash('error', $this->getErrorMessageForException($e, $this->getErrorMessages()));
+            $this->addFlash('error', $this->getErrorMessageForException($e, $this->getErrorMessages($e)));
 
             return $this->redirectToRoute('admin_search_alias_index');
         }
@@ -121,13 +200,13 @@ class SearchAliasController extends PrestaShopAdminController
                 $this->trans('The selection has been successfully deleted.', [], 'Admin.Notifications.Success')
             );
         } catch (AliasException $e) {
-            $this->addFlash('error', $this->getErrorMessageForException($e, $this->getErrorMessages()));
+            $this->addFlash('error', $this->getErrorMessageForException($e, $this->getErrorMessages($e)));
         }
 
         return $this->redirectToRoute('admin_search_alias_index');
     }
 
-    public function getErrorMessages(): array
+    public function getErrorMessages(Exception $e): array
     {
         return [
             AliasConstraintException::class => [
@@ -144,6 +223,11 @@ class SearchAliasController extends PrestaShopAdminController
                 AliasConstraintException::INVALID_SEARCH => $this->trans(
                     'Invalid search term.',
                     [],
+                    'Admin.Shopparameters.Feature'
+                ),
+                AliasConstraintException::ALIAS_ALREADY_USED => $this->trans(
+                    'Some alias are already in use for another search term: %s.',
+                    [$e->getMessage()],
                     'Admin.Shopparameters.Feature'
                 ),
             ],
