@@ -24,41 +24,24 @@
  * @license   https://opensource.org/licenses/OSL-3.0 Open Software License (OSL 3.0)
  */
 
-declare(strict_types=1);
+namespace PrestaShop\PrestaShop\Core\Grid\Position;
 
-namespace PrestaShop\PrestaShop\Core\Grid\Data\Factory;
-
-use CartRule;
-use PrestaShop\PrestaShop\Core\Grid\Data\GridData;
-use PrestaShop\PrestaShop\Core\Grid\Record\RecordCollection;
-use PrestaShop\PrestaShop\Core\Grid\Search\SearchCriteriaInterface;
+use Symfony\Component\DependencyInjection\Attribute\AutowireLocator;
+use Symfony\Contracts\Service\ServiceProviderInterface;
 
 /**
- * Class CustomerDiscountGridDataFactory is responsible for returning grid data for customer's discounts.
+ * This is a service locator that allows fetching position definitions via their index.
  */
-final class CustomerDiscountGridDataFactory implements GridDataFactoryInterface
+class PositionDefinitionProvider
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function getData(SearchCriteriaInterface $searchCriteria)
+    public function __construct(
+        #[AutowireLocator('core.grid_position_definition')]
+        protected ServiceProviderInterface $positionDefinitions
+    ) {
+    }
+
+    public function getPositionDefinition(string $name): PositionDefinitionInterface
     {
-        $customerFilters = $searchCriteria->getFilters();
-        $allDiscounts = CartRule::getAllCustomerCartRules(
-            $customerFilters['id_customer']
-        );
-
-        $discountsToDisplay = array_slice(
-            $allDiscounts,
-            (int) $searchCriteria->getOffset(),
-            (int) $searchCriteria->getLimit()
-        );
-
-        $records = new RecordCollection($discountsToDisplay);
-
-        return new GridData(
-            $records,
-            count($allDiscounts)
-        );
+        return $this->positionDefinitions->get($name);
     }
 }

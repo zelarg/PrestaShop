@@ -44,6 +44,7 @@ use PrestaShop\PrestaShop\Core\Grid\Definition\Factory\GridDefinitionFactoryInte
 use PrestaShop\PrestaShop\Core\Grid\GridInterface;
 use PrestaShop\PrestaShop\Core\Grid\Position\GridPositionUpdaterInterface;
 use PrestaShop\PrestaShop\Core\Grid\Position\PositionDefinition;
+use PrestaShop\PrestaShop\Core\Grid\Position\PositionDefinitionInterface;
 use PrestaShop\PrestaShop\Core\Grid\Position\PositionUpdateFactoryInterface;
 use PrestaShop\PrestaShop\Core\Grid\Presenter\GridPresenterInterface;
 use PrestaShop\PrestaShop\Core\Help\Documentation;
@@ -324,7 +325,7 @@ class PrestaShopAdminController extends AbstractController
     /**
      * Updates the position of a grid based on the provided PositionDefinition and provided data.
      *
-     * @param PositionDefinition $positionDefinition
+     * @param PositionDefinitionInterface $positionDefinition
      * @param array $positionsData
      *
      * @return void
@@ -332,7 +333,7 @@ class PrestaShopAdminController extends AbstractController
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    protected function updateGridPosition(PositionDefinition $positionDefinition, array $positionsData): void
+    protected function updateGridPosition(PositionDefinitionInterface $positionDefinition, array $positionsData): void
     {
         $positionUpdateFactory = $this->container->get(PositionUpdateFactoryInterface::class);
         $positionUpdate = $positionUpdateFactory->buildPositionUpdate($positionsData, $positionDefinition);
