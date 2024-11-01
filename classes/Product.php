@@ -5405,11 +5405,11 @@ class ProductCore extends ObjectModel
 
         if (isset($row['quantity_wanted'])) {
             // 'quantity_wanted' may very well be zero even if set
-            $quantity = max((int) $row['minimal_quantity'], (int) $row['quantity_wanted']);
+            $quantityToUseForPriceCalculations = max((int) $row['minimal_quantity'], (int) $row['quantity_wanted']);
         } elseif (isset($row['cart_quantity'])) {
-            $quantity = max((int) $row['minimal_quantity'], (int) $row['cart_quantity']);
+            $quantityToUseForPriceCalculations = max((int) $row['minimal_quantity'], (int) $row['cart_quantity']);
         } else {
-            $quantity = (int) $row['minimal_quantity'];
+            $quantityToUseForPriceCalculations = (int) $row['minimal_quantity'];
         }
 
         // We save value in $priceTaxExcluded and $priceTaxIncluded before they may be rounded
@@ -5421,7 +5421,7 @@ class ProductCore extends ObjectModel
             null,
             false,
             true,
-            $quantity
+            $quantityToUseForPriceCalculations
         );
 
         if (self::$_taxCalculationMethod == PS_TAX_EXC) {
@@ -5434,7 +5434,7 @@ class ProductCore extends ObjectModel
                 null,
                 false,
                 true,
-                $quantity
+                $quantityToUseForPriceCalculations
             );
             $row['price_without_reduction'] = $row['price_without_reduction_without_tax'] = Product::getPriceStatic(
                 (int) $row['id_product'],
@@ -5444,7 +5444,7 @@ class ProductCore extends ObjectModel
                 null,
                 false,
                 false,
-                $quantity
+                $quantityToUseForPriceCalculations
             );
         } else {
             $priceTaxIncluded = Product::getPriceStatic(
@@ -5455,7 +5455,7 @@ class ProductCore extends ObjectModel
                 null,
                 false,
                 true,
-                $quantity
+                $quantityToUseForPriceCalculations
             );
             $row['price'] = Tools::ps_round($priceTaxIncluded, Context::getContext()->getComputingPrecision());
             $row['price_without_reduction'] = Product::getPriceStatic(
@@ -5466,7 +5466,7 @@ class ProductCore extends ObjectModel
                 null,
                 false,
                 false,
-                $quantity
+                $quantityToUseForPriceCalculations
             );
             $row['price_without_reduction_without_tax'] = Product::getPriceStatic(
                 (int) $row['id_product'],
@@ -5476,7 +5476,7 @@ class ProductCore extends ObjectModel
                 null,
                 false,
                 false,
-                $quantity
+                $quantityToUseForPriceCalculations
             );
         }
 
@@ -5488,7 +5488,7 @@ class ProductCore extends ObjectModel
             null,
             true,
             true,
-            $quantity,
+            $quantityToUseForPriceCalculations,
             true,
             null,
             null,
@@ -5504,7 +5504,7 @@ class ProductCore extends ObjectModel
             null,
             true,
             true,
-            $quantity,
+            $quantityToUseForPriceCalculations,
             true,
             null,
             null,
@@ -5550,7 +5550,7 @@ class ProductCore extends ObjectModel
         $row['packItems'] = $row['pack'] ? Pack::getItemTable($row['id_product'], $id_lang) : [];
         $row['nopackprice'] = $row['pack'] ? Pack::noPackPrice($row['id_product']) : 0;
 
-        if ($row['pack'] && !Pack::isInStock($row['id_product'], $quantity, $context->cart)) {
+        if ($row['pack'] && !Pack::isInStock($row['id_product'], $quantityToUseForPriceCalculations, $context->cart)) {
             $row['quantity'] = 0;
         }
 
@@ -5580,7 +5580,7 @@ class ProductCore extends ObjectModel
         ]);
 
         // Always recompute unit prices based on initial ratio so that discounts are applied on unit price as well
-        $unitPriceRatio = self::computeUnitPriceRatio($row, $id_product_attribute, $quantity, $context);
+        $unitPriceRatio = self::computeUnitPriceRatio($row, $id_product_attribute, $quantityToUseForPriceCalculations, $context);
         $row['unit_price_ratio'] = $unitPriceRatio;
         $row['unit_price_tax_excluded'] = $unitPriceRatio != 0 ? $priceTaxExcluded / $unitPriceRatio : 0.0;
         $row['unit_price_tax_included'] = $unitPriceRatio != 0 ? $priceTaxIncluded / $unitPriceRatio : 0.0;
