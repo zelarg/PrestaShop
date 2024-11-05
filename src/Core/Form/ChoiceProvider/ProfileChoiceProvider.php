@@ -26,8 +26,8 @@
 
 namespace PrestaShop\PrestaShop\Core\Form\ChoiceProvider;
 
-use PrestaShop\PrestaShop\Core\Form\FormChoiceProviderInterface;
 use PrestaShop\PrestaShop\Core\Form\FormChoiceFormatter;
+use PrestaShop\PrestaShop\Core\Form\FormChoiceProviderInterface;
 
 /**
  * Class ProfileChoiceProvider provides employee profile choices.

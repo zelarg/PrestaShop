@@ -29,8 +29,8 @@ declare(strict_types=1);
 namespace PrestaShop\PrestaShop\Core\Form\ChoiceProvider;
 
 use Contact;
-use PrestaShop\PrestaShop\Core\Form\FormChoiceProviderInterface;
 use PrestaShop\PrestaShop\Core\Form\FormChoiceFormatter;
+use PrestaShop\PrestaShop\Core\Form\FormChoiceProviderInterface;
 
 class ContactTypeChoiceProvider implements FormChoiceProviderInterface
 {
