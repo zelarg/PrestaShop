@@ -370,6 +370,9 @@ class ProductControllerCore extends ProductPresentingFrontControllerCore
             // Assign template vars related to the category + execute hooks related to the category
             $this->assignCategory();
 
+            // Assign template vars related to manufacturer of the product
+            $this->assignManufacturer();
+
             // Assign template vars related to the price and tax
             $this->assignPriceAndTax();
 
@@ -379,9 +382,7 @@ class ProductControllerCore extends ProductPresentingFrontControllerCore
             // Add notification about this product being in cart
             $this->addCartQuantityNotification();
 
-            // Pack management
-            $pack_items = Pack::isPack($this->product->id) ? Pack::getItemTable($this->product->id, $this->context->language->id, true) : [];
-
+            // Prepare product presenter for related items like packs and accessories
             $assembler = new ProductAssembler($this->context);
             $presenter = new ProductListingPresenter(
                 new ImageRetriever(
@@ -394,6 +395,8 @@ class ProductControllerCore extends ProductPresentingFrontControllerCore
             );
             $presentationSettings = $this->getProductPresentationSettings();
 
+            // Presenting pack items
+            $pack_items = Pack::isPack($this->product->id) ? Pack::getItemTable($this->product->id, $this->context->language->id, true) : [];
             $presentedPackItems = [];
             foreach ($pack_items as $item) {
                 $presentedPackItems[] = $presenter->present(
@@ -407,8 +410,11 @@ class ProductControllerCore extends ProductPresentingFrontControllerCore
             $this->context->smarty->assign('noPackPrice', $this->product->getNoPackPrice());
             $this->context->smarty->assign('displayPackPrice', $pack_items && $productPrice < Pack::noPackPrice((int) $this->product->id));
             $this->context->smarty->assign('priceDisplay', $priceDisplay);
+
+            // Variable containing information about a pack that this product belongs to
             $this->context->smarty->assign('packs', Pack::getPacksTable($this->product->id, $this->context->language->id, true, 1));
 
+            // Assign accessories
             $accessories = $this->product->getAccessories($this->context->language->id);
             if (is_array($accessories)) {
                 foreach ($accessories as &$accessory) {
@@ -442,23 +448,6 @@ class ProductControllerCore extends ProductPresentingFrontControllerCore
                 $product_for_template = $filteredProduct['object'];
             }
 
-            // Prepare information about product manufacturer
-            $productManufacturer = null;
-            $manufacturerImageUrl = null;
-            $productBrandUrl = null;
-
-            if (!empty($this->product->id_manufacturer)) {
-                $manufacturerPresenter = new ManufacturerPresenter($this->context->link);
-                $productManufacturer = $manufacturerPresenter->present(
-                    new Manufacturer((int) $this->product->id_manufacturer, $this->context->language->id),
-                    $this->context->language
-                );
-
-                // These two variables are deprecated are kept just for backward compatibility and will be removed in v10
-                $manufacturerImageUrl = $productManufacturer['image']['small']['url'];
-                $productBrandUrl = $productManufacturer['url'];
-            }
-
             $this->context->smarty->assign([
                 'priceDisplay' => $priceDisplay,
                 'productPriceWithoutReduction' => $productPriceWithoutReduction,
@@ -467,9 +456,6 @@ class ProductControllerCore extends ProductPresentingFrontControllerCore
                 'accessories' => $accessories,
                 'product' => $product_for_template,
                 'displayUnitPrice' => !empty($product_for_template['unit_price_tax_excluded']),
-                'product_manufacturer' => $productManufacturer,
-                'manufacturer_image_url' => $manufacturerImageUrl,
-                'product_brand_url' => $productBrandUrl,
             ]);
 
             // Assign attribute groups to the template
@@ -896,6 +882,35 @@ class ProductControllerCore extends ProductPresentingFrontControllerCore
         $this->context->smarty->assign([
             'attributesCombinations' => $attributes_combinations,
             'attribute_anchor_separator' => Configuration::get('PS_ATTRIBUTE_ANCHOR_SEPARATOR'),
+        ]);
+    }
+
+    /**
+     * Assign template vars related to manufacturer.
+     */
+    protected function assignManufacturer()
+    {
+        // Prepare information about product manufacturer
+        $productManufacturer = null;
+        $manufacturerImageUrl = null;
+        $productBrandUrl = null;
+
+        if (!empty($this->product->id_manufacturer)) {
+            $manufacturerPresenter = new ManufacturerPresenter($this->context->link);
+            $productManufacturer = $manufacturerPresenter->present(
+                new Manufacturer((int) $this->product->id_manufacturer, $this->context->language->id),
+                $this->context->language
+            );
+
+            // These two variables are deprecated are kept just for backward compatibility and will be removed in v10
+            $manufacturerImageUrl = $productManufacturer['image']['small']['url'];
+            $productBrandUrl = $productManufacturer['url'];
+        }
+
+        $this->context->smarty->assign([
+            'product_manufacturer' => $productManufacturer,
+            'manufacturer_image_url' => $manufacturerImageUrl,
+            'product_brand_url' => $productBrandUrl,
         ]);
     }
 
