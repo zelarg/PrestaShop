@@ -30,6 +30,7 @@ namespace PrestaShop\PrestaShop\Core\Form\ChoiceProvider;
 
 use Contact;
 use PrestaShop\PrestaShop\Core\Form\FormChoiceProviderInterface;
+use PrestaShop\PrestaShop\Core\Form\FormChoiceFormatter;
 
 class ContactTypeChoiceProvider implements FormChoiceProviderInterface
 {
@@ -45,14 +46,10 @@ class ContactTypeChoiceProvider implements FormChoiceProviderInterface
 
     public function getChoices(): array
     {
-        $contacts = Contact::getContacts($this->langId);
-
-        $contactArray = [];
-
-        foreach ($contacts as $contact) {
-            $contactArray[$contact['name']] = $contact['id_contact'];
-        }
-
-        return $contactArray;
+        return FormChoiceFormatter::formatFormChoices(
+            Contact::getContacts($this->langId),
+            'id_contact',
+            'name'
+        );
     }
 }
