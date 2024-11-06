@@ -30,6 +30,7 @@ use PrestaShop\PrestaShop\Core\CommandBus\Attributes\AsCommandHandler;
 use PrestaShop\PrestaShop\Core\Domain\Module\Command\ResetModuleCommand;
 use PrestaShop\PrestaShop\Core\Domain\Module\CommandHandler\ResetModuleHandlerInterface;
 use PrestaShop\PrestaShop\Core\Domain\Module\Exception\CannotResetModuleException;
+use PrestaShop\PrestaShop\Core\Domain\Module\Exception\ModuleNotInstalledException;
 use PrestaShop\PrestaShop\Core\Module\ModuleManager;
 use PrestaShop\PrestaShop\Core\Module\ModuleRepository;
 
@@ -45,13 +46,8 @@ class ResetModuleHandler implements ResetModuleHandlerInterface
     public function handle(ResetModuleCommand $command): void
     {
         $module = $this->moduleRepository->getPresentModule($command->getTechnicalName()->getValue());
-
         if (!$module->isInstalled()) {
-            throw new CannotResetModuleException('Cannot reset module that is not installed', CannotResetModuleException::NOT_INSTALLED);
-        }
-
-        if (!$module->isActive()) {
-            throw new CannotResetModuleException('Cannot reset module that is disabled', CannotResetModuleException::NOT_ACTIVE);
+            throw new ModuleNotInstalledException('Module ' . $command->getTechnicalName()->getValue() . ' not installed.');
         }
 
         if (!$this->moduleManager->reset($command->getTechnicalName()->getValue(), $command->keepData())) {

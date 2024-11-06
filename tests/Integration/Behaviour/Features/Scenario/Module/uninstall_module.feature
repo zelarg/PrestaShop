@@ -36,6 +36,32 @@ Feature: Module
       | enabled           | false                |
       | installed         | false                |
 
+  Scenario: Reset uninstalled the module is installed afterward
+    Given module ps_emailsubscription has following infos:
+      | technical_name | ps_emailsubscription |
+      | enabled        | false                |
+      | installed      | false                |
+    When I reset module "ps_featuredproducts"
+    Then I should have an exception that module is not installed
+    And module ps_emailsubscription has following infos:
+      | technical_name | ps_emailsubscription |
+      | enabled        | false                |
+      | installed      | false                |
+
+  Scenario: Update module status when uninstalled is not allowed
+    Given module ps_emailsubscription has following infos:
+      | technical_name | ps_emailsubscription |
+      | enabled        | false                |
+      | installed      | false                |
+    When I disable module "ps_emailsubscription"
+    Then I should have an exception that module is not installed
+    When I enable module "ps_emailsubscription"
+    Then I should have an exception that module is not installed
+    And module ps_emailsubscription has following infos:
+      | technical_name | ps_emailsubscription |
+      | enabled        | false                |
+      | installed      | false                |
+
   Scenario: Uninstall module
     Given module bankwire has following infos:
       | technical_name    | bankwire |

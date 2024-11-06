@@ -39,7 +39,6 @@ use PrestaShop\PrestaShop\Core\Domain\Module\Command\UninstallModuleCommand;
 use PrestaShop\PrestaShop\Core\Domain\Module\Command\UpdateModuleStatusCommand;
 use PrestaShop\PrestaShop\Core\Domain\Module\Command\UploadModuleCommand;
 use PrestaShop\PrestaShop\Core\Domain\Module\Exception\AlreadyInstalledModuleException;
-use PrestaShop\PrestaShop\Core\Domain\Module\Exception\CannotResetModuleException;
 use PrestaShop\PrestaShop\Core\Domain\Module\Exception\ModuleException;
 use PrestaShop\PrestaShop\Core\Domain\Module\Exception\ModuleNotFoundException;
 use PrestaShop\PrestaShop\Core\Domain\Module\Exception\ModuleNotInstalledException;
@@ -58,7 +57,7 @@ class ModuleFeatureContext extends AbstractDomainFeatureContext
             /** @var ModuleInfos $moduleInfos */
             $moduleInfos = $this->getQueryBus()->handle(new GetModuleInfos($technicalName));
             $this->assertModuleInfosWithData($moduleInfos, $tableNode);
-        } catch (ModuleNotFoundException $e) {
+        } catch (ModuleException $e) {
             $this->setLastException($e);
         }
     }
@@ -77,14 +76,6 @@ class ModuleFeatureContext extends AbstractDomainFeatureContext
     public function assertModuleIsAlreadyInstalled(): void
     {
         $this->assertLastErrorIs(AlreadyInstalledModuleException::class);
-    }
-
-    /**
-     * @Then I should have an exception that disabled module cannot be reset
-     */
-    public function assertDisabledError(): void
-    {
-        $this->assertLastErrorIs(CannotResetModuleException::class, CannotResetModuleException::NOT_ACTIVE);
     }
 
     /**
@@ -119,10 +110,14 @@ class ModuleFeatureContext extends AbstractDomainFeatureContext
      */
     public function updateModuleStatus(string $action, string $technicalName): void
     {
-        $this->getCommandBus()->handle(new UpdateModuleStatusCommand(
-            $technicalName,
-            $action === 'enable'
-        ));
+        try {
+            $this->getCommandBus()->handle(new UpdateModuleStatusCommand(
+                $technicalName,
+                $action === 'enable'
+            ));
+        } catch (ModuleException $e) {
+            $this->setLastException($e);
+        }
 
         // Clean the cache
         Module::resetStaticCache();
@@ -173,7 +168,7 @@ class ModuleFeatureContext extends AbstractDomainFeatureContext
                 $technicalName,
                 false
             ));
-        } catch (CannotResetModuleException $e) {
+        } catch (ModuleException $e) {
             $this->setLastException($e);
         }
 
