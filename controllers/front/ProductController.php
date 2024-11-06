@@ -335,38 +335,6 @@ class ProductControllerCore extends ProductPresentingFrontControllerCore
                 $productPriceWithoutReduction = $this->product->getPriceWithoutReduct(true, null);
             }
 
-            $pictures = [];
-            $text_fields = [];
-            if ($this->product->customizable) {
-                $files = $this->context->cart->getProductCustomization($this->product->id, Product::CUSTOMIZE_FILE, true);
-                foreach ($files as $file) {
-                    $pictures['pictures_' . $this->product->id . '_' . $file['index']] = $file['value'];
-                }
-
-                $texts = $this->context->cart->getProductCustomization($this->product->id, Product::CUSTOMIZE_TEXTFIELD, true);
-
-                foreach ($texts as $text_field) {
-                    $text_fields['textFields_' . $this->product->id . '_' . $text_field['index']] = str_replace('<br />', "\n", $text_field['value']);
-                }
-            }
-
-            $this->context->smarty->assign([
-                'pictures' => $pictures,
-                'textFields' => $text_fields, ]);
-
-            $this->product->customization_required = false;
-            $customization_fields = $this->product->customizable ? $this->product->getCustomizationFields($this->context->language->id) : false;
-            if (is_array($customization_fields)) {
-                foreach ($customization_fields as &$customization_field) {
-                    if ($customization_field['type'] == Product::CUSTOMIZE_FILE) {
-                        $customization_field['key'] = 'pictures_' . $this->product->id . '_' . $customization_field['id_customization_field'];
-                    } elseif ($customization_field['type'] == Product::CUSTOMIZE_TEXTFIELD) {
-                        $customization_field['key'] = 'textFields_' . $this->product->id . '_' . $customization_field['id_customization_field'];
-                    }
-                }
-                unset($customization_field);
-            }
-
             // Assign template vars related to the category + execute hooks related to the category
             $this->assignCategory();
 
@@ -427,10 +395,6 @@ class ProductControllerCore extends ProductPresentingFrontControllerCore
                 unset($accessory);
             }
 
-            if ($this->product->customizable) {
-                $customization_datas = $this->context->cart->getProductCustomization($this->product->id, null, true);
-            }
-
             $product_for_template = $this->getTemplateVarProduct();
 
             // Chained hook call - if multiple modules are hooked here, they will receive the result of the previous one as a parameter
@@ -451,8 +415,7 @@ class ProductControllerCore extends ProductPresentingFrontControllerCore
             $this->context->smarty->assign([
                 'priceDisplay' => $priceDisplay,
                 'productPriceWithoutReduction' => $productPriceWithoutReduction,
-                'customizationFields' => $customization_fields,
-                'id_customization' => empty($customization_datas) ? null : $customization_datas[0]['id_customization'],
+                'id_customization' => empty($product_for_template['id_customization']) ? null : $product_for_template['id_customization'],
                 'accessories' => $accessories,
                 'product' => $product_for_template,
                 'displayUnitPrice' => !empty($product_for_template['unit_price_tax_excluded']),
