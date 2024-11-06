@@ -57,23 +57,7 @@ class ModuleFeatureContext extends AbstractDomainFeatureContext
         try {
             /** @var ModuleInfos $moduleInfos */
             $moduleInfos = $this->getQueryBus()->handle(new GetModuleInfos($technicalName));
-
-            $data = $tableNode->getRowsHash();
-            if (isset($data['technical_name'])) {
-                Assert::assertEquals($data['technical_name'], $moduleInfos->getTechnicalName(), 'Invalid technical name');
-            }
-            if (isset($data['installed_version'])) {
-                Assert::assertEquals($data['installed_version'] ?: null, $moduleInfos->getInstalledVersion(), 'Invalid installed version');
-            }
-            if (isset($data['module_version'])) {
-                Assert::assertEquals($data['module_version'], $moduleInfos->getModuleVersion(), 'Invalid module_version version');
-            }
-            if (isset($data['enabled'])) {
-                Assert::assertEquals(PrimitiveUtils::castStringBooleanIntoBoolean($data['enabled']), $moduleInfos->isEnabled(), 'Invalid enabled value');
-            }
-            if (isset($data['installed'])) {
-                Assert::assertEquals(PrimitiveUtils::castStringBooleanIntoBoolean($data['installed']), $moduleInfos->isInstalled(), 'Invalid installed value');
-            }
+            $this->assertModuleInfosWithData($moduleInfos, $tableNode);
         } catch (ModuleNotFoundException $e) {
             $this->setLastException($e);
         }
@@ -212,9 +196,9 @@ class ModuleFeatureContext extends AbstractDomainFeatureContext
     }
 
     /**
-     * @When /^I upload module from "(zip|url)" "(.+)"$/
+     * @When /^I upload module from "(zip|url)" "(.+)" that should have the following infos:$/
      */
-    public function uploadModule(string $sourceType, string $sourceGiven): void
+    public function uploadModule(string $sourceType, string $sourceGiven, TableNode $tableNode): void
     {
         switch ($sourceType) {
             case 'zip':
@@ -228,12 +212,33 @@ class ModuleFeatureContext extends AbstractDomainFeatureContext
                 break;
         }
         try {
-            $this->getQueryBus()->handle(new UploadModuleCommand($source));
+            $moduleInfos = $this->getCommandBus()->handle(new UploadModuleCommand($source));
+            $this->assertModuleInfosWithData($moduleInfos, $tableNode);
         } catch (ModuleException $e) {
             $this->setLastException($e);
         }
 
         // Clean the cache
         Module::resetStaticCache();
+    }
+
+    private function assertModuleInfosWithData(ModuleInfos $moduleInfos, TableNode $tableNode): void
+    {
+        $data = $tableNode->getRowsHash();
+        if (isset($data['technical_name'])) {
+            Assert::assertEquals($data['technical_name'], $moduleInfos->getTechnicalName(), 'Invalid technical name');
+        }
+        if (isset($data['installed_version'])) {
+            Assert::assertEquals($data['installed_version'] ?: null, $moduleInfos->getInstalledVersion(), 'Invalid installed version');
+        }
+        if (isset($data['module_version'])) {
+            Assert::assertEquals($data['module_version'], $moduleInfos->getModuleVersion(), 'Invalid module_version version');
+        }
+        if (isset($data['enabled'])) {
+            Assert::assertEquals(PrimitiveUtils::castStringBooleanIntoBoolean($data['enabled']), $moduleInfos->isEnabled(), 'Invalid enabled value');
+        }
+        if (isset($data['installed'])) {
+            Assert::assertEquals(PrimitiveUtils::castStringBooleanIntoBoolean($data['installed']), $moduleInfos->isInstalled(), 'Invalid installed value');
+        }
     }
 }

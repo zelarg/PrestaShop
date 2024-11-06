@@ -27,8 +27,9 @@
 namespace PrestaShop\PrestaShop\Core\Domain\Module\CommandHandler;
 
 use PrestaShop\PrestaShop\Core\Domain\Module\Command\UploadModuleCommand;
+use PrestaShop\PrestaShop\Core\Domain\Module\QueryResult\ModuleInfos;
 
 interface UploadModuleHandlerInterface
 {
-    public function handle(UploadModuleCommand $command): void;
+    public function handle(UploadModuleCommand $command): ModuleInfos;
 }

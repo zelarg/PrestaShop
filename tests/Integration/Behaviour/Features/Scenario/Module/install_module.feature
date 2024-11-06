@@ -18,8 +18,7 @@ Feature: Module
     When I install module "test_install_cqrs_command"
     Then I should have an exception that module is not found
     # Now I upload based on a local zip file
-    When I upload module from "zip" "test_install_cqrs_command.zip"
-    Then module test_install_cqrs_command has following infos:
+    When I upload module from "zip" "test_install_cqrs_command.zip" that should have the following infos:
       | technical_name    | test_install_cqrs_command |
       | installed_version |                           |
       | module_version    | 1.0.0                     |
@@ -44,8 +43,7 @@ Feature: Module
     When I install module "dashactivity"
     Then I should have an exception that module is not found
     # Now I can upload module from external zip file
-    And I upload module from "url" "https://github.com/PrestaShop/dashactivity/releases/download/v2.1.0/dashactivity.zip"
-    Then module dashactivity has following infos:
+    And I upload module from "url" "https://github.com/PrestaShop/dashactivity/releases/download/v2.1.0/dashactivity.zip" that should have the following infos:
       | technical_name    | dashactivity |
       | installed_version |              |
       | module_version    | 2.1.0        |

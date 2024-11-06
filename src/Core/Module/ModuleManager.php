@@ -90,7 +90,7 @@ class ModuleManager implements ModuleManagerInterface
         $this->hookManager = $hookManager;
     }
 
-    public function upload(string $source): void
+    public function upload(string $source): string
     {
         if (!$this->adminModuleDataProvider->isAllowedAccess(__FUNCTION__)) {
             throw new Exception($this->translator->trans(
@@ -105,6 +105,8 @@ class ModuleManager implements ModuleManagerInterface
         $moduleName = $handler->getModuleName($source);
         $module = $this->moduleRepository->getModule($moduleName);
         $this->dispatch(ModuleManagementEvent::UPLOAD, $module);
+
+        return $moduleName;
     }
 
     public function install(string $name, $source = null): bool
