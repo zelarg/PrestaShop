@@ -45,16 +45,18 @@ class UninstallModuleHandler implements UninstallModuleHandlerInterface
 
     public function handle(UninstallModuleCommand $command): void
     {
-        $moduleName = $command->getTechnicalName()->getValue();
-        $deleteFile = $command->deleteFiles();
+        $module = $this->moduleRepository->getPresentModule($command->getTechnicalName()->getValue());
 
-        $module = $this->moduleRepository->getPresentModule($moduleName);
-
-        if (!$module->isInstalled()) {
-            throw new ModuleNotInstalledException('Module ' . $moduleName . ' not installed.');
+        // Cannot perform uninstall action of the module is not installed yet UNLESS the commands aims at removing files
+        if (!$module->isInstalled() && !$command->deleteFiles()) {
+            throw new ModuleNotInstalledException('Module ' . $command->getTechnicalName()->getValue() . ' not installed.');
         }
 
-        $result = $this->moduleManager->uninstall($moduleName, $deleteFile);
+        if ($module->isInstalled()) {
+            $result = $this->moduleManager->uninstall($command->getTechnicalName()->getValue(), $command->deleteFiles());
+        } else {
+            $result = $this->moduleManager->delete($command->getTechnicalName()->getValue());
+        }
 
         if (!$result) {
             throw new CannotUninstallModuleException('Technical error occurred while uninstalling module.');

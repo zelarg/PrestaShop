@@ -180,6 +180,7 @@ class ModuleManager implements ModuleManagerInterface
 
         if ($deleteFiles && $path = $this->moduleRepository->getModulePath($name)) {
             $this->filesystem->remove($path);
+            $this->dispatch(ModuleManagementEvent::DELETE, $module);
         }
 
         $this->dispatch(ModuleManagementEvent::UNINSTALL, $module);

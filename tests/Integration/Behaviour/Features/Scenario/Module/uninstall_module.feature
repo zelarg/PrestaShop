@@ -58,3 +58,16 @@ Feature: Module
       | installed         | false               |
     When I uninstall module "ps_featuredproducts" with deleteFiles false
     Then I should have an exception that module is not installed
+
+  Scenario: Uninstall module that is not installed possible only to remove files
+    Given I upload module from "zip" "test_install_cqrs_command.zip" that should have the following infos:
+      | technical_name    | test_install_cqrs_command |
+      | installed_version |                           |
+      | module_version    | 1.0.0                     |
+      | enabled           | false                     |
+      | installed         | false                     |
+    When I uninstall module "test_install_cqrs_command" with deleteFiles true
+    # Since the module is completely removed and is not present it cannot be found anymore
+    Then module test_install_cqrs_command has following infos:
+      | installed | false |
+    Then I should have an exception that module is not found
