@@ -4,7 +4,6 @@ import testContext from '@utils/testContext';
 // Import BO pages
 import featuresPage from '@pages/BO/catalog/features';
 import createProductPage from '@pages/BO/catalog/products/add';
-import detailsTab from '@pages/BO/catalog/products/add/detailsTab';
 import filesPage from '@pages/BO/catalog/files';
 
 import {expect} from 'chai';
@@ -12,6 +11,7 @@ import {
   boDashboardPage,
   boLoginPage,
   boProductsPage,
+  boProductsCreateTabDetailsPage,
   type BrowserContext,
   FakerProduct,
   foClassicProductPage,
@@ -162,31 +162,31 @@ describe('BO - Catalog - Products : Details tab', async () => {
     it('should go to details tab and set References form with a wrong data and check the error message', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'setWrongData', baseContext);
 
-      await detailsTab.setProductDetails(page, newProductData);
-      await detailsTab.setMPN(page, newProductData.mpn!);
-      await detailsTab.setUPC(page, newProductData.upc!);
+      await boProductsCreateTabDetailsPage.setProductDetails(page, newProductData);
+      await boProductsCreateTabDetailsPage.setMPN(page, newProductData.mpn!);
+      await boProductsCreateTabDetailsPage.setUPC(page, newProductData.upc!);
 
-      let errorMessage = await detailsTab.getErrorMessageInReferencesForm(page, 3);
+      let errorMessage = await boProductsCreateTabDetailsPage.getErrorMessageInReferencesForm(page, 3);
       expect(errorMessage).to.eq(`"${newProductData.upc}" is invalid`);
 
-      await detailsTab.setEAN13(page, newProductData.ean13!);
+      await boProductsCreateTabDetailsPage.setEAN13(page, newProductData.ean13!);
 
-      errorMessage = await detailsTab.getErrorMessageInReferencesForm(page, 4);
+      errorMessage = await boProductsCreateTabDetailsPage.getErrorMessageInReferencesForm(page, 4);
       expect(errorMessage).to.eq(`"${newProductData.ean13}" is invalid`);
 
-      await detailsTab.setISBN(page, newProductData.isbn!);
+      await boProductsCreateTabDetailsPage.setISBN(page, newProductData.isbn!);
 
-      errorMessage = await detailsTab.getErrorMessageInReferencesForm(page, 5);
+      errorMessage = await boProductsCreateTabDetailsPage.getErrorMessageInReferencesForm(page, 5);
       expect(errorMessage).to.eq(`"${newProductData.isbn}" is invalid`);
     });
 
     it('should set References form with a good data', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'setGoodDara', baseContext);
 
-      await detailsTab.setMPN(page, editProductData.mpn!);
-      await detailsTab.setUPC(page, editProductData.upc!);
-      await detailsTab.setEAN13(page, editProductData.ean13!);
-      await detailsTab.setISBN(page, editProductData.isbn!);
+      await boProductsCreateTabDetailsPage.setMPN(page, editProductData.mpn!);
+      await boProductsCreateTabDetailsPage.setUPC(page, editProductData.upc!);
+      await boProductsCreateTabDetailsPage.setEAN13(page, editProductData.ean13!);
+      await boProductsCreateTabDetailsPage.setISBN(page, editProductData.isbn!);
 
       const message = await createProductPage.saveProduct(page);
       expect(message).to.eq(createProductPage.successfulUpdateMessage);
@@ -195,7 +195,7 @@ describe('BO - Catalog - Products : Details tab', async () => {
     it('should add 2 features', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'addFirstFeature', baseContext);
 
-      await detailsTab.setFeature(page, editProductData.features);
+      await boProductsCreateTabDetailsPage.setFeature(page, editProductData.features);
 
       const message = await createProductPage.saveProduct(page);
       expect(message).to.eq(createProductPage.successfulUpdateMessage);
@@ -236,7 +236,7 @@ describe('BO - Catalog - Products : Details tab', async () => {
       await testContext.addContextItem(this, 'testIdentifier', 'checkFeatureLink', baseContext);
 
       await createProductPage.goToTab(page, 'details');
-      page = await detailsTab.clickonManageFeatures(page);
+      page = await boProductsCreateTabDetailsPage.clickonManageFeatures(page);
 
       const pageTitle = await featuresPage.getPageTitle(page);
       expect(pageTitle).to.contains(featuresPage.pageTitle);
@@ -254,17 +254,17 @@ describe('BO - Catalog - Products : Details tab', async () => {
     it('should add a custom feature value only on French', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'addCustomFeatureValueInFr', baseContext);
 
-      await detailsTab.setFeature(page, productFeaturesFr);
+      await boProductsCreateTabDetailsPage.setFeature(page, productFeaturesFr);
       await createProductPage.clickOnSaveProductButton(page);
 
-      const message = await detailsTab.getAlertDangerBlockParagraphContent(page);
-      expect(message).to.eq(detailsTab.featureCustomValueNotDefaultLanguageMessage);
+      const message = await boProductsCreateTabDetailsPage.getAlertDangerBlockParagraphContent(page);
+      expect(message).to.eq(boProductsCreateTabDetailsPage.featureCustomValueNotDefaultLanguageMessage);
     });
 
     it('should delete the created features', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'deleteFeatures', baseContext);
 
-      await detailsTab.deleteFeatures(page, editProductData.features.concat(productFeaturesFr));
+      await boProductsCreateTabDetailsPage.deleteFeatures(page, editProductData.features.concat(productFeaturesFr));
 
       const message = await createProductPage.saveProduct(page);
       expect(message).to.eq(createProductPage.successfulUpdateMessage);
@@ -302,7 +302,7 @@ describe('BO - Catalog - Products : Details tab', async () => {
     it('should click on \'Manage all files\' link', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'clickOnManageAllFiles', baseContext);
 
-      page = await detailsTab.clickOnManageAllFiles(page);
+      page = await boProductsCreateTabDetailsPage.clickOnManageAllFiles(page);
 
       const pageTitle = await filesPage.getPageTitle(page);
       expect(pageTitle).to.contains(filesPage.pageTitle);
@@ -320,14 +320,14 @@ describe('BO - Catalog - Products : Details tab', async () => {
     it('should search for a not existing file', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'searchNotExistingFile', baseContext);
 
-      const searchResult = await detailsTab.searchFile(page, 'hello world');
+      const searchResult = await boProductsCreateTabDetailsPage.searchFile(page, 'hello world');
       expect(searchResult).to.eq('No results found for "hello world"');
     });
 
     it('should add new file', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'addNewFile', baseContext);
 
-      await detailsTab.addNewFile(page, editProductData);
+      await boProductsCreateTabDetailsPage.addNewFile(page, editProductData);
 
       const message = await createProductPage.saveProduct(page);
       expect(message).to.eq(createProductPage.successfulUpdateMessage);
@@ -336,16 +336,16 @@ describe('BO - Catalog - Products : Details tab', async () => {
     it('should delete the file', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'deleteFile', baseContext);
 
-      await detailsTab.deleteFiles(page, editProductData);
+      await boProductsCreateTabDetailsPage.deleteFiles(page, editProductData);
 
-      const alertMessage = await detailsTab.getNoFileAttachedMessage(page);
+      const alertMessage = await boProductsCreateTabDetailsPage.getNoFileAttachedMessage(page);
       expect(alertMessage).to.eq('No files attached');
     });
 
     it('should set the condition in product page', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'setCondition', baseContext);
 
-      await detailsTab.setCondition(page, editProductData);
+      await boProductsCreateTabDetailsPage.setCondition(page, editProductData);
 
       const message = await createProductPage.saveProduct(page);
       expect(message).to.eq(createProductPage.successfulUpdateMessage);
@@ -383,7 +383,7 @@ describe('BO - Catalog - Products : Details tab', async () => {
     it('should create 4 customizations', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'createCustomizations', baseContext);
 
-      await detailsTab.addNewCustomizations(page, editProductData);
+      await boProductsCreateTabDetailsPage.addNewCustomizations(page, editProductData);
 
       const message = await createProductPage.saveProduct(page);
       expect(message).to.eq(createProductPage.successfulUpdateMessage);
@@ -421,7 +421,7 @@ describe('BO - Catalog - Products : Details tab', async () => {
     it('should delete the 4 customizations', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'deleteCustomizations', baseContext);
 
-      await detailsTab.deleteCustomizations(page, editProductData);
+      await boProductsCreateTabDetailsPage.deleteCustomizations(page, editProductData);
 
       const message = await createProductPage.saveProduct(page);
       expect(message).to.eq(createProductPage.successfulUpdateMessage);
