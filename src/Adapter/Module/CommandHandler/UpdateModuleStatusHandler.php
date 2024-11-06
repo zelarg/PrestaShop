@@ -48,7 +48,7 @@ class UpdateModuleStatusHandler implements UpdateModuleStatusHandlerInterface
         $module = $this->moduleRepository->getPresentModule($command->getTechnicalName()->getValue());
 
         if (!$module->isInstalled()) {
-            throw new ModuleNotInstalledException('Module ' . $command->getTechnicalName()->getValue() . ' not installed.');
+            throw new ModuleNotInstalledException('Cannot toggle status for module ' . $command->getTechnicalName()->getValue() . ' since it is not installed');
         }
 
         if ($command->isEnabled()) {

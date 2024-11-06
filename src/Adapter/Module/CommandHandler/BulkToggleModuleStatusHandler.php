@@ -65,7 +65,7 @@ class BulkToggleModuleStatusHandler implements BulkToggleModuleStatusHandlerInte
         foreach ($command->getModules() as $moduleName) {
             $module = $this->moduleRepository->getPresentModule($moduleName);
             if (!$module->isInstalled()) {
-                throw new ModuleNotInstalledException('Module ' . $moduleName . ' not installed.');
+                throw new ModuleNotInstalledException('Cannot toggle status for module ' . $moduleName . ' since it is not installed');
             }
 
             if ($this->isDisablingAlreadyDisabledModule($command->getExpectedStatus(), $moduleName)) {

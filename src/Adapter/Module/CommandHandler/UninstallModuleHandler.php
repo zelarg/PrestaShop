@@ -49,7 +49,7 @@ class UninstallModuleHandler implements UninstallModuleHandlerInterface
 
         // Cannot perform uninstall action of the module is not installed yet UNLESS the commands aims at removing files
         if (!$module->isInstalled() && !$command->deleteFiles()) {
-            throw new ModuleNotInstalledException('Module ' . $command->getTechnicalName()->getValue() . ' not installed.');
+            throw new ModuleNotInstalledException('Cannot uninstall module ' . $command->getTechnicalName()->getValue() . ' since it is not installed');
         }
 
         if ($module->isInstalled()) {

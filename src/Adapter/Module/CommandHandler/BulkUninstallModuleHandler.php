@@ -51,7 +51,7 @@ class BulkUninstallModuleHandler implements BulkUninstallModuleHandlerInterface
             $module = $this->moduleRepository->getPresentModule($moduleName->getValue());
 
             if (!$module->isInstalled()) {
-                throw new ModuleNotInstalledException('Module ' . $moduleName->getValue() . ' not installed.');
+                throw new ModuleNotInstalledException('Cannot uninstall module ' . $moduleName->getValue() . ' since it is not installed');
             }
         }
 

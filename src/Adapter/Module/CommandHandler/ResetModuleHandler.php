@@ -47,7 +47,7 @@ class ResetModuleHandler implements ResetModuleHandlerInterface
     {
         $module = $this->moduleRepository->getPresentModule($command->getTechnicalName()->getValue());
         if (!$module->isInstalled()) {
-            throw new ModuleNotInstalledException('Module ' . $command->getTechnicalName()->getValue() . ' not installed.');
+            throw new ModuleNotInstalledException('Cannot reset module ' . $command->getTechnicalName()->getValue() . ' since it is not installed');
         }
 
         if (!$this->moduleManager->reset($command->getTechnicalName()->getValue(), $command->keepData())) {
