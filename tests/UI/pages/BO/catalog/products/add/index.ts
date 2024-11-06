@@ -1,11 +1,10 @@
-// Import pages
 import BOBasePage from '@pages/BO/BObasePage';
-import detailsTab from '@pages/BO/catalog/products/add/detailsTab';
 import pricingTab from '@pages/BO/catalog/products/add/pricingTab';
 import packTab from '@pages/BO/catalog/products/add/packTab';
 
 import {
   boProductsCreateTabDescriptionPage,
+  boProductsCreateTabDetailsPage,
   boProductsCreateTabShippingPage,
   boProductsCreateTabStocksPage,
   boProductsCreateTabVirtualProductPage,
@@ -359,7 +358,7 @@ class CreateProduct extends BOBasePage {
     await this.setProductName(page, productData.name, 'en');
     await this.setProductName(page, productData.nameFR, 'fr');
 
-    await detailsTab.setProductDetails(page, productData);
+    await boProductsCreateTabDetailsPage.setProductDetails(page, productData);
 
     if (productData.type === 'virtual') {
       await boProductsCreateTabVirtualProductPage.setVirtualProduct(page, productData);
