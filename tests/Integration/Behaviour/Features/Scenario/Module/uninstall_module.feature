@@ -22,7 +22,7 @@ Feature: Module
       | module_version    | 1.0.0                |
       | enabled           | true                 |
       | installed         | true                 |
-    When I bulk uninstall modules: "ps_featuredproducts,ps_emailsubscription" with deleteFile false
+    When I bulk uninstall modules: "ps_featuredproducts,ps_emailsubscription" with deleteFiles false
     Then module ps_featuredproducts has following infos:
       | technical_name    | ps_featuredproducts |
       | installed_version |                     |
@@ -43,7 +43,7 @@ Feature: Module
       | module_version    | 2.0.0    |
       | enabled           | true     |
       | installed         | true     |
-    When I uninstall module "bankwire" with deleteFile true
+    When I uninstall module "bankwire" with deleteFiles true
     # Since the module is completely removed and is not present it cannot be found anymore
     And module bankwire has following infos:
       | installed | false |
@@ -56,5 +56,5 @@ Feature: Module
       | module_version    | 1.0.0               |
       | enabled           | false               |
       | installed         | false               |
-    When I uninstall module "ps_featuredproducts" with deleteFile false
+    When I uninstall module "ps_featuredproducts" with deleteFiles false
     Then I should have an exception that module is not installed

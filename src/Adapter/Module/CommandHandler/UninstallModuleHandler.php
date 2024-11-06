@@ -46,7 +46,7 @@ class UninstallModuleHandler implements UninstallModuleHandlerInterface
     public function handle(UninstallModuleCommand $command): void
     {
         $moduleName = $command->getTechnicalName()->getValue();
-        $deleteFile = $command->getDeteleFile();
+        $deleteFile = $command->deleteFiles();
 
         $module = $this->moduleRepository->getPresentModule($moduleName);
 

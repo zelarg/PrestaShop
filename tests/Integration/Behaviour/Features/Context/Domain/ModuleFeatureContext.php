@@ -145,7 +145,7 @@ class ModuleFeatureContext extends AbstractDomainFeatureContext
     }
 
     /**
-     * @When /^I uninstall module "(.+)" with deleteFile (true|false)$/
+     * @When /^I uninstall module "(.+)" with deleteFiles (true|false)$/
      */
     public function uninstallModule(string $module, string $deleteFile): void
     {
@@ -160,7 +160,7 @@ class ModuleFeatureContext extends AbstractDomainFeatureContext
     }
 
     /**
-     * @When /^I bulk uninstall modules: "(.+)" with deleteFile (true|false)$/
+     * @When /^I bulk uninstall modules: "(.+)" with deleteFiles (true|false)$/
      */
     public function bulkUninstallModule(string $modulesRef, string $deleteFile): void
     {
