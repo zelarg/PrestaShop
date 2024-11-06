@@ -36,7 +36,38 @@ Feature: Module
       | enabled           | false                |
       | installed         | false                |
 
-  Scenario: Bulk toggle status on uninstalled module is not allowed
+  Scenario: Bulk uninstall on uninstalled or not existing modules is not allowed
+    Given module ps_emailsubscription has following infos:
+      | enabled   | false |
+      | installed | false |
+    Given module ps_banner has following infos:
+      | enabled   | true |
+      | installed | true |
+    When I bulk uninstall modules: "ps_emailsubscription,ps_banner" with deleteFiles false
+    Then I should have an exception that module is not installed
+    # The modules have not been modified
+    And module ps_emailsubscription has following infos:
+      | enabled   | false |
+      | installed | false |
+    And module ps_banner has following infos:
+      | enabled   | true |
+      | installed | true |
+    When I bulk uninstall modules: "ps_banner,ps_emailsubscription" with deleteFiles false
+    Then I should have an exception that module is not installed
+    # The result is the same regardless of the order
+    And module ps_emailsubscription has following infos:
+      | enabled   | false |
+      | installed | false |
+    And module ps_banner has following infos:
+      | enabled   | true |
+      | installed | true |
+    # First module error triggers error
+    When I bulk uninstall modules: "ps_banner,ps_emailsubscription,ps_notthere" with deleteFiles false
+    Then I should have an exception that module is not installed
+    When I bulk uninstall modules: "ps_notthere,ps_banner,ps_emailsubscription" with deleteFiles false
+    Then I should have an exception that module is not found
+
+  Scenario: Bulk toggle status on uninstalled or not existing modules is not allowed
     Given module ps_emailsubscription has following infos:
       | enabled   | false |
       | installed | false |
