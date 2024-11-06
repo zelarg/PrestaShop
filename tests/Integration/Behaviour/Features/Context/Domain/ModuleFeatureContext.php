@@ -96,10 +96,14 @@ class ModuleFeatureContext extends AbstractDomainFeatureContext
             $modules[] = $modulesReference;
         }
 
-        $this->getQueryBus()->handle(new BulkToggleModuleStatusCommand(
-            $modules,
-            'enable' === $action
-        ));
+        try {
+            $this->getCommandBus()->handle(new BulkToggleModuleStatusCommand(
+                $modules,
+                'enable' === $action
+            ));
+        } catch (ModuleException $e) {
+            $this->setLastException($e);
+        }
 
         // Clean the cache
         Module::resetStaticCache();
@@ -129,7 +133,7 @@ class ModuleFeatureContext extends AbstractDomainFeatureContext
     public function uninstallModule(string $module, string $deleteFile): void
     {
         try {
-            $this->getQueryBus()->handle(new UninstallModuleCommand($module, $deleteFile == 'true'));
+            $this->getCommandBus()->handle(new UninstallModuleCommand($module, $deleteFile == 'true'));
         } catch (ModuleException $e) {
             $this->setLastException($e);
         }
@@ -149,7 +153,7 @@ class ModuleFeatureContext extends AbstractDomainFeatureContext
                 $modules[] = $modulesReference;
             }
 
-            $this->getQueryBus()->handle(new BulkUninstallModuleCommand($modules, $deleteFile == 'true'));
+            $this->getCommandBus()->handle(new BulkUninstallModuleCommand($modules, $deleteFile == 'true'));
         } catch (ModuleException $e) {
             $this->setLastException($e);
         }
@@ -182,7 +186,7 @@ class ModuleFeatureContext extends AbstractDomainFeatureContext
     public function installModule(string $technicalName): void
     {
         try {
-            $this->getQueryBus()->handle(new InstallModuleCommand($technicalName));
+            $this->getCommandBus()->handle(new InstallModuleCommand($technicalName));
         } catch (ModuleException $e) {
             $this->setLastException($e);
         }

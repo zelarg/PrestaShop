@@ -38,6 +38,20 @@ Feature: Module
     And module ps_emailsubscription has following infos:
       | enabled | true |
 
+  Scenario: Bulk toggle status on module not found is not allowed
+    Given module ps_emailsubscription has following infos:
+      | enabled | true |
+    When I bulk disable modules: "ps_notthere,ps_emailsubscription"
+    Then I should have an exception that module is not found
+    # The existing module has not been modified
+    And module ps_emailsubscription has following infos:
+      | enabled | true |
+    When I bulk disable modules: "ps_emailsubscription,ps_notthere"
+    Then I should have an exception that module is not found
+    # The result is the same regardless of the order
+    And module ps_emailsubscription has following infos:
+      | enabled | true |
+
   Scenario: Update module status
     Given module ps_featuredproducts has following infos:
       | enabled | true |
