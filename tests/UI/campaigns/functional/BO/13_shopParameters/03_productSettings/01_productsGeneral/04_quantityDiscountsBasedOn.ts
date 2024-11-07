@@ -4,7 +4,6 @@ import testContext from '@utils/testContext';
 // Import pages
 // Import BO pages
 import addProductPage from '@pages/BO/catalog/products/add';
-import pricingTab from '@pages/BO/catalog/products/add/pricingTab';
 import combinationsTab from '@pages/BO/catalog/products/add/combinationsTab';
 
 import {expect} from 'chai';
@@ -12,6 +11,7 @@ import {
   boDashboardPage,
   boLoginPage,
   boProductsPage,
+  boProductsCreateTabPricingPage,
   boProductSettingsPage,
   type BrowserContext,
   FakerProduct,
@@ -188,9 +188,9 @@ describe('BO - Shop Parameters - Product Settings : Choose quantity discount bas
     it('should add specific price', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'addSpecificPrice', baseContext);
 
-      await pricingTab.clickOnAddSpecificPriceButton(page);
+      await boProductsCreateTabPricingPage.clickOnAddSpecificPriceButton(page);
 
-      const createProductMessage = await pricingTab.setSpecificPrice(page, productWithCombinations.specificPrice);
+      const createProductMessage = await boProductsCreateTabPricingPage.setSpecificPrice(page, productWithCombinations.specificPrice);
       expect(createProductMessage).to.equal(addProductPage.successfulCreationMessage);
     });
 

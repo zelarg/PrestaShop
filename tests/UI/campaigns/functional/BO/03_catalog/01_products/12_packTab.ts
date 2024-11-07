@@ -8,13 +8,13 @@ import {deleteProductTest} from '@commonTests/BO/catalog/product';
 // Import BO pages
 import createProductsPage from '@pages/BO/catalog/products/add';
 import packTab from '@pages/BO/catalog/products/add/packTab';
-import pricingTab from '@pages/BO/catalog/products/add/pricingTab';
 
 import {
   boDashboardPage,
   boLoginPage,
   boOrdersPage,
   boProductsPage,
+  boProductsCreateTabPricingPage,
   type BrowserContext,
   dataCustomers,
   dataOrderStatuses,
@@ -290,7 +290,7 @@ describe('BO - Catalog - Products : Pack Tab', async () => {
     it('should set the retail price', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'setRetailPrice', baseContext);
 
-      await pricingTab.setRetailPrice(page, true, productRetailPrice);
+      await boProductsCreateTabPricingPage.setRetailPrice(page, true, productRetailPrice);
 
       const message = await createProductsPage.saveProduct(page);
       expect(message).to.eq(createProductsPage.successfulUpdateMessage);

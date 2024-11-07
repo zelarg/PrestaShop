@@ -6,7 +6,6 @@ import {deleteProductTest} from '@commonTests/BO/catalog/product';
 
 // Import pages
 import createProductsPage from '@pages/BO/catalog/products/add';
-import pricingTab from '@pages/BO/catalog/products/add/pricingTab';
 
 import {expect} from 'chai';
 import {faker} from '@faker-js/faker';
@@ -16,6 +15,7 @@ import {
   boProductsPage,
   boProductsCreateTabDescriptionPage,
   boProductsCreateTabDetailsPage,
+  boProductsCreateTabPricingPage,
   boProductsCreateTabStocksPage,
   type BrowserContext,
   FakerProduct,
@@ -209,7 +209,7 @@ describe('BO - Catalog - Products : Header', async () => {
   it('should edit the retail price', async function () {
     await testContext.addContextItem(this, 'testIdentifier', 'editRetailPrice', baseContext);
 
-    await pricingTab.setRetailPrice(page, false, productRetailPriceTaxIncluded);
+    await boProductsCreateTabPricingPage.setRetailPrice(page, false, productRetailPriceTaxIncluded);
 
     const message = await createProductsPage.saveProduct(page);
     expect(message).to.eq(createProductsPage.successfulUpdateMessage);

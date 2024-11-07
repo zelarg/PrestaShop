@@ -12,7 +12,6 @@ import {createOrderByGuestTest} from '@commonTests/FO/classic/order';
 import cartRulesPage from '@pages/BO/catalog/discounts';
 import addCartRulePage from '@pages/BO/catalog/discounts/add';
 import combinationsTab from '@pages/BO/catalog/products/add/combinationsTab';
-import pricingTab from '@pages/BO/catalog/products/add/pricingTab';
 import addProductPage from '@pages/BO/catalog/products/add';
 
 import {
@@ -21,6 +20,7 @@ import {
   boOrdersPage,
   boOrdersViewBlockProductsPage,
   boProductsPage,
+  boProductsCreateTabPricingPage,
   type BrowserContext,
   dataPaymentMethods,
   dataProducts,
@@ -314,15 +314,15 @@ describe('BO - Orders - View and edit order : Check product block in view order 
           // Add specific price
           if (product === productWithSpecificPrice) {
             await addProductPage.goToTab(page, 'pricing');
-            await pricingTab.clickOnAddSpecificPriceButton(page);
+            await boProductsCreateTabPricingPage.clickOnAddSpecificPriceButton(page);
 
-            createProductMessage = await pricingTab.setSpecificPrice(page, productWithSpecificPrice.specificPrice);
+            createProductMessage = await boProductsCreateTabPricingPage.setSpecificPrice(page, productWithSpecificPrice.specificPrice);
             expect(createProductMessage).to.equal(addProductPage.successfulCreationMessage);
           }
           // Add eco tax
           if (product === productWithEcoTax) {
             await addProductPage.goToTab(page, 'pricing');
-            await pricingTab.addEcoTax(page, productWithEcoTax.ecoTax);
+            await boProductsCreateTabPricingPage.addEcoTax(page, productWithEcoTax.ecoTax);
 
             updateProductMessage = await addProductPage.saveProduct(page);
             expect(updateProductMessage).to.equal(addProductPage.successfulUpdateMessage);

@@ -10,7 +10,6 @@ import deleteNonOrderedShoppingCarts from '@commonTests/BO/orders/shoppingCarts'
 
 // Import BO pages
 import addProductPage from '@pages/BO/catalog/products/add';
-import pricingTab from '@pages/BO/catalog/products/add/pricingTab';
 import addOrderPage from '@pages/BO/orders/add';
 
 import {
@@ -18,6 +17,7 @@ import {
   boLoginPage,
   boOrdersPage,
   boProductsPage,
+  boProductsCreateTabPricingPage,
   boStockPage,
   type BrowserContext,
   dataCurrencies,
@@ -288,15 +288,15 @@ describe('BO - Orders - Create order : Add a product to the cart', async () => {
         // Add specific price
         if (product === productWithSpecificPrice) {
           await addProductPage.goToTab(page, 'pricing');
-          await pricingTab.clickOnAddSpecificPriceButton(page);
+          await boProductsCreateTabPricingPage.clickOnAddSpecificPriceButton(page);
 
-          createProductMessage = await pricingTab.setSpecificPrice(page, productWithSpecificPrice.specificPrice);
+          createProductMessage = await boProductsCreateTabPricingPage.setSpecificPrice(page, productWithSpecificPrice.specificPrice);
           expect(createProductMessage).to.equal(addProductPage.successfulCreationMessage);
         }
         // Add eco tax
         if (product === productWithEcoTax) {
           await addProductPage.goToTab(page, 'pricing');
-          await pricingTab.addEcoTax(page, productWithEcoTax.ecoTax);
+          await boProductsCreateTabPricingPage.addEcoTax(page, productWithEcoTax.ecoTax);
 
           updateProductMessage = await addProductPage.saveProduct(page);
           expect(updateProductMessage).to.equal(addProductPage.successfulUpdateMessage);
