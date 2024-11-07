@@ -290,7 +290,10 @@ describe('BO - Orders - Create order : Add a product to the cart', async () => {
           await addProductPage.goToTab(page, 'pricing');
           await boProductsCreateTabPricingPage.clickOnAddSpecificPriceButton(page);
 
-          createProductMessage = await boProductsCreateTabPricingPage.setSpecificPrice(page, productWithSpecificPrice.specificPrice);
+          createProductMessage = await boProductsCreateTabPricingPage.setSpecificPrice(
+            page,
+            productWithSpecificPrice.specificPrice,
+          );
           expect(createProductMessage).to.equal(addProductPage.successfulCreationMessage);
         }
         // Add eco tax

@@ -263,7 +263,10 @@ describe('FO - Product page - Product page : Display volume discount', async () 
 
       await boProductsCreateTabPricingPage.clickOnAddSpecificPriceButton(page);
 
-      const createProductMessage = await boProductsCreateTabPricingPage.setSpecificPrice(page, secondSpecificPriceData.specificPrice);
+      const createProductMessage = await boProductsCreateTabPricingPage.setSpecificPrice(
+        page,
+        secondSpecificPriceData.specificPrice,
+      );
       expect(createProductMessage).to.equal(createProductPage.successfulCreationMessage);
     });
 

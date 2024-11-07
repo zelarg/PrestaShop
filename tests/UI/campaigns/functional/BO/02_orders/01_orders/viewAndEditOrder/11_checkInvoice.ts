@@ -259,7 +259,10 @@ describe('BO - Orders - View and edit order: Check invoice', async () => {
           await addProductPage.goToTab(page, 'pricing');
           await boProductsCreateTabPricingPage.clickOnAddSpecificPriceButton(page);
 
-          createProductMessage = await boProductsCreateTabPricingPage.setSpecificPrice(page, productWithSpecificPrice.specificPrice);
+          createProductMessage = await boProductsCreateTabPricingPage.setSpecificPrice(
+            page,
+            productWithSpecificPrice.specificPrice,
+          );
           expect(createProductMessage).to.equal(addProductPage.successfulCreationMessage);
         }
         // Add eco tax

@@ -190,7 +190,10 @@ describe('BO - Shop Parameters - Product Settings : Choose quantity discount bas
 
       await boProductsCreateTabPricingPage.clickOnAddSpecificPriceButton(page);
 
-      const createProductMessage = await boProductsCreateTabPricingPage.setSpecificPrice(page, productWithCombinations.specificPrice);
+      const createProductMessage = await boProductsCreateTabPricingPage.setSpecificPrice(
+        page,
+        productWithCombinations.specificPrice,
+      );
       expect(createProductMessage).to.equal(addProductPage.successfulCreationMessage);
     });
 

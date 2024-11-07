@@ -134,9 +134,9 @@ describe('BO - Shop Parameters - Search - Indexing: Set a cron job', async () =>
       });
 
       if (arg.status === 'cronRebuildJob') {
-        it(`should click on the rebuild index cron job link`, async function () {
+        it('should click on the rebuild index cron job link', async function () {
           await testContext.addContextItem(this, 'testIdentifier', `${arg.status}${index}`, baseContext);
-  
+
           await boSearchPage.clickRebuildEntireIndexCronJobLink(page);
           await boSearchPage.reloadPage(page);
 
@@ -159,7 +159,7 @@ describe('BO - Shop Parameters - Search - Indexing: Set a cron job', async () =>
       if (arg.status === 'disable') {
         it(`should ${arg.status} Indexing`, async function () {
           await testContext.addContextItem(this, 'testIdentifier', `${arg.status}${index}`, baseContext);
-  
+
           const textResult = await boSearchPage.setIndexing(page, false);
           expect(textResult).to.be.eq(boSearchPage.settingsUpdateMessage);
         });
