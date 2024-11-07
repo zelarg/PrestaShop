@@ -24,33 +24,25 @@
  * @license   https://opensource.org/licenses/OSL-3.0 Open Software License (OSL 3.0)
  */
 
-namespace PrestaShopBundle\Event;
+declare(strict_types=1);
 
-use PrestaShop\PrestaShop\Core\Module\ModuleInterface;
-use Symfony\Contracts\EventDispatcher\Event;
+namespace PrestaShop\PrestaShop\Core\Domain\Module\Command;
 
-class ModuleManagementEvent extends Event
+/**
+ * Upload module
+ */
+class UploadModuleCommand
 {
-    public const INSTALL = 'module.install';
-    public const POST_INSTALL = 'module.post.install';
-    public const UNINSTALL = 'module.uninstall';
-    public const DISABLE = 'module.disable';
-    public const ENABLE = 'module.enable';
-    public const UPGRADE = 'module.upgrade';
-    public const UPLOAD = 'module.upload';
-    public const RESET = 'module.reset';
-    public const DELETE = 'module.delete';
-
-    /** @var ModuleInterface */
-    private $module;
-
-    public function __construct(ModuleInterface $module)
-    {
-        $this->module = $module;
+    /**
+     * @param string $source Source for module
+     */
+    public function __construct(
+        private readonly string $source
+    ) {
     }
 
-    public function getModule(): ModuleInterface
+    public function getSource(): string
     {
-        return $this->module;
+        return $this->source;
     }
 }

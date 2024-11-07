@@ -24,33 +24,35 @@
  * @license   https://opensource.org/licenses/OSL-3.0 Open Software License (OSL 3.0)
  */
 
-namespace PrestaShopBundle\Event;
+declare(strict_types=1);
 
-use PrestaShop\PrestaShop\Core\Module\ModuleInterface;
-use Symfony\Contracts\EventDispatcher\Event;
+namespace PrestaShop\PrestaShop\Core\Domain\Module\Command;
 
-class ModuleManagementEvent extends Event
+use PrestaShop\PrestaShop\Core\Domain\Module\ValueObject\ModuleTechnicalName;
+
+/**
+ * Install module
+ */
+class InstallModuleCommand
 {
-    public const INSTALL = 'module.install';
-    public const POST_INSTALL = 'module.post.install';
-    public const UNINSTALL = 'module.uninstall';
-    public const DISABLE = 'module.disable';
-    public const ENABLE = 'module.enable';
-    public const UPGRADE = 'module.upgrade';
-    public const UPLOAD = 'module.upload';
-    public const RESET = 'module.reset';
-    public const DELETE = 'module.delete';
+    /**
+     * @var ModuleTechnicalName
+     */
+    private $technicalName;
 
-    /** @var ModuleInterface */
-    private $module;
-
-    public function __construct(ModuleInterface $module)
+    /**
+     * @param string $technicalName Technical name for module
+     */
+    public function __construct(string $technicalName)
     {
-        $this->module = $module;
+        $this->technicalName = new ModuleTechnicalName($technicalName);
     }
 
-    public function getModule(): ModuleInterface
+    /**
+     * @return ModuleTechnicalName
+     */
+    public function getTechnicalName(): ModuleTechnicalName
     {
-        return $this->module;
+        return $this->technicalName;
     }
 }

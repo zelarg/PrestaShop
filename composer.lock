@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "6420a9dee0439988a2462be3865bfc6e",
+    "content-hash": "c4e96763d84a33afcb1eeb54a1ffad92",
     "packages": [
         {
             "name": "api-platform/core",
@@ -5676,16 +5676,16 @@
         },
         {
             "name": "prestashop/ps_apiresources",
-            "version": "dev-reset-module",
+            "version": "dev-install-uninstall-module",
             "source": {
                 "type": "git",
-                "url": "https://github.com/jinpresta/ps_apiresources.git",
-                "reference": "aec9dcfcd51f7766885bbe8143174abf1e9be77f"
+                "url": "https://github.com/jolelievre/ps_apiresources.git",
+                "reference": "566a92a61e7419d58348c3768d5b90d978fb75de"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/jinpresta/ps_apiresources/zipball/aec9dcfcd51f7766885bbe8143174abf1e9be77f",
-                "reference": "aec9dcfcd51f7766885bbe8143174abf1e9be77f",
+                "url": "https://api.github.com/repos/jolelievre/ps_apiresources/zipball/566a92a61e7419d58348c3768d5b90d978fb75de",
+                "reference": "566a92a61e7419d58348c3768d5b90d978fb75de",
                 "shasum": ""
             },
             "require": {
@@ -5693,6 +5693,7 @@
             },
             "require-dev": {
                 "czproject/git-php": "^4.2",
+                "friendsofphp/php-cs-fixer": "^v3",
                 "phpunit/phpunit": "^9.6",
                 "prestashop/php-dev-tools": "^4.3"
             },
@@ -5737,9 +5738,9 @@
             "description": "PrestaShop - API Resources",
             "homepage": "https://github.com/PrestaShop/ps_apiresources",
             "support": {
-                "source": "https://github.com/jinpresta/ps_apiresources/tree/reset-module"
+                "source": "https://github.com/jolelievre/ps_apiresources/tree/install-uninstall-module"
             },
-            "time": "2024-10-21T16:46:05+00:00"
+            "time": "2024-11-06T14:43:11+00:00"
         },
         {
             "name": "prestashop/ps_banner",

@@ -37,16 +37,15 @@ class UninstallModuleCommand
 {
     private ModuleTechnicalName $technicalName;
 
-    private bool $deleteFile;
-
     /**
      * @param string $technicalName Array of technical names for modules
-     * @param bool $deleteFile Boolean for delete module files
+     * @param bool $deleteFiles Boolean for delete module files
      */
-    public function __construct(string $technicalName, bool $deleteFile = false)
-    {
+    public function __construct(
+        string $technicalName,
+        private readonly bool $deleteFiles = false
+    ) {
         $this->technicalName = new ModuleTechnicalName($technicalName);
-        $this->deleteFile = $deleteFile;
     }
 
     /**
@@ -60,8 +59,8 @@ class UninstallModuleCommand
     /**
      * @return bool
      */
-    public function getDeteleFile(): bool
+    public function deleteFiles(): bool
     {
-        return $this->deleteFile;
+        return $this->deleteFiles;
     }
 }

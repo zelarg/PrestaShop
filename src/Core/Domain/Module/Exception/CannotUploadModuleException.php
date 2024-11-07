@@ -24,33 +24,8 @@
  * @license   https://opensource.org/licenses/OSL-3.0 Open Software License (OSL 3.0)
  */
 
-namespace PrestaShopBundle\Event;
+namespace PrestaShop\PrestaShop\Core\Domain\Module\Exception;
 
-use PrestaShop\PrestaShop\Core\Module\ModuleInterface;
-use Symfony\Contracts\EventDispatcher\Event;
-
-class ModuleManagementEvent extends Event
+class CannotUploadModuleException extends ModuleException
 {
-    public const INSTALL = 'module.install';
-    public const POST_INSTALL = 'module.post.install';
-    public const UNINSTALL = 'module.uninstall';
-    public const DISABLE = 'module.disable';
-    public const ENABLE = 'module.enable';
-    public const UPGRADE = 'module.upgrade';
-    public const UPLOAD = 'module.upload';
-    public const RESET = 'module.reset';
-    public const DELETE = 'module.delete';
-
-    /** @var ModuleInterface */
-    private $module;
-
-    public function __construct(ModuleInterface $module)
-    {
-        $this->module = $module;
-    }
-
-    public function getModule(): ModuleInterface
-    {
-        return $this->module;
-    }
 }

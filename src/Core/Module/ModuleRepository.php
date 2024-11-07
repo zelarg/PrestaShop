@@ -269,12 +269,18 @@ class ModuleRepository implements ModuleRepositoryInterface
     private function getModuleDiskAttributes(string $moduleName, bool $isValid, int $filemtime): array
     {
         $path = $this->modulePath . $moduleName;
+        if ($isValid) {
+            $moduleConfig = ModuleLegacy::loadModuleXMLConfig($moduleName);
+            $version = $moduleConfig['version'] ?? null;
+        } else {
+            $version = null;
+        }
 
         return [
             'filemtime' => $filemtime,
             'is_present' => $filemtime > 0,
             'is_valid' => $isValid,
-            'version' => $isValid ? ModuleLegacy::getInstanceByName($moduleName)->version : null,
+            'version' => $version,
             'path' => $path,
         ];
     }

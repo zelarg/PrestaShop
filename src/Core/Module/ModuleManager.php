@@ -90,6 +90,25 @@ class ModuleManager implements ModuleManagerInterface
         $this->hookManager = $hookManager;
     }
 
+    public function upload(string $source): string
+    {
+        if (!$this->adminModuleDataProvider->isAllowedAccess(__FUNCTION__)) {
+            throw new Exception($this->translator->trans(
+                'You are not allowed to upload modules.',
+                [],
+                'Admin.Modules.Notification'
+            ));
+        }
+
+        $handler = $this->sourceFactory->getHandler($source);
+        $handler->handle($source);
+        $moduleName = $handler->getModuleName($source);
+        $module = $this->moduleRepository->getModule($moduleName);
+        $this->dispatch(ModuleManagementEvent::UPLOAD, $module);
+
+        return $moduleName;
+    }
+
     public function install(string $name, $source = null): bool
     {
         if (!$this->adminModuleDataProvider->isAllowedAccess(__FUNCTION__)) {
@@ -161,6 +180,7 @@ class ModuleManager implements ModuleManagerInterface
 
         if ($deleteFiles && $path = $this->moduleRepository->getModulePath($name)) {
             $this->filesystem->remove($path);
+            $this->dispatch(ModuleManagementEvent::DELETE, $module);
         }
 
         $this->dispatch(ModuleManagementEvent::UNINSTALL, $module);

@@ -27,15 +27,15 @@
 namespace PrestaShop\PrestaShop\Adapter\Module\CommandHandler;
 
 use PrestaShop\PrestaShop\Core\CommandBus\Attributes\AsCommandHandler;
-use PrestaShop\PrestaShop\Core\Domain\Module\Command\BulkUninstallModuleCommand;
-use PrestaShop\PrestaShop\Core\Domain\Module\CommandHandler\BulkUninstallModuleHandlerInterface;
-use PrestaShop\PrestaShop\Core\Domain\Module\Exception\CannotUninstallModuleException;
-use PrestaShop\PrestaShop\Core\Domain\Module\Exception\ModuleNotInstalledException;
+use PrestaShop\PrestaShop\Core\Domain\Module\Command\InstallModuleCommand;
+use PrestaShop\PrestaShop\Core\Domain\Module\CommandHandler\InstallModuleHandlerInterface;
+use PrestaShop\PrestaShop\Core\Domain\Module\Exception\AlreadyInstalledModuleException;
+use PrestaShop\PrestaShop\Core\Domain\Module\Exception\CannotInstallModuleException;
 use PrestaShop\PrestaShop\Core\Module\ModuleManager;
 use PrestaShop\PrestaShop\Core\Module\ModuleRepository;
 
 #[AsCommandHandler]
-class BulkUninstallModuleHandler implements BulkUninstallModuleHandlerInterface
+class InstallModuleHandler implements InstallModuleHandlerInterface
 {
     public function __construct(
         protected ModuleManager $moduleManager,
@@ -43,25 +43,17 @@ class BulkUninstallModuleHandler implements BulkUninstallModuleHandlerInterface
     ) {
     }
 
-    public function handle(BulkUninstallModuleCommand $command): void
+    public function handle(InstallModuleCommand $command): void
     {
-        $deleteFile = $command->deleteFiles();
-        // First loop through all the modules and check if they are valid for uninstallation
-        foreach ($command->getModules() as $moduleName) {
-            $module = $this->moduleRepository->getPresentModule($moduleName->getValue());
-
-            if (!$module->isInstalled()) {
-                throw new ModuleNotInstalledException('Cannot uninstall module ' . $moduleName->getValue() . ' since it is not installed');
-            }
+        $module = $this->moduleRepository->getPresentModule($command->getTechnicalName()->getValue());
+        if ($module->isInstalled()) {
+            throw new AlreadyInstalledModuleException('Cannot install module ' . $command->getTechnicalName()->getValue() . ' since it is already installed');
         }
 
-        // Then perform the bulk action
-        foreach ($command->getModules() as $moduleName) {
-            $result = $this->moduleManager->uninstall($moduleName->getValue(), $deleteFile);
+        $result = $this->moduleManager->install($command->getTechnicalName()->getValue());
 
-            if (!$result) {
-                throw new CannotUninstallModuleException('Technical error occurred while uninstalling module.');
-            }
+        if (!$result) {
+            throw new CannotInstallModuleException('Technical error occurred while installing module.');
         }
     }
 }
