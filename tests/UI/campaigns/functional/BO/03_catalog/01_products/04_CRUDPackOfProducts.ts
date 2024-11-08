@@ -4,13 +4,13 @@ import testContext from '@utils/testContext';
 // Import pages
 import createProductsPage from '@pages/BO/catalog/products/add';
 import packTab from '@pages/BO/catalog/products/add/packTab';
-import pricingTab from '@pages/BO/catalog/products/add/pricingTab';
 
 import {expect} from 'chai';
 import {
   boDashboardPage,
   boLoginPage,
   boProductsPage,
+  boProductsCreateTabPricingPage,
   type BrowserContext,
   dataEmployees,
   dataProducts,
@@ -346,7 +346,7 @@ describe('BO - Catalog - Products : CRUD pack of products', async () => {
     it('should go to Pricing tab and edit retail price, enable the product then save', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'editRetailPrice', baseContext);
 
-      await pricingTab.setProductPricing(page, pricingData);
+      await boProductsCreateTabPricingPage.setProductPricing(page, pricingData);
 
       await createProductsPage.setProductStatus(page, true);
 

@@ -6,7 +6,6 @@ import {deleteProductTest} from '@commonTests/BO/catalog/product';
 
 // Import BO pages
 import createProductPage from '@pages/BO/catalog/products/add';
-import pricingTab from '@pages/BO/catalog/products/add/pricingTab';
 
 // Import FO pages
 import {blockCartModal} from '@pages/FO/classic/modal/blockCart';
@@ -16,6 +15,7 @@ import {
   boDashboardPage,
   boLoginPage,
   boProductsPage,
+  boProductsCreateTabPricingPage,
   type BrowserContext,
   FakerProduct,
   foClassicCartPage,
@@ -143,7 +143,7 @@ describe('FO - Product page - Product page : Display volume discount', async () 
       await testContext.addContextItem(this, 'testIdentifier', 'setRetailPrice', baseContext);
 
       await createProductPage.goToTab(page, 'pricing');
-      await pricingTab.setRetailPrice(page, false, 20);
+      await boProductsCreateTabPricingPage.setRetailPrice(page, false, 20);
 
       const message = await createProductPage.saveProduct(page);
       expect(message).to.eq(createProductPage.successfulUpdateMessage);
@@ -152,9 +152,9 @@ describe('FO - Product page - Product page : Display volume discount', async () 
     it('should create new specific price', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'setSpecificPrice', baseContext);
 
-      await pricingTab.clickOnAddSpecificPriceButton(page);
+      await boProductsCreateTabPricingPage.clickOnAddSpecificPriceButton(page);
 
-      const createProductMessage = await pricingTab.setSpecificPrice(page, newProductData.specificPrice);
+      const createProductMessage = await boProductsCreateTabPricingPage.setSpecificPrice(page, newProductData.specificPrice);
       expect(createProductMessage).to.equal(createProductPage.successfulCreationMessage);
     });
   });
@@ -261,9 +261,12 @@ describe('FO - Product page - Product page : Display volume discount', async () 
     it('should create a second specific price', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'createSecondSpecificPrice', baseContext);
 
-      await pricingTab.clickOnAddSpecificPriceButton(page);
+      await boProductsCreateTabPricingPage.clickOnAddSpecificPriceButton(page);
 
-      const createProductMessage = await pricingTab.setSpecificPrice(page, secondSpecificPriceData.specificPrice);
+      const createProductMessage = await boProductsCreateTabPricingPage.setSpecificPrice(
+        page,
+        secondSpecificPriceData.specificPrice,
+      );
       expect(createProductMessage).to.equal(createProductPage.successfulCreationMessage);
     });
 

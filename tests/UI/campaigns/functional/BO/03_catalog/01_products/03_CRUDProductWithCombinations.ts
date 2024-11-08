@@ -4,7 +4,6 @@ import testContext from '@utils/testContext';
 // Import pages
 import createProductsPage from '@pages/BO/catalog/products/add';
 import combinationsTab from '@pages/BO/catalog/products/add/combinationsTab';
-import pricingTab from '@pages/BO/catalog/products/add/pricingTab';
 
 import {expect} from 'chai';
 import {
@@ -12,6 +11,7 @@ import {
   boDashboardPage,
   boLoginPage,
   boProductsPage,
+  boProductsCreateTabPricingPage,
   type BrowserContext,
   FakerProduct,
   foClassicProductPage,
@@ -515,7 +515,7 @@ describe('BO - Catalog - Products : CRUD product with combinations', async () =>
     it('should go to Pricing tab and edit retail price, enable the product then save', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'saveProduct', baseContext);
 
-      await pricingTab.setProductPricing(page, pricingData);
+      await boProductsCreateTabPricingPage.setProductPricing(page, pricingData);
 
       await createProductsPage.setProductStatus(page, true);
 

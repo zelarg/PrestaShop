@@ -1,10 +1,10 @@
 import BOBasePage from '@pages/BO/BObasePage';
-import pricingTab from '@pages/BO/catalog/products/add/pricingTab';
 import packTab from '@pages/BO/catalog/products/add/packTab';
 
 import {
   boProductsCreateTabDescriptionPage,
   boProductsCreateTabDetailsPage,
+  boProductsCreateTabPricingPage,
   boProductsCreateTabShippingPage,
   boProductsCreateTabStocksPage,
   boProductsCreateTabVirtualProductPage,
@@ -373,7 +373,7 @@ class CreateProduct extends BOBasePage {
       await boProductsCreateTabShippingPage.setPackageDimension(page, productData);
     }
 
-    await pricingTab.setProductPricing(page, productData);
+    await boProductsCreateTabPricingPage.setProductPricing(page, productData);
 
     return this.saveProduct(page);
   }

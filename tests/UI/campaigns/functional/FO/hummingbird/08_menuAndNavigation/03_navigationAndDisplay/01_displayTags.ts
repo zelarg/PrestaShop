@@ -7,13 +7,13 @@ import {enableHummingbird, disableHummingbird} from '@commonTests/BO/design/humm
 
 // Import BO pages
 import addProductPage from '@pages/BO/catalog/products/add';
-import pricingTab from '@pages/BO/catalog/products/add/pricingTab';
 
 import {expect} from 'chai';
 import {
   boDashboardPage,
   boLoginPage,
   boProductsPage,
+  boProductsCreateTabPricingPage,
   boProductsCreateTabStocksPage,
   boProductSettingsPage,
   type BrowserContext,
@@ -261,9 +261,9 @@ describe('FO - Navigation and display : Display tags', async () => {
     it('should add a specific price', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'addSpecificPrice', baseContext);
 
-      await pricingTab.clickOnAddSpecificPriceButton(page);
+      await boProductsCreateTabPricingPage.clickOnAddSpecificPriceButton(page);
 
-      const message = await pricingTab.setSpecificPrice(page, specificPriceData.specificPrice);
+      const message = await boProductsCreateTabPricingPage.setSpecificPrice(page, specificPriceData.specificPrice);
       expect(message).to.equal(addProductPage.successfulCreationMessage);
     });
   });
