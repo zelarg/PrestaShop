@@ -33,9 +33,9 @@ Feature: Module
       | technical_name    | dashproducts |
       | installed_version | 2.1.3        |
       | module_version    | 2.1.4        |
-      | enabled           | false        |
+      | enabled           | true        |
       | installed         | true         |
-    And I Update module "dashproducts"
+    And I update module dashproducts
     Then module dashproducts has following infos:
       | technical_name    | dashproducts |
       | installed_version | 2.1.4        |
@@ -59,7 +59,7 @@ Feature: Module
       | module_version    | 2.1.3        |
       | enabled           | false        |
       | installed         | false        |
-    And I update module "dashproducts"
+    And I update module dashproducts
     Then module dashproducts has following infos:
       | technical_name    | dashproducts |
       | installed_version | 2.1.4        |
