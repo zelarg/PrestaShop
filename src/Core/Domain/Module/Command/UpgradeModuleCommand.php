@@ -24,11 +24,33 @@
  * @license   https://opensource.org/licenses/OSL-3.0 Open Software License (OSL 3.0)
  */
 
-namespace PrestaShop\PrestaShop\Core\Domain\Module\CommandHandler;
+declare(strict_types=1);
 
-use PrestaShop\PrestaShop\Core\Domain\Module\Command\UpdateModuleCommand;
+namespace PrestaShop\PrestaShop\Core\Domain\Module\Command;
 
-interface UpdateModuleHandlerInterface
+use PrestaShop\PrestaShop\Core\Domain\Module\ValueObject\ModuleTechnicalName;
+
+/**
+ * Upgrade module
+ */
+class UpgradeModuleCommand
 {
-    public function handle(UpdateModuleCommand $command): void;
+    private ModuleTechnicalName $technicalName;
+
+    /**
+     * @param string $technicalName Technical name for module
+     */
+    public function __construct(string $technicalName)
+    {
+        $this->technicalName = new ModuleTechnicalName($technicalName);
+    }
+
+    /**
+     * @return ModuleTechnicalName
+     */
+    public function getTechnicalName(): ModuleTechnicalName
+    {
+        return $this->technicalName;
+    }
+
 }

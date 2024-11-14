@@ -38,7 +38,7 @@ use PrestaShop\PrestaShop\Core\Domain\Module\Command\ResetModuleCommand;
 use PrestaShop\PrestaShop\Core\Domain\Module\Command\UninstallModuleCommand;
 use PrestaShop\PrestaShop\Core\Domain\Module\Command\UpdateModuleStatusCommand;
 use PrestaShop\PrestaShop\Core\Domain\Module\Command\UploadModuleCommand;
-use PrestaShop\PrestaShop\Core\Domain\Module\Command\UpdateModuleCommand;
+use PrestaShop\PrestaShop\Core\Domain\Module\Command\UpgradeModuleCommand;
 use PrestaShop\PrestaShop\Core\Domain\Module\Exception\AlreadyInstalledModuleException;
 use PrestaShop\PrestaShop\Core\Domain\Module\Exception\ModuleAlreadyUpToDateException;
 use PrestaShop\PrestaShop\Core\Domain\Module\Exception\ModuleException;
@@ -232,12 +232,12 @@ class ModuleFeatureContext extends AbstractDomainFeatureContext
     }
 
     /**
-     * @When I update module :technicalName
+     * @When I upgrade module :technicalName
      */
-    public function updateModule(string $technicalName): void
+    public function upgradeModule(string $technicalName): void
     {
         try {
-            $this->getCommandBus()->handle(new UpdateModuleCommand($technicalName));
+            $this->getCommandBus()->handle(new UpgradeModuleCommand($technicalName));
         } catch (ModuleException $e) {
             $this->setLastException($e);
         }

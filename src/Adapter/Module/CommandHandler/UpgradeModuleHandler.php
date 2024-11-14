@@ -27,16 +27,16 @@
 namespace PrestaShop\PrestaShop\Adapter\Module\CommandHandler;
 
 use PrestaShop\PrestaShop\Core\CommandBus\Attributes\AsCommandHandler;
-use PrestaShop\PrestaShop\Core\Domain\Module\Command\UpdateModuleCommand;
-use PrestaShop\PrestaShop\Core\Domain\Module\CommandHandler\UpdateModuleHandlerInterface;
+use PrestaShop\PrestaShop\Core\Domain\Module\Command\UpgradeModuleCommand;
+use PrestaShop\PrestaShop\Core\Domain\Module\CommandHandler\UpgradeModuleHandlerInterface;
 use PrestaShop\PrestaShop\Core\Domain\Module\Exception\ModuleAlreadyUpToDateException;
 use PrestaShop\PrestaShop\Core\Domain\Module\Exception\ModuleNotInstalledException;
-use PrestaShop\PrestaShop\Core\Domain\Module\Exception\CannotUpdateModuleException;
+use PrestaShop\PrestaShop\Core\Domain\Module\Exception\CannotUpgradeModuleException;
 use PrestaShop\PrestaShop\Core\Module\ModuleManager;
 use PrestaShop\PrestaShop\Core\Module\ModuleRepository;
 
 #[AsCommandHandler]
-class UpdateModuleHandler implements UpdateModuleHandlerInterface
+class UpgradeModuleHandler implements UpgradeModuleHandlerInterface
 {
     public function __construct(
         protected ModuleManager $moduleManager,
@@ -44,7 +44,7 @@ class UpdateModuleHandler implements UpdateModuleHandlerInterface
     ) {
     }
 
-    public function handle(UpdateModuleCommand $command): void
+    public function handle(UpgradeModuleCommand $command): void
     {
         $technical_name = $command->getTechnicalName()->getValue();
 
@@ -61,7 +61,7 @@ class UpdateModuleHandler implements UpdateModuleHandlerInterface
         $result = $this->moduleManager->upgrade($technical_name);
 
         if (!$result) {
-            throw new CannotUpdateModuleException('Technical error occurred while updating module.');
+            throw new CannotUpgradeModuleException('Technical error occurred while updating module.');
         }
     }
 }
