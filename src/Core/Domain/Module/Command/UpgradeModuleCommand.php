@@ -52,5 +52,4 @@ class UpgradeModuleCommand
     {
         return $this->technicalName;
     }
-
 }

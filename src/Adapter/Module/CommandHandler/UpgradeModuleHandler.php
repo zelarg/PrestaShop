@@ -29,9 +29,9 @@ namespace PrestaShop\PrestaShop\Adapter\Module\CommandHandler;
 use PrestaShop\PrestaShop\Core\CommandBus\Attributes\AsCommandHandler;
 use PrestaShop\PrestaShop\Core\Domain\Module\Command\UpgradeModuleCommand;
 use PrestaShop\PrestaShop\Core\Domain\Module\CommandHandler\UpgradeModuleHandlerInterface;
+use PrestaShop\PrestaShop\Core\Domain\Module\Exception\CannotUpgradeModuleException;
 use PrestaShop\PrestaShop\Core\Domain\Module\Exception\ModuleAlreadyUpToDateException;
 use PrestaShop\PrestaShop\Core\Domain\Module\Exception\ModuleNotInstalledException;
-use PrestaShop\PrestaShop\Core\Domain\Module\Exception\CannotUpgradeModuleException;
 use PrestaShop\PrestaShop\Core\Module\ModuleManager;
 use PrestaShop\PrestaShop\Core\Module\ModuleRepository;
 
@@ -50,11 +50,11 @@ class UpgradeModuleHandler implements UpgradeModuleHandlerInterface
 
         $module = $this->moduleRepository->getModule($technical_name);
 
-        if(!$module->isInstalled()) {
+        if (!$module->isInstalled()) {
             throw new ModuleNotInstalledException('Module is not installed.');
         }
 
-        if(!$module->canBeUpgraded()) {
+        if (!$module->canBeUpgraded()) {
             throw new ModuleAlreadyUpToDateException('Module is already up to date.');
         }
 
