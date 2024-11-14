@@ -106,7 +106,7 @@ jobs:
         uses: actions/upload-artifact@v4
         if: failure()
         with:
-          name: sanity-${{ matrix.php }}-${{ matrix.browser }}
+          name: sanity-${{ matrix.php }}-${{ matrix.browser }}-${{ matrix.db }}
           path: |
             ./tests/UI/screenshots/
             ./var/logs

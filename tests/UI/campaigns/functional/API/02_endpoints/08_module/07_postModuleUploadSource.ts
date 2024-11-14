@@ -3,6 +3,7 @@ import testContext from '@utils/testContext';
 
 // Import commonTests
 import {deleteAPIClientTest} from '@commonTests/BO/advancedParameters/authServer';
+import {deleteModule} from '@commonTests/BO/modules/moduleManager';
 
 import {expect} from 'chai';
 import {
@@ -15,22 +16,20 @@ import {
   type BrowserContext,
   dataModules,
   FakerAPIClient,
-  type ModuleInfo,
   type Page,
   utilsAPI,
   utilsPlaywright,
 } from '@prestashop-core/ui-testing';
 
-const baseContext: string = 'functional_API_endpoints_module_putModuleTechnicalNameStatus';
+const baseContext: string = 'functional_API_endpoints_module_postModuleUploadSource';
 
-describe('API : PUT /module/{technicalName}/status', async () => {
+describe('API : POST /module/upload-source', async () => {
   let apiContext: APIRequestContext;
   let browserContext: BrowserContext;
   let page: Page;
   let clientSecret: string;
   let accessToken: string;
   let jsonResponse: any;
-  let moduleInfo: ModuleInfo;
 
   const clientScope: string = 'module_write';
   const clientData: FakerAPIClient = new FakerAPIClient({
@@ -133,7 +132,7 @@ describe('API : PUT /module/{technicalName}/status', async () => {
     });
   });
 
-  describe('BackOffice : Expected data', async () => {
+  describe('BackOffice : Check the module is not present', async () => {
     it('should go to \'Modules > Module Manager\' page', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'goToModulesPage', baseContext);
 
@@ -147,116 +146,107 @@ describe('API : PUT /module/{technicalName}/status', async () => {
     it('should filter list by name', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'searchModule', baseContext);
 
-      const isModuleVisible = await boModuleManagerPage.searchModule(page, dataModules.blockwishlist);
+      const isModuleVisible = await boModuleManagerPage.searchModule(page, dataModules.keycloak);
+      expect(isModuleVisible).to.be.equal(false);
+    });
+  });
+
+  describe('API : POST module/upload-source', async () => {
+    it('should request the endpoint /module/upload-source', async function () {
+      await testContext.addContextItem(this, 'testIdentifier', 'requestEndpoint', baseContext);
+
+      const apiResponse = await apiContext.post('module/upload-source', {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+        data: {
+          source: dataModules.keycloak.releaseZip(dataModules.keycloak.versionCurrent),
+        },
+      });
+      expect(apiResponse.status()).to.eq(201);
+      expect(utilsAPI.hasResponseHeader(apiResponse, 'Content-Type')).to.eq(true);
+      expect(utilsAPI.getResponseHeader(apiResponse, 'Content-Type')).to.contains('application/json');
+
+      jsonResponse = await apiResponse.json();
+    });
+
+    it('should check the JSON Response keys', async function () {
+      await testContext.addContextItem(this, 'testIdentifier', 'checkResponseKeys', baseContext);
+      expect(jsonResponse).to.have.all.keys(
+        'moduleId',
+        'technicalName',
+        'moduleVersion',
+        'installedVersion',
+        'enabled',
+        'installed',
+      );
+    });
+
+    it('should check the JSON Response : `moduleId`', async function () {
+      await testContext.addContextItem(this, 'testIdentifier', 'checkResponseModuleId', baseContext);
+
+      expect(jsonResponse).to.have.property('moduleId');
+      expect(jsonResponse.moduleId).to.equals(null);
+    });
+
+    it('should check the JSON Response : `technicalName`', async function () {
+      await testContext.addContextItem(this, 'testIdentifier', 'checkResponseTechnicalName', baseContext);
+
+      expect(jsonResponse).to.have.property('technicalName');
+      expect(jsonResponse.technicalName).to.be.a('string');
+      expect(jsonResponse.technicalName).to.be.equal(dataModules.keycloak.tag);
+    });
+
+    it('should check the JSON Response : `moduleVersion`', async function () {
+      await testContext.addContextItem(this, 'testIdentifier', 'checkResponseModuleVersion', baseContext);
+
+      expect(jsonResponse).to.have.property('moduleVersion');
+      expect(jsonResponse.moduleVersion).to.be.a('string');
+      expect(dataModules.keycloak.versionCurrent).to.contains(jsonResponse.moduleVersion);
+    });
+
+    it('should check the JSON Response : `installedVersion`', async function () {
+      await testContext.addContextItem(this, 'testIdentifier', 'checkResponseInstalledVersion', baseContext);
+
+      expect(jsonResponse).to.have.property('installedVersion');
+      expect(jsonResponse.installedVersion).to.equals(null);
+    });
+
+    it('should check the JSON Response : `enabled`', async function () {
+      await testContext.addContextItem(this, 'testIdentifier', 'checkResponseEnabled', baseContext);
+
+      expect(jsonResponse).to.have.property('enabled');
+      expect(jsonResponse.enabled).to.be.a('boolean');
+      expect(jsonResponse.enabled).to.be.equal(false);
+    });
+
+    it('should check the JSON Response : `installed`', async function () {
+      await testContext.addContextItem(this, 'testIdentifier', 'checkResponseInstalled', baseContext);
+
+      expect(jsonResponse).to.have.property('installed');
+      expect(jsonResponse.installed).to.be.a('boolean');
+      expect(jsonResponse.installed).to.be.equal(false);
+    });
+  });
+
+  describe('BackOffice : Check the module is present', async () => {
+    it('should filter list by name', async function () {
+      await testContext.addContextItem(this, 'testIdentifier', 'searchModulePresent', baseContext);
+
+      const isModuleVisible = await boModuleManagerPage.searchModule(page, dataModules.keycloak);
       expect(isModuleVisible).to.be.equal(true);
 
-      moduleInfo = await boModuleManagerPage.getModuleInformationNth(page, 1);
+      const moduleInfo = await boModuleManagerPage.getModuleInformationNth(page, 1);
+      expect(moduleInfo.technicalName).to.equal(jsonResponse.technicalName);
+      expect(moduleInfo.version).to.equal(jsonResponse.moduleVersion);
+      expect(moduleInfo.enabled).to.equal(jsonResponse.enabled);
+      expect(moduleInfo.installed).to.equal(jsonResponse.installed);
     });
   });
 
-  [
-    false,
-    true,
-  ].forEach((argStatus: boolean, index: number) => {
-    describe(`API : Check Data with status = ${argStatus}`, async () => {
-      it('should request the endpoint /module/{technicalName}/status', async function () {
-        await testContext.addContextItem(this, 'testIdentifier', `requestEndpoint${index}`, baseContext);
-
-        const apiResponse = await apiContext.put(`module/${moduleInfo.technicalName}/status`, {
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-          },
-          data: {
-            enabled: argStatus,
-          },
-        });
-        expect(apiResponse.status()).to.eq(200);
-        expect(utilsAPI.hasResponseHeader(apiResponse, 'Content-Type')).to.eq(true);
-        expect(utilsAPI.getResponseHeader(apiResponse, 'Content-Type')).to.contains('application/json');
-
-        jsonResponse = await apiResponse.json();
-      });
-
-      it('should check the JSON Response keys', async function () {
-        await testContext.addContextItem(this, 'testIdentifier', `checkResponseKeys${index}`, baseContext);
-        expect(jsonResponse).to.have.all.keys(
-          'moduleId',
-          'technicalName',
-          'version',
-          'enabled',
-          'installed',
-        );
-      });
-
-      it('should check the JSON Response : `moduleId`', async function () {
-        await testContext.addContextItem(this, 'testIdentifier', `checkResponseModuleId${index}`, baseContext);
-
-        expect(jsonResponse).to.have.property('moduleId');
-        expect(jsonResponse.moduleId).to.be.a('number');
-        expect(jsonResponse.moduleId).to.be.equal(moduleInfo.moduleId);
-      });
-
-      it('should check the JSON Response : `technicalName`', async function () {
-        await testContext.addContextItem(this, 'testIdentifier', `checkResponseTechnicalName${index}`, baseContext);
-
-        expect(jsonResponse).to.have.property('technicalName');
-        expect(jsonResponse.technicalName).to.be.a('string');
-        expect(jsonResponse.technicalName).to.be.equal(moduleInfo.technicalName);
-      });
-
-      it('should check the JSON Response : `version`', async function () {
-        await testContext.addContextItem(this, 'testIdentifier', `checkResponseVersion${index}`, baseContext);
-
-        expect(jsonResponse).to.have.property('version');
-        expect(jsonResponse.version).to.be.a('string');
-        expect(jsonResponse.version).to.be.equal(moduleInfo.version);
-      });
-
-      it('should check the JSON Response : `enabled`', async function () {
-        await testContext.addContextItem(this, 'testIdentifier', `checkResponseEnabled${index}`, baseContext);
-
-        expect(jsonResponse).to.have.property('enabled');
-        expect(jsonResponse.enabled).to.be.a('boolean');
-        expect(jsonResponse.enabled).to.be.equal(argStatus);
-      });
-
-      it('should check the JSON Response : `installed`', async function () {
-        await testContext.addContextItem(this, 'testIdentifier', `checkResponseInstalled${index}`, baseContext);
-
-        expect(jsonResponse).to.have.property('installed');
-        expect(jsonResponse.installed).to.be.a('boolean');
-        expect(jsonResponse.installed).to.be.equal(moduleInfo.installed);
-      });
-
-      it('should reload the \'Modules > Module Manager\' page', async function () {
-        await testContext.addContextItem(this, 'testIdentifier', `returnToModulesPage${index}`, baseContext);
-
-        await boDashboardPage.goToSubMenu(page, boDashboardPage.modulesParentLink, boDashboardPage.moduleManagerLink);
-        await boDashboardPage.reloadPage(page);
-
-        const pageTitle = await boModuleManagerPage.getPageTitle(page);
-        expect(pageTitle).to.contains(boModuleManagerPage.pageTitle);
-      });
-
-      it('should search the module', async function () {
-        await testContext.addContextItem(this, 'testIdentifier', `searchModule${index}`, baseContext);
-
-        const isModuleVisible = await boModuleManagerPage.searchModule(page, dataModules.blockwishlist);
-        expect(isModuleVisible).to.be.equal(true);
-      });
-
-      // @todo : https://github.com/PrestaShop/PrestaShop/issues/37253
-      it(`should check the module is ${argStatus ? 'enabled' : 'disabled'}`, async function () {
-        await testContext.addContextItem(this, 'testIdentifier', `checkStatus${index}`, baseContext);
-
-        this.skip();
-
-        const moduleStatus = await boModuleManagerPage.getModuleInformationNth(page, 1);
-        expect(moduleStatus.enabled).to.equal(argStatus);
-      });
-    });
-  });
+  // Pre-condition: Uninstall the module
+  deleteModule(dataModules.keycloak, `${baseContext}_postTest_0`);
 
   // Pre-condition: Create an API Client
-  deleteAPIClientTest(`${baseContext}_postTest`);
+  deleteAPIClientTest(`${baseContext}_postTest_1`);
 });

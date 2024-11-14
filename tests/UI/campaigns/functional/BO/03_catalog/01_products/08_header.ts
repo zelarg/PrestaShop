@@ -6,8 +6,6 @@ import {deleteProductTest} from '@commonTests/BO/catalog/product';
 
 // Import pages
 import createProductsPage from '@pages/BO/catalog/products/add';
-import detailsTab from '@pages/BO/catalog/products/add/detailsTab';
-import pricingTab from '@pages/BO/catalog/products/add/pricingTab';
 
 import {expect} from 'chai';
 import {faker} from '@faker-js/faker';
@@ -16,6 +14,8 @@ import {
   boLoginPage,
   boProductsPage,
   boProductsCreateTabDescriptionPage,
+  boProductsCreateTabDetailsPage,
+  boProductsCreateTabPricingPage,
   boProductsCreateTabStocksPage,
   type BrowserContext,
   FakerProduct,
@@ -209,7 +209,7 @@ describe('BO - Catalog - Products : Header', async () => {
   it('should edit the retail price', async function () {
     await testContext.addContextItem(this, 'testIdentifier', 'editRetailPrice', baseContext);
 
-    await pricingTab.setRetailPrice(page, false, productRetailPriceTaxIncluded);
+    await boProductsCreateTabPricingPage.setRetailPrice(page, false, productRetailPriceTaxIncluded);
 
     const message = await createProductsPage.saveProduct(page);
     expect(message).to.eq(createProductsPage.successfulUpdateMessage);
@@ -324,10 +324,10 @@ describe('BO - Catalog - Products : Header', async () => {
   it('should set references', async function () {
     await testContext.addContextItem(this, 'testIdentifier', 'setReferences', baseContext);
 
-    await detailsTab.setMPN(page, productMPN);
-    await detailsTab.setUPC(page, productUPC);
-    await detailsTab.setEAN13(page, productEAN13);
-    await detailsTab.setISBN(page, productISBN);
+    await boProductsCreateTabDetailsPage.setMPN(page, productMPN);
+    await boProductsCreateTabDetailsPage.setUPC(page, productUPC);
+    await boProductsCreateTabDetailsPage.setEAN13(page, productEAN13);
+    await boProductsCreateTabDetailsPage.setISBN(page, productISBN);
 
     const message = await createProductsPage.saveProduct(page);
     expect(message).to.eq(createProductsPage.successfulUpdateMessage);

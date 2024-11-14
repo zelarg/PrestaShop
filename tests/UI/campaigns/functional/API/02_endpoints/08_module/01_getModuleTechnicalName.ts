@@ -175,7 +175,8 @@ describe('API : GET /module/{technicalName}', async () => {
       expect(jsonResponse).to.have.all.keys(
         'moduleId',
         'technicalName',
-        'version',
+        'moduleVersion',
+        'installedVersion',
         'enabled',
         'installed',
       );
@@ -197,12 +198,20 @@ describe('API : GET /module/{technicalName}', async () => {
       expect(jsonResponse.technicalName).to.be.equal(moduleInfo.technicalName);
     });
 
-    it('should check the JSON Response : `version`', async function () {
-      await testContext.addContextItem(this, 'testIdentifier', 'checkResponseVersion', baseContext);
+    it('should check the JSON Response : `moduleVersion`', async function () {
+      await testContext.addContextItem(this, 'testIdentifier', 'checkResponseModuleVersion', baseContext);
 
-      expect(jsonResponse).to.have.property('version');
-      expect(jsonResponse.version).to.be.a('string');
-      expect(jsonResponse.version).to.be.equal(moduleInfo.version);
+      expect(jsonResponse).to.have.property('moduleVersion');
+      expect(jsonResponse.moduleVersion).to.be.a('string');
+      expect(jsonResponse.moduleVersion).to.be.equal(moduleInfo.version);
+    });
+
+    it('should check the JSON Response : `installedVersion`', async function () {
+      await testContext.addContextItem(this, 'testIdentifier', 'checkResponseInstalledVersion', baseContext);
+
+      expect(jsonResponse).to.have.property('installedVersion');
+      expect(jsonResponse.installedVersion).to.be.a('string');
+      expect(jsonResponse.installedVersion).to.be.equal(moduleInfo.version);
     });
 
     it('should check the JSON Response : `enabled`', async function () {

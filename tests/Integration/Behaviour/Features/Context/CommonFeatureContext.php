@@ -74,6 +74,7 @@ use Mail;
 use Manufacturer;
 use Message;
 use Meta;
+use Module;
 use ObjectModel;
 use OrderCartRule;
 use OrderHistory;
@@ -88,6 +89,7 @@ use Pack;
 use Page;
 use PHPUnit\Framework\Assert;
 use PrestaShop\PrestaShop\Adapter\LegacyContext;
+use PrestaShop\PrestaShop\Core\Context\ContextBuilderPreparer;
 use Product;
 use ProductAttribute;
 use ProductDownload;
@@ -175,6 +177,9 @@ class CommonFeatureContext extends AbstractPrestaShopFeatureContext
 
         // Disable legacy object model cache to prevent conflicts between scenarios.
         ObjectModel::disableCache();
+        /** @var ContextBuilderPreparer $preparer */
+        $preparer = static::getContainer()->get(ContextBuilderPreparer::class);
+        $preparer->prepareFromLegacyContext(Context::getContext());
     }
 
     /**
@@ -260,7 +265,15 @@ class CommonFeatureContext extends AbstractPrestaShopFeatureContext
     /**
      * @AfterFeature @reset-test-modules-after-feature
      */
-    public static function resetTestModules(): void
+    public static function resetTestModulesAfterFeature(): void
+    {
+        (new ResourceResetter())->resetTestModules();
+    }
+
+    /**
+     * @AfterFeature @reset-test-modules-before-feature
+     */
+    public static function resetTestModulesBeforeFeature(): void
     {
         (new ResourceResetter())->resetTestModules();
     }
@@ -680,6 +693,7 @@ class CommonFeatureContext extends AbstractPrestaShopFeatureContext
         Manufacturer::resetStaticCache();
         Message::resetStaticCache();
         Meta::resetStaticCache();
+        Module::resetStaticCache();
         Page::resetStaticCache();
         ProductDownload::resetStaticCache();
         ProductSupplier::resetStaticCache();

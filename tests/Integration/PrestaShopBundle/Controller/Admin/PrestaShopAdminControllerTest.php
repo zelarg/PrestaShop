@@ -32,7 +32,7 @@ use Symfony\Component\Translation\Translator;
 use Tests\Integration\Utility\LoginTrait;
 use Tests\TestCase\SymfonyIntegrationTestCase;
 
-class FrameworkBundleAdminControllerTest extends SymfonyIntegrationTestCase
+class PrestaShopAdminControllerTest extends SymfonyIntegrationTestCase
 {
     use LoginTrait;
 

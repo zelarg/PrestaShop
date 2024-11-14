@@ -5,7 +5,6 @@ import testContext from '@utils/testContext';
 import {createProductTest, deleteProductTest} from '@commonTests/BO/catalog/product';
 
 // Import BO pages
-import pricingTab from '@pages/BO/catalog/products/add/pricingTab';
 import createProductsPage from '@pages/BO/catalog/products/add';
 
 import {expect} from 'chai';
@@ -13,6 +12,7 @@ import {
   boDashboardPage,
   boLoginPage,
   boProductsPage,
+  boProductsCreateTabPricingPage,
   boShopParametersPage,
   type BrowserContext,
   FakerProduct,
@@ -187,7 +187,7 @@ describe('BO - Shop Parameters - General : Round mode', async () => {
       it('should edit the product price', async function () {
         await testContext.addContextItem(this, 'testIdentifier', 'editProductPrice1', baseContext);
 
-        await pricingTab.setProductPricing(page, pricingData);
+        await boProductsCreateTabPricingPage.setProductPricing(page, pricingData);
 
         const updateProductMessage = await createProductsPage.saveProduct(page);
         expect(updateProductMessage).to.equal(createProductsPage.successfulUpdateMessage);
@@ -306,7 +306,7 @@ describe('BO - Shop Parameters - General : Round mode', async () => {
       it('should edit the product price', async function () {
         await testContext.addContextItem(this, 'testIdentifier', 'editProductPrice2', baseContext);
 
-        await pricingTab.setProductPricing(page, pricingData);
+        await boProductsCreateTabPricingPage.setProductPricing(page, pricingData);
 
         const updateProductMessage = await createProductsPage.saveProduct(page);
         expect(updateProductMessage).to.equal(createProductsPage.successfulUpdateMessage);

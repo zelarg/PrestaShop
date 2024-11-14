@@ -216,7 +216,62 @@ function resetModule(module: FakerModule, baseContext: string = 'commonTests-res
   });
 }
 
+function deleteModule(module: FakerModule, baseContext: string = 'commonTests-deleteModule'): void {
+  describe(`Delete module ${module.name}`, async () => {
+    let browserContext: BrowserContext;
+    let page: Page;
+
+    before(async function () {
+      browserContext = await utilsPlaywright.createBrowserContext(this.browser);
+      page = await utilsPlaywright.newTab(browserContext);
+    });
+
+    after(async () => {
+      await utilsPlaywright.closeBrowserContext(browserContext);
+    });
+
+    it('should login in BO', async function () {
+      await testContext.addContextItem(this, 'testIdentifier', 'loginBO', baseContext);
+
+      await boLoginPage.goTo(page, global.BO.URL);
+      await boLoginPage.successLogin(page, global.BO.EMAIL, global.BO.PASSWD);
+
+      const pageTitle = await boDashboardPage.getPageTitle(page);
+      expect(pageTitle).to.contains(boDashboardPage.pageTitle);
+    });
+
+    it('should go to \'Modules > Module Manager\' page', async function () {
+      await testContext.addContextItem(this, 'testIdentifier', 'goToModuleManagerPage', baseContext);
+
+      await boDashboardPage.goToSubMenu(
+        page,
+        boDashboardPage.modulesParentLink,
+        boDashboardPage.moduleManagerLink,
+      );
+      await boModuleManagerPage.closeSfToolBar(page);
+
+      const pageTitle = await boModuleManagerPage.getPageTitle(page);
+      expect(pageTitle).to.contains(boModuleManagerPage.pageTitle);
+    });
+
+    it(`should search the module '${module.name}'`, async function () {
+      await testContext.addContextItem(this, 'testIdentifier', 'searchModule', baseContext);
+
+      const isModuleVisible = await boModuleManagerPage.searchModule(page, module);
+      expect(isModuleVisible, 'Module is not visible!').to.eq(true);
+    });
+
+    it(`should reset the module '${module.name}'`, async function () {
+      await testContext.addContextItem(this, 'testIdentifier', 'deleteModule', baseContext);
+
+      const successMessage = await boModuleManagerPage.setActionInModule(page, module, 'delete');
+      expect(successMessage).to.eq(boModuleManagerPage.deleteModuleSuccessMessage(module.tag));
+    });
+  });
+}
+
 export {
+  deleteModule,
   installModule,
   uninstallModule,
   resetModule,

@@ -1304,6 +1304,37 @@ abstract class ModuleCore implements ModuleInterface
         return Tools::htmlentitiesDecodeUTF8($string);
     }
 
+    public static function loadModuleXMLConfig(string $technicalName, ?string $languageIsoCode = null): ?array
+    {
+        if (empty($languageIsoCode)) {
+            $languageIsoCode = substr(Context::getContext()->language->iso_code, 0, 2);
+        }
+
+        // Config file
+        $configFilePath = _PS_MODULE_DIR_ . $technicalName . '/config_' . $languageIsoCode . '.xml';
+        // For "en" iso code, we keep the default config.xml name
+        if ($languageIsoCode == 'en' || !file_exists($configFilePath)) {
+            $configFilePath = _PS_MODULE_DIR_ . $technicalName . '/config.xml';
+            if (!file_exists($configFilePath)) {
+                return null;
+            }
+        }
+
+        // Load config.xml
+        libxml_use_internal_errors(true);
+        $moduleConfigXML = @simplexml_load_file($configFilePath);
+        if (!$moduleConfigXML) {
+            return null;
+        }
+
+        $moduleConfig = [];
+        foreach ($moduleConfigXML as $key => $value) {
+            $moduleConfig[(string) $key] = (string) $value;
+        }
+
+        return $moduleConfig;
+    }
+
     public static function getModuleName($module)
     {
         $iso = substr(Context::getContext()->language->iso_code, 0, 2);

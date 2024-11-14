@@ -303,7 +303,7 @@ class Suppliers extends BOBasePage {
       // Do nothing
     }
     // click on search
-    await page.locator(this.filterSearchButton).click();
+    await this.clickAndWaitForURL(page, this.filterSearchButton);
     await this.waitForVisibleSelector(page, this.filterResetButton);
   }
 
@@ -313,7 +313,7 @@ class Suppliers extends BOBasePage {
    * @param value {boolean} True if we need to filter by supplier enabled, false if not
    * @return {Promise<void>}
    */
-  async filterSupplierEnabled(page: Page, value: boolean) : Promise<void> {
+  async filterSupplierEnabled(page: Page, value: boolean): Promise<void> {
     await this.filterTable(page, 'select', 'active', value ? 'Yes' : 'No');
   }
 
@@ -337,8 +337,8 @@ class Suppliers extends BOBasePage {
       this.waitForVisibleSelector(page, `${this.bulkActionsToggleButton}[aria-expanded='true']`),
     ]);
 
-    // Click on delete and wait for modal
-    await page.locator(enable ? this.bulkActionsEnableButton : this.bulkActionsDisableButton).click();
+    // Click on enable/disable and wait for modal
+    await this.clickAndWaitForURL(page, enable ? this.bulkActionsEnableButton : this.bulkActionsDisableButton);
     return this.getAlertSuccessBlockParagraphContent(page);
   }
 

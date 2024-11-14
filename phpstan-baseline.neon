@@ -6,6 +6,11 @@ parameters:
 			path: src/Core/Addon/Module/ModuleManagerBuilder.php
 
 		-
+			message: "#^Namespace Language is forbidden, No legacy calls inside the prestashop bundle\\. Please create an interface and an adapter if you need to\\.$#"
+			count: 1
+			path: src/Core/Addon/Module/ModuleManagerBuilder.php
+
+		-
 			message: "#^Class AbstractAssetManager is forbidden, No legacy calls inside the prestashop bundle\\. Please create an interface and an adapter if you need to\\.$#"
 			count: 4
 			path: src/Core/Addon/Theme/Theme.php
@@ -184,6 +189,16 @@ parameters:
 			message: "#^Namespace Cache is forbidden, No legacy calls inside the prestashop bundle\\. Please create an interface and an adapter if you need to\\.$#"
 			count: 7
 			path: src/Core/Category/NameBuilder/CategoryDisplayNameBuilder.php
+
+		-
+			message: "#^Class Context is forbidden, No legacy calls inside the prestashop bundle\\. Please create an interface and an adapter if you need to\\.$#"
+			count: 1
+			path: src/Core/Context/ContextBuilderPreparer.php
+
+		-
+			message: "#^Namespace Context is forbidden, No legacy calls inside the prestashop bundle\\. Please create an interface and an adapter if you need to\\.$#"
+			count: 1
+			path: src/Core/Context/ContextBuilderPreparer.php
 
 		-
 			message: "#^Class Country is forbidden, No legacy calls inside the prestashop bundle\\. Please create an interface and an adapter if you need to\\.$#"
@@ -1051,16 +1066,6 @@ parameters:
 			path: src/PrestaShopBundle/Controller/Admin/Improve/Design/MailThemeController.php
 
 		-
-			message: "#^Class Hook is forbidden, No legacy calls inside the prestashop bundle\\. Please create an interface and an adapter if you need to\\.$#"
-			count: 1
-			path: src/PrestaShopBundle/Controller/Admin/Improve/Design/PositionsController.php
-
-		-
-			message: "#^Namespace Hook is forbidden, No legacy calls inside the prestashop bundle\\. Please create an interface and an adapter if you need to\\.$#"
-			count: 1
-			path: src/PrestaShopBundle/Controller/Admin/Improve/Design/PositionsController.php
-
-		-
 			message: "#^Namespace Db is forbidden, No legacy calls inside the prestashop bundle\\. Please create an interface and an adapter if you need to\\.$#"
 			count: 2
 			path: src/PrestaShopBundle/Controller/Admin/Improve/ModuleController.php
@@ -1419,6 +1424,16 @@ parameters:
 			message: "#^Using _DB_PREFIX_ is forbidden, Use dependency injection instead$#"
 			count: 3
 			path: src/PrestaShopBundle/Translation/Loader/SqlTranslationLoader.php
+
+		-
+			message: "#^Class Link is forbidden, No legacy calls inside the prestashop bundle\\. Please create an interface and an adapter if you need to\\.$#"
+			count: 2
+			path: src/PrestaShopBundle/Twig/Component/AbstractMultistoreHeader.php
+
+		-
+			message: "#^Namespace Link is forbidden, No legacy calls inside the prestashop bundle\\. Please create an interface and an adapter if you need to\\.$#"
+			count: 1
+			path: src/PrestaShopBundle/Twig/Component/AbstractMultistoreHeader.php
 
 		-
 			message: "#^Namespace AdminController is forbidden, No legacy calls inside the prestashop bundle\\. Please create an interface and an adapter if you need to\\.$#"

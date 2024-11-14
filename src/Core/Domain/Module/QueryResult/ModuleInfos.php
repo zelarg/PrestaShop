@@ -33,7 +33,8 @@ class ModuleInfos
     public function __construct(
         private readonly ?int $moduleId,
         private readonly string $technicalName,
-        private readonly string $version,
+        private readonly string $moduleVersion,
+        private readonly ?string $installedVersion,
         private readonly bool $enabled,
         private readonly bool $installed,
     ) {
@@ -49,9 +50,14 @@ class ModuleInfos
         return $this->technicalName;
     }
 
-    public function getVersion(): string
+    public function getModuleVersion(): string
     {
-        return $this->version;
+        return $this->moduleVersion;
+    }
+
+    public function getInstalledVersion(): ?string
+    {
+        return $this->installedVersion;
     }
 
     public function isEnabled(): bool

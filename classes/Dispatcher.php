@@ -66,7 +66,6 @@ class DispatcherCore
             'keywords' => [
                 'id' => ['regexp' => '[0-9]+', 'param' => 'id_category'],
                 'rewrite' => ['regexp' => self::REWRITE_PATTERN],
-                'meta_keywords' => ['regexp' => '[_a-zA-Z0-9-\pL]*'],
                 'meta_title' => ['regexp' => '[_a-zA-Z0-9-\pL]*'],
             ],
         ],
@@ -76,7 +75,6 @@ class DispatcherCore
             'keywords' => [
                 'id' => ['regexp' => '[0-9]+', 'param' => 'id_supplier'],
                 'rewrite' => ['regexp' => self::REWRITE_PATTERN],
-                'meta_keywords' => ['regexp' => '[_a-zA-Z0-9-\pL]*'],
                 'meta_title' => ['regexp' => '[_a-zA-Z0-9-\pL]*'],
             ],
         ],
@@ -86,7 +84,6 @@ class DispatcherCore
             'keywords' => [
                 'id' => ['regexp' => '[0-9]+', 'param' => 'id_manufacturer'],
                 'rewrite' => ['regexp' => self::REWRITE_PATTERN],
-                'meta_keywords' => ['regexp' => '[_a-zA-Z0-9-\pL]*'],
                 'meta_title' => ['regexp' => '[_a-zA-Z0-9-\pL]*'],
             ],
         ],
@@ -96,7 +93,6 @@ class DispatcherCore
             'keywords' => [
                 'id' => ['regexp' => '[0-9]+', 'param' => 'id_cms'],
                 'rewrite' => ['regexp' => self::REWRITE_PATTERN],
-                'meta_keywords' => ['regexp' => '[_a-zA-Z0-9-\pL]*'],
                 'meta_title' => ['regexp' => '[_a-zA-Z0-9-\pL]*'],
             ],
         ],
@@ -106,7 +102,6 @@ class DispatcherCore
             'keywords' => [
                 'id' => ['regexp' => '[0-9]+', 'param' => 'id_cms_category'],
                 'rewrite' => ['regexp' => self::REWRITE_PATTERN],
-                'meta_keywords' => ['regexp' => '[_a-zA-Z0-9-\pL]*'],
                 'meta_title' => ['regexp' => '[_a-zA-Z0-9-\pL]*'],
             ],
         ],
@@ -132,7 +127,6 @@ class DispatcherCore
                 'category' => ['regexp' => '[_a-zA-Z0-9-\pL]*'],
                 'categories' => ['regexp' => '[/_a-zA-Z0-9-\pL]*'],
                 'reference' => ['regexp' => '[_a-zA-Z0-9-\pL]*'],
-                'meta_keywords' => ['regexp' => '[_a-zA-Z0-9-\pL]*'],
                 'meta_title' => ['regexp' => '[_a-zA-Z0-9-\pL]*'],
                 'manufacturer' => ['regexp' => '[_a-zA-Z0-9-\pL]*'],
                 'supplier' => ['regexp' => '[_a-zA-Z0-9-\pL]*'],
@@ -538,14 +532,18 @@ class DispatcherCore
             );
         }
 
-        // If there are several languages, set $_GET['isolang'] and remove the language part from the request URI
-        if (
-            $this->use_routes
-            && $isMultiLanguageActivated
-            && preg_match('#^/([a-z]{2})(?:/.*)?$#', $requestUri, $matches)
-        ) {
-            $_GET['isolang'] = $matches[1];
-            $requestUri = substr($requestUri, 3);
+        // If friendly URLs are activated and there are more than one languages on the shop, we handle the language
+        // Set $_GET['isolang'] and remove the language part from the request URI
+        if ($this->use_routes && $isMultiLanguageActivated) {
+            // If we find a language in the URL, we assign it and remove it from the URL
+            if (preg_match('#^/([a-z]{2})(?:/.*)?$#', $requestUri, $matches)) {
+                $_GET['isolang'] = $matches[1];
+                $requestUri = substr($requestUri, 3);
+            // Otherwise, we use the default language
+            } else {
+                $defaultLanguage = new Language((int) Configuration::get('PS_LANG_DEFAULT'));
+                $_GET['isolang'] = $defaultLanguage->iso_code;
+            }
         }
 
         return $requestUri;

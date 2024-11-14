@@ -142,6 +142,7 @@ abstract class AbstractCategoryType extends TranslatorAwareType
                 'type' => FormattedTextareaType::class,
                 'required' => false,
                 'options' => [
+                    'limit' => FormattedTextareaType::LIMIT_MEDIUMTEXT_UTF8_MB4,
                     'constraints' => [
                         new CleanHtml([
                             'message' => $this->trans('This field is invalid', 'Admin.Notifications.Error'),
@@ -155,6 +156,7 @@ abstract class AbstractCategoryType extends TranslatorAwareType
                 'type' => FormattedTextareaType::class,
                 'required' => false,
                 'options' => [
+                    'limit' => FormattedTextareaType::LIMIT_MEDIUMTEXT_UTF8_MB4,
                     'constraints' => [
                         new CleanHtml([
                             'message' => $this->trans('This field is invalid', 'Admin.Notifications.Error'),
@@ -257,35 +259,6 @@ abstract class AbstractCategoryType extends TranslatorAwareType
                             ),
                         ]),
                     ],
-                ],
-            ])
-            ->add('meta_keyword', TranslatableType::class, [
-                'label' => $this->trans('Meta keywords', 'Admin.Global'),
-                'help' => $this->trans('To add tags, press the \'enter\' key. You can also use the \'comma\' key.', 'Admin.Shopparameters.Help')
-                    . '<br>' . $genericCharactersHint,
-                'required' => false,
-                'options' => [
-                    'constraints' => [
-                        new TypedRegex([
-                            'type' => TypedRegex::TYPE_GENERIC_NAME,
-                        ]),
-                        new Length([
-                            'max' => SeoSettings::MAX_KEYWORDS_LENGTH,
-                            'maxMessage' => $this->trans(
-                                'This field cannot be longer than %limit% characters.',
-                                'Admin.Notifications.Error',
-                                [
-                                    '%limit%' => SeoSettings::MAX_KEYWORDS_LENGTH,
-                                ]
-                            ),
-                        ]),
-                    ],
-                    'attr' => [
-                        'maxlength' => SeoSettings::MAX_KEYWORDS_LENGTH,
-                        'class' => 'js-taggable-field',
-                        'placeholder' => $this->trans('Add tag', 'Admin.Actions'),
-                    ],
-                    'required' => false,
                 ],
             ])
             ->add('link_rewrite', TranslatableType::class, [

@@ -1,12 +1,10 @@
 // Import utils
 import testContext from '@utils/testContext';
 
-// Import pages
-import positionsPage from '@pages/BO/design/positions';
-
 import {expect} from 'chai';
 import {
   boDashboardPage,
+  boDesignPositionsPage,
   boLoginPage,
   type BrowserContext,
   type Page,
@@ -48,18 +46,18 @@ describe('BO - Design - Positions : Filter module', async () => {
       boDashboardPage.designParentLink,
       boDashboardPage.positionsLink,
     );
-    await positionsPage.closeSfToolBar(page);
+    await boDesignPositionsPage.closeSfToolBar(page);
 
-    const pageTitle = await positionsPage.getPageTitle(page);
-    expect(pageTitle).to.contains(positionsPage.pageTitle);
+    const pageTitle = await boDesignPositionsPage.getPageTitle(page);
+    expect(pageTitle).to.contains(boDesignPositionsPage.pageTitle);
   });
 
   it(`should filter by module '${moduleName}' and check the result`, async function () {
     await testContext.addContextItem(this, 'testIdentifier', 'filterModule', baseContext);
 
-    await positionsPage.filterModule(page, moduleName);
+    await boDesignPositionsPage.filterModule(page, moduleName);
 
-    const numberOfHooks = await positionsPage.getNumberOfHooks(page);
+    const numberOfHooks = await boDesignPositionsPage.getNumberOfHooks(page);
     expect(numberOfHooks).to.eq(5);
   });
 
@@ -74,10 +72,10 @@ describe('BO - Design - Positions : Filter module', async () => {
     it(`should check the hook '${hook}'`, async function () {
       await testContext.addContextItem(this, 'testIdentifier', `checkHooks${hook}`, baseContext);
 
-      const isVisible = await positionsPage.isHookVisible(page, hook);
+      const isVisible = await boDesignPositionsPage.isHookVisible(page, hook);
       expect(isVisible).to.eq(true);
 
-      const firstModuleName = await positionsPage.getModulesInHook(page, hook);
+      const firstModuleName = await boDesignPositionsPage.getModulesInHook(page, hook);
       expect(firstModuleName).to.contain(moduleName);
     });
   });
@@ -85,9 +83,9 @@ describe('BO - Design - Positions : Filter module', async () => {
   it('should filter by \'All modules\' and check the result', async function () {
     await testContext.addContextItem(this, 'testIdentifier', 'filterAllModules', baseContext);
 
-    await positionsPage.filterModule(page, 'All modules');
+    await boDesignPositionsPage.filterModule(page, 'All modules');
 
-    const numberOfHooks = await positionsPage.getNumberOfHooks(page);
+    const numberOfHooks = await boDesignPositionsPage.getNumberOfHooks(page);
     expect(numberOfHooks).to.above(5);
   });
 });

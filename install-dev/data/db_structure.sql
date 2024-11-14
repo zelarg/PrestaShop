@@ -364,7 +364,6 @@ CREATE TABLE `PREFIX_category_lang` (
   `additional_description` MEDIUMTEXT,
   `link_rewrite` varchar(128) NOT NULL,
   `meta_title` varchar(255) DEFAULT NULL,
-  `meta_keywords` varchar(255) DEFAULT NULL,
   `meta_description` varchar(512) DEFAULT NULL,
   PRIMARY KEY (
     `id_category`, `id_shop`, `id_lang`
@@ -400,7 +399,6 @@ CREATE TABLE `PREFIX_cms_lang` (
   `meta_title` varchar(255) NOT NULL,
   `head_seo_title` varchar(255) DEFAULT NULL,
   `meta_description` varchar(512) DEFAULT NULL,
-  `meta_keywords` varchar(255) DEFAULT NULL,
   `content` longtext,
   `link_rewrite` varchar(128) NOT NULL,
   PRIMARY KEY (`id_cms`, `id_shop`, `id_lang`)
@@ -428,7 +426,6 @@ CREATE TABLE `PREFIX_cms_category_lang` (
   `description` MEDIUMTEXT,
   `link_rewrite` varchar(128) NOT NULL,
   `meta_title` varchar(255) DEFAULT NULL,
-  `meta_keywords` varchar(255) DEFAULT NULL,
   `meta_description` varchar(512) DEFAULT NULL,
   PRIMARY KEY (
     `id_cms_category`, `id_shop`, `id_lang`
@@ -874,6 +871,7 @@ CREATE TABLE `PREFIX_feature_value` (
   `id_feature_value` int(10) unsigned NOT NULL auto_increment,
   `id_feature` int(10) unsigned NOT NULL,
   `custom` tinyint(3) unsigned DEFAULT NULL,
+  `position` int(10) unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (`id_feature_value`),
   KEY `feature` (`id_feature`)
 ) ENGINE=ENGINE_TYPE DEFAULT CHARSET=utf8mb4 COLLATION;
@@ -1061,7 +1059,6 @@ CREATE TABLE `PREFIX_manufacturer_lang` (
   `description` MEDIUMTEXT,
   `short_description` MEDIUMTEXT,
   `meta_title` varchar(255) DEFAULT NULL,
-  `meta_keywords` varchar(255) DEFAULT NULL,
   `meta_description` varchar(512) DEFAULT NULL,
   PRIMARY KEY (`id_manufacturer`, `id_lang`)
 ) ENGINE=ENGINE_TYPE DEFAULT CHARSET=utf8mb4 COLLATION;
@@ -1107,7 +1104,6 @@ CREATE TABLE `PREFIX_meta_lang` (
   `id_lang` int(10) unsigned NOT NULL,
   `title` varchar(128) DEFAULT NULL,
   `description` varchar(255) DEFAULT NULL,
-  `keywords` varchar(255) DEFAULT NULL,
   `url_rewrite` varchar(255) NOT NULL,
   PRIMARY KEY (`id_meta`, `id_shop`, `id_lang`),
   KEY `id_shop` (`id_shop`),
@@ -1816,7 +1812,6 @@ CREATE TABLE `PREFIX_product_lang` (
   `description_short` MEDIUMTEXT,
   `link_rewrite` varchar(128) NOT NULL,
   `meta_description` varchar(512) DEFAULT NULL,
-  `meta_keywords` varchar(255) DEFAULT NULL,
   `meta_title` varchar(128) DEFAULT NULL,
   `name` varchar(128) NOT NULL,
   `available_now` varchar(255) DEFAULT NULL,
@@ -2013,7 +2008,6 @@ CREATE TABLE `PREFIX_supplier_lang` (
   `id_lang` int(10) unsigned NOT NULL,
   `description` MEDIUMTEXT,
   `meta_title` varchar(255) DEFAULT NULL,
-  `meta_keywords` varchar(255) DEFAULT NULL,
   `meta_description` varchar(512) DEFAULT NULL,
   PRIMARY KEY (`id_supplier`, `id_lang`)
 ) ENGINE=ENGINE_TYPE DEFAULT CHARSET=utf8mb4 COLLATION;

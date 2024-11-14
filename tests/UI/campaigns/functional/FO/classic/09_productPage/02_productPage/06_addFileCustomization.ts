@@ -6,13 +6,13 @@ import {deleteProductTest} from '@commonTests/BO/catalog/product';
 
 // Import BO pages
 import createProductPage from '@pages/BO/catalog/products/add';
-import detailsTab from '@pages/BO/catalog/products/add/detailsTab';
 
 import {expect} from 'chai';
 import {
   boDashboardPage,
   boLoginPage,
   boProductsPage,
+  boProductsCreateTabDetailsPage,
   type BrowserContext,
   FakerProduct,
   foClassicProductPage,
@@ -112,7 +112,7 @@ describe('FO - Product page - Product page : Add a file customization', async ()
     it('should create 2 customizations', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'createCustomizations', baseContext);
 
-      await detailsTab.addNewCustomizations(page, newProductData);
+      await boProductsCreateTabDetailsPage.addNewCustomizations(page, newProductData);
 
       const message = await createProductPage.saveProduct(page);
       expect(message).to.eq(createProductPage.successfulUpdateMessage);
