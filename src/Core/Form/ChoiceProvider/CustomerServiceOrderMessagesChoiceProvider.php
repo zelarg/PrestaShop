@@ -52,8 +52,8 @@ final class CustomerServiceOrderMessagesChoiceProvider implements ConfigurableFo
     {
         return FormChoiceFormatter::formatFormChoices(
             $this->orderMessageProvider->getMessages($options['lang_id']),
-            'id_order_message',
-            'message'
+            'message',
+            'id_order_message'
         );
     }
 }
