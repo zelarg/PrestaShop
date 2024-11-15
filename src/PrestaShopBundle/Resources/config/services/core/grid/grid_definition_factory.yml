@@ -1,9 +1,16 @@
 services:
   _defaults:
     public: true
+  _instanceof:
+    PrestaShop\PrestaShop\Core\Grid\Definition\Factory\GridDefinitionFactoryInterface:
+      tags: [ 'core.grid_definition_factory' ]
+
+  PrestaShop\PrestaShop\Core\Grid\Definition\Factory\GridDefinitionFactoryProvider:
+    arguments:
+      $factories: !tagged_locator { tag: core.grid_definition_factory }
 
   PrestaShop\PrestaShop\Core\Grid\Definition\Factory\AbstractGridDefinitionFactory:
-    abstract: true
+    public: false
     arguments:
       - '@prestashop.core.hook.dispatcher'
     calls:
@@ -477,7 +484,7 @@ services:
   # Alias for this abstract definition causes tests in vendor fail for some reason, so we stick to full definition instead
   prestashop.core.grid.definition.factory.abstract_grid_definition:
     class: 'PrestaShop\PrestaShop\Core\Grid\Definition\Factory\AbstractGridDefinitionFactory'
-    abstract: true
+    public: false
     arguments:
       - '@prestashop.core.hook.dispatcher'
     calls:

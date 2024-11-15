@@ -60,6 +60,21 @@ class ShopContext
         return $this->shopConstraint;
     }
 
+    public function isAllShopContext(): bool
+    {
+        return $this->shopConstraint->forAllShops();
+    }
+
+    public function isShopGroupContext(): bool
+    {
+        return $this->shopConstraint->isShopGroupContext();
+    }
+
+    public function isSingleShopContext(): bool
+    {
+        return $this->shopConstraint->isSingleShopContext();
+    }
+
     public function getId(): int
     {
         return $this->id;

@@ -9,8 +9,6 @@ import {createOrderByCustomerTest, createOrderSpecificProductTest} from '@common
 
 // Import BO pages
 import addProductPage from '@pages/BO/catalog/products/add';
-import pricingTab from '@pages/BO/catalog/products/add/pricingTab';
-import detailsTab from '@pages/BO/catalog/products/add/detailsTab';
 import orderPageCustomerBlock from '@pages/BO/orders/view/customerBlock';
 import orderPagePaymentBlock from '@pages/BO/orders/view/paymentBlock';
 
@@ -21,6 +19,8 @@ import {
   boOrdersViewBlockProductsPage,
   boOrdersViewBlockTabListPage,
   boProductsPage,
+  boProductsCreateTabDetailsPage,
+  boProductsCreateTabPricingPage,
   type BrowserContext,
   dataAddresses,
   dataCarriers,
@@ -257,15 +257,18 @@ describe('BO - Orders - View and edit order: Check invoice', async () => {
         // Add specific price
         if (product === productWithSpecificPrice) {
           await addProductPage.goToTab(page, 'pricing');
-          await pricingTab.clickOnAddSpecificPriceButton(page);
+          await boProductsCreateTabPricingPage.clickOnAddSpecificPriceButton(page);
 
-          createProductMessage = await pricingTab.setSpecificPrice(page, productWithSpecificPrice.specificPrice);
+          createProductMessage = await boProductsCreateTabPricingPage.setSpecificPrice(
+            page,
+            productWithSpecificPrice.specificPrice,
+          );
           expect(createProductMessage).to.equal(addProductPage.successfulCreationMessage);
         }
         // Add eco tax
         if (product === productWithEcoTax) {
           await addProductPage.goToTab(page, 'pricing');
-          await pricingTab.addEcoTax(page, productWithEcoTax.ecoTax);
+          await boProductsCreateTabPricingPage.addEcoTax(page, productWithEcoTax.ecoTax);
 
           updateProductMessage = await addProductPage.saveProduct(page);
           expect(updateProductMessage).to.equal(addProductPage.successfulUpdateMessage);
@@ -273,7 +276,7 @@ describe('BO - Orders - View and edit order: Check invoice', async () => {
         // Add customization
         if (product === customizedProduct) {
           await addProductPage.goToTab(page, 'details');
-          await detailsTab.addNewCustomizations(page, product);
+          await boProductsCreateTabDetailsPage.addNewCustomizations(page, product);
 
           updateProductMessage = await addProductPage.saveProduct(page);
           expect(updateProductMessage).to.equal(addProductPage.successfulUpdateMessage);

@@ -20,6 +20,9 @@
   <configuration id="PS_REWRITING_SETTINGS" name="PS_REWRITING_SETTINGS">
     <value>0</value>
   </configuration>
+  <configuration id="PS_DEFAULT_LANGUAGE_URL_PREFIX" name="PS_DEFAULT_LANGUAGE_URL_PREFIX">
+    <value>1</value>
+  </configuration>
   <configuration id="PS_ORDER_OUT_OF_STOCK" name="PS_ORDER_OUT_OF_STOCK">
     <value>0</value>
   </configuration>
@@ -300,6 +303,15 @@
     <value>8</value>
   </configuration>
   <configuration id="PS_SMARTY_CACHE" name="PS_SMARTY_CACHE">
+    <value>1</value>
+  </configuration>
+  <configuration id="PS_CSS_THEME_CACHE" name="PS_CSS_THEME_CACHE">
+    <value>1</value>
+  </configuration>
+  <configuration id="PS_JS_THEME_CACHE" name="PS_JS_THEME_CACHE">
+    <value>1</value>
+  </configuration>
+  <configuration id="PS_HTACCESS_CACHE_CONTROL" name="PS_HTACCESS_CACHE_CONTROL">
     <value>1</value>
   </configuration>
   <configuration id="PS_DIMENSION_UNIT" name="PS_DIMENSION_UNIT">
@@ -899,6 +911,9 @@ Country</value>
     </configuration>
     <configuration id="PS_SEPARATOR_FILE_MANAGER_SQL" name="PS_SEPARATOR_FILE_MANAGER_SQL">
       <value>;</value>
+    </configuration>
+    <configuration id="PS_FEATURE_VALUES_ORDER" name="PS_FEATURE_VALUES_ORDER">
+      <value>name</value>
     </configuration>
   </entities>
 </entity_configuration>

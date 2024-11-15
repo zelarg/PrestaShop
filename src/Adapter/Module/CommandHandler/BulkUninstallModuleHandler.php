@@ -45,14 +45,18 @@ class BulkUninstallModuleHandler implements BulkUninstallModuleHandlerInterface
 
     public function handle(BulkUninstallModuleCommand $command): void
     {
-        $deleteFile = $command->getDeteleFile();
+        $deleteFile = $command->deleteFiles();
+        // First loop through all the modules and check if they are valid for uninstallation
         foreach ($command->getModules() as $moduleName) {
             $module = $this->moduleRepository->getPresentModule($moduleName->getValue());
 
             if (!$module->isInstalled()) {
-                throw new ModuleNotInstalledException('Module ' . $moduleName->getValue() . ' not installed.');
+                throw new ModuleNotInstalledException('Cannot uninstall module ' . $moduleName->getValue() . ' since it is not installed');
             }
+        }
 
+        // Then perform the bulk action
+        foreach ($command->getModules() as $moduleName) {
             $result = $this->moduleManager->uninstall($moduleName->getValue(), $deleteFile);
 
             if (!$result) {

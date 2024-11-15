@@ -9,13 +9,12 @@ import {resetModule} from '@commonTests/BO/modules/moduleManager';
 // Import FO pages
 import {createAccountPage as foCreateAccountPage} from '@pages/FO/classic/myAccount/add';
 import {accountIdentityPage} from '@pages/FO/classic/myAccount/identity';
-// Import BO pages
-import boDesignPositionsPage from '@pages/BO/design/positions';
 
 import {expect} from 'chai';
 import {faker, fakerFR} from '@faker-js/faker';
 import {
   boDashboardPage,
+  boDesignPositionsPage,
   boDesignPositionsHookModulePage,
   boLoginPage,
   boModuleManagerPage,

@@ -6,13 +6,13 @@ import {deleteProductTest} from '@commonTests/BO/catalog/product';
 
 // Import BO pages
 import createProductPage from '@pages/BO/catalog/products/add';
-import pricingTab from '@pages/BO/catalog/products/add/pricingTab';
 
 import {expect} from 'chai';
 import {
   boDashboardPage,
   boLoginPage,
   boProductsPage,
+  boProductsCreateTabPricingPage,
   type BrowserContext,
   FakerProduct,
   foClassicCategoryPage,
@@ -133,7 +133,7 @@ describe('FO - Product page - Product page : Display discount', async () => {
       await testContext.addContextItem(this, 'testIdentifier', 'setRetailPrice', baseContext);
 
       await createProductPage.goToTab(page, 'pricing');
-      await pricingTab.setRetailPrice(page, true, 20);
+      await boProductsCreateTabPricingPage.setRetailPrice(page, true, 20);
 
       const message = await createProductPage.saveProduct(page);
       expect(message).to.eq(createProductPage.successfulUpdateMessage);
@@ -142,9 +142,9 @@ describe('FO - Product page - Product page : Display discount', async () => {
     it('should create new specific price', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'setSpecificPrice', baseContext);
 
-      await pricingTab.clickOnAddSpecificPriceButton(page);
+      await boProductsCreateTabPricingPage.clickOnAddSpecificPriceButton(page);
 
-      const createProductMessage = await pricingTab.setSpecificPrice(page, newProductData.specificPrice);
+      const createProductMessage = await boProductsCreateTabPricingPage.setSpecificPrice(page, newProductData.specificPrice);
       expect(createProductMessage).to.equal(createProductPage.successfulCreationMessage);
     });
   });

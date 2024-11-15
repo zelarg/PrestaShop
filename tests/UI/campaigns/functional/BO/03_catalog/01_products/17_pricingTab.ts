@@ -3,7 +3,6 @@ import testContext from '@utils/testContext';
 
 // Import BO pages
 import createProductPage from '@pages/BO/catalog/products/add';
-import pricingTab from '@pages/BO/catalog/products/add/pricingTab';
 import createCatalogPriceRulePage from '@pages/BO/catalog/discounts/catalogPriceRules/add';
 import cartRulesPage from '@pages/BO/catalog/discounts';
 
@@ -15,6 +14,7 @@ import {
   boDashboardPage,
   boLoginPage,
   boProductsPage,
+  boProductsCreateTabPricingPage,
   type BrowserContext,
   FakerCatalogPriceRule,
   FakerProduct,
@@ -133,13 +133,13 @@ describe('BO - Catalog - Products : Pricing tab', async () => {
     it('should check summary block', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'checkSummaryBlock', baseContext);
 
-      const result = await pricingTab.getSummary(page);
+      const result = await boProductsCreateTabPricingPage.getSummary(page);
       await Promise.all([
         expect(result.priceTaxExcludedValue).to.eq('€100.00 tax excl.'),
         expect(result.priceTaxIncludedValue).to.eq('€100.00 tax incl.'),
         expect(result.marginValue).to.eq('€100.00 margin'),
         expect(result.marginRateValue).to.eq('100.00% margin rate'),
-        expect(result.WholesalePriceValue).to.eq('€0.00 cost price'),
+        expect(result.wholesalePriceValue).to.eq('€0.00 cost price'),
       ]);
     });
 
@@ -172,7 +172,7 @@ describe('BO - Catalog - Products : Pricing tab', async () => {
     it('should edit the product price and the tax rule', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'editRetailPrice', baseContext);
 
-      await pricingTab.setTaxRule(page, 'FR Taux standard (20%)');
+      await boProductsCreateTabPricingPage.setTaxRule(page, 'FR Taux standard (20%)');
 
       const message = await createProductPage.saveProduct(page);
       expect(message).to.eq(createProductPage.successfulUpdateMessage);
@@ -181,13 +181,13 @@ describe('BO - Catalog - Products : Pricing tab', async () => {
     it('should check summary block', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'checkSummaryBlock2', baseContext);
 
-      const result = await pricingTab.getSummary(page);
+      const result = await boProductsCreateTabPricingPage.getSummary(page);
       await Promise.all([
         expect(result.priceTaxExcludedValue).to.eq('€100.00 tax excl.'),
         expect(result.priceTaxIncludedValue).to.eq('€120.00 tax incl.'),
         expect(result.marginValue).to.eq('€100.00 margin'),
         expect(result.marginRateValue).to.eq('100.00% margin rate'),
-        expect(result.WholesalePriceValue).to.eq('€0.00 cost price'),
+        expect(result.wholesalePriceValue).to.eq('€0.00 cost price'),
       ]);
     });
 
@@ -220,7 +220,7 @@ describe('BO - Catalog - Products : Pricing tab', async () => {
     it('should add a cost price', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'addCostPrice', baseContext);
 
-      await pricingTab.setCostPrice(page, 35);
+      await boProductsCreateTabPricingPage.setCostPrice(page, 35);
 
       const message = await createProductPage.saveProduct(page);
       expect(message).to.eq(createProductPage.successfulUpdateMessage);
@@ -229,21 +229,21 @@ describe('BO - Catalog - Products : Pricing tab', async () => {
     it('should check summary block', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'checkSummaryBlock3', baseContext);
 
-      const result = await pricingTab.getSummary(page);
+      const result = await boProductsCreateTabPricingPage.getSummary(page);
       await Promise.all([
         expect(result.priceTaxExcludedValue).to.eq('€100.00 tax excl.'),
         expect(result.priceTaxIncludedValue).to.eq('€120.00 tax incl.'),
         expect(result.marginValue).to.eq('€65.00 margin'),
         expect(result.marginRateValue).to.eq('65.00% margin rate'),
-        expect(result.WholesalePriceValue).to.eq('€35.00 cost price'),
+        expect(result.wholesalePriceValue).to.eq('€35.00 cost price'),
       ]);
     });
 
     it('should edit Retail price per unit section', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'editRetailPriceParUnit', baseContext);
 
-      await pricingTab.setDisplayRetailPricePerUnit(page, true);
-      await pricingTab.setRetailPricePerUnit(page, true, 10, 'per unit');
+      await boProductsCreateTabPricingPage.setDisplayRetailPricePerUnit(page, true);
+      await boProductsCreateTabPricingPage.setRetailPricePerUnit(page, true, 10, 'per unit');
 
       const message = await createProductPage.saveProduct(page);
       expect(message).to.eq(createProductPage.successfulUpdateMessage);
@@ -252,16 +252,16 @@ describe('BO - Catalog - Products : Pricing tab', async () => {
     it('should check summary block', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'checkSummaryBlock4', baseContext);
 
-      const result = await pricingTab.getSummary(page);
+      const result = await boProductsCreateTabPricingPage.getSummary(page);
       await Promise.all([
         expect(result.priceTaxExcludedValue).to.eq('€100.00 tax excl.'),
         expect(result.priceTaxIncludedValue).to.eq('€120.00 tax incl.'),
         expect(result.marginValue).to.eq('€65.00 margin'),
         expect(result.marginRateValue).to.eq('65.00% margin rate'),
-        expect(result.WholesalePriceValue).to.eq('€35.00 cost price'),
+        expect(result.wholesalePriceValue).to.eq('€35.00 cost price'),
       ]);
 
-      const unitPrice = await pricingTab.getUnitPriceValue(page);
+      const unitPrice = await boProductsCreateTabPricingPage.getUnitPriceValue(page);
       expect(unitPrice).to.eq('€10.00 per unit');
     });
 
@@ -294,7 +294,7 @@ describe('BO - Catalog - Products : Pricing tab', async () => {
     it('should check Display On sale flag', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'checkDisplayOnSaleFlag', baseContext);
 
-      await pricingTab.setDisplayOnSaleFlag(page);
+      await boProductsCreateTabPricingPage.setDisplayOnSaleFlag(page);
 
       const message = await createProductPage.saveProduct(page);
       expect(message).to.eq(createProductPage.successfulUpdateMessage);
@@ -329,9 +329,9 @@ describe('BO - Catalog - Products : Pricing tab', async () => {
     it('should add a specific price', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'addSpecificPrice', baseContext);
 
-      await pricingTab.clickOnAddSpecificPriceButton(page);
+      await boProductsCreateTabPricingPage.clickOnAddSpecificPriceButton(page);
 
-      const message = await pricingTab.setSpecificPrice(page, specificPriceData.specificPrice);
+      const message = await boProductsCreateTabPricingPage.setSpecificPrice(page, specificPriceData.specificPrice);
       expect(message).to.equal(createProductPage.successfulCreationMessage);
     });
 
@@ -364,9 +364,9 @@ describe('BO - Catalog - Products : Pricing tab', async () => {
     it('should edit specific price', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'editSpecificPrice', baseContext);
 
-      await pricingTab.clickOnEditSpecificPriceIcon(page, 1);
+      await boProductsCreateTabPricingPage.clickOnEditSpecificPriceIcon(page, 1);
 
-      const message = await pricingTab.setSpecificPrice(page, editSpecificPriceData.specificPrice);
+      const message = await boProductsCreateTabPricingPage.setSpecificPrice(page, editSpecificPriceData.specificPrice);
       expect(message).to.equal('Update successful');
     });
 
@@ -399,8 +399,8 @@ describe('BO - Catalog - Products : Pricing tab', async () => {
     it('should delete specific price', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'deleteSpecificPrice', baseContext);
 
-      const successMessage = await pricingTab.deleteSpecificPrice(page, 1);
-      expect(successMessage).to.eq(pricingTab.successfulDeleteMessage);
+      const successMessage = await boProductsCreateTabPricingPage.deleteSpecificPrice(page, 1);
+      expect(successMessage).to.eq(boProductsCreateTabPricingPage.successfulDeleteMessage);
     });
 
     it('should preview product', async function () {
@@ -432,8 +432,8 @@ describe('BO - Catalog - Products : Pricing tab', async () => {
     it('should click on show catalog price rule button then on manage catalog price rules', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'clickOnManageCatalogPriceRuleLink', baseContext);
 
-      await pricingTab.clickOnShowCatalogPriceRuleButton(page);
-      page = await pricingTab.clickOnManageCatalogPriceRuleLink(page);
+      await boProductsCreateTabPricingPage.clickOnShowCatalogPriceRuleButton(page);
+      page = await boProductsCreateTabPricingPage.clickOnManageCatalogPriceRuleLink(page);
 
       const pageTitle = await catalogPriceRulesPage.getPageTitle(page);
       expect(pageTitle).to.contains(catalogPriceRulesPage.pageTitle);
@@ -461,9 +461,9 @@ describe('BO - Catalog - Products : Pricing tab', async () => {
     it('should click on show catalog price rule button and check the catalog price rule', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'clickOnShowCatalogPriceRuleButton', baseContext);
 
-      await pricingTab.clickOnShowCatalogPriceRuleButton(page);
+      await boProductsCreateTabPricingPage.clickOnShowCatalogPriceRuleButton(page);
 
-      const result = await pricingTab.getCatalogPriceRuleData(page, 1);
+      const result = await boProductsCreateTabPricingPage.getCatalogPriceRuleData(page, 1);
       await Promise.all([
         expect(result.name).to.eq(newCatalogPriceRuleData.name),
         expect(result.currency).to.eq(newCatalogPriceRuleData.currency),
@@ -478,7 +478,7 @@ describe('BO - Catalog - Products : Pricing tab', async () => {
     it('should click on hide catalog price rules button', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'clickOnHideCatalogPriceRuleButton', baseContext);
 
-      const isCatalogPriceRulesTableVisible = await pricingTab.clickOnHideCatalogPriceRulesButton(page);
+      const isCatalogPriceRulesTableVisible = await boProductsCreateTabPricingPage.clickOnHideCatalogPriceRulesButton(page);
       expect(isCatalogPriceRulesTableVisible).to.eq(false);
     });
   });

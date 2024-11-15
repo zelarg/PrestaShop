@@ -38,11 +38,7 @@ services:
       - 'console.command'
 
   PrestaShopBundle\Command\ModuleCommand:
-    arguments:
-      - '@translator'
-      - '@prestashop.adapter.legacy.context'
-      - '@prestashop.adapter.module.self_configurator'
-      - '@PrestaShop\PrestaShop\Core\Module\ModuleManager'
+    autowire: true
     tags:
       - 'console.command'
 

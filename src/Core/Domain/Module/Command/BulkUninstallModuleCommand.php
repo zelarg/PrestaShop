@@ -38,21 +38,17 @@ class BulkUninstallModuleCommand
     /**
      * @var array<ModuleTechnicalName>
      */
-    private $modules;
-
-    /**
-     * @var bool
-     */
-    private $deleteFile;
+    private array $modules;
 
     /**
      * @param array<string> $modules Array of technical names for modules
-     * @param bool $deleteFile Boolean for delete modules files
+     * @param bool $deleteFiles Boolean for delete modules files
      */
-    public function __construct(array $modules, bool $deleteFile = false)
-    {
+    public function __construct(
+        array $modules,
+        private readonly bool $deleteFiles = false
+    ) {
         $this->modules = array_map(fn (string $technicalName) => new ModuleTechnicalName($technicalName), $modules);
-        $this->deleteFile = $deleteFile;
     }
 
     /**
@@ -63,11 +59,8 @@ class BulkUninstallModuleCommand
         return $this->modules;
     }
 
-    /**
-     * @return bool
-     */
-    public function getDeteleFile(): bool
+    public function deleteFiles(): bool
     {
-        return $this->deleteFile;
+        return $this->deleteFiles;
     }
 }

@@ -15,16 +15,15 @@ import {
   type BrowserContext,
   dataModules,
   FakerAPIClient,
-  modBlockwishlistBoMain,
   type ModuleInfo,
   type Page,
   utilsAPI,
   utilsPlaywright,
 } from '@prestashop-core/ui-testing';
 
-const baseContext: string = 'functional_API_endpoints_module_patchModuleTechnicalNameReset';
+const baseContext: string = 'functional_API_endpoints_module_putModuleTechnicalNameStatus';
 
-describe('API : PATCH /module/{technicalName}/reset', async () => {
+describe('API : PUT /module/{technicalName}/status', async () => {
   let apiContext: APIRequestContext;
   let browserContext: BrowserContext;
   let page: Page;
@@ -153,46 +152,22 @@ describe('API : PATCH /module/{technicalName}/reset', async () => {
 
       moduleInfo = await boModuleManagerPage.getModuleInformationNth(page, 1);
     });
-
-    it(`should go to the configuration page of the module '${dataModules.blockwishlist.name}'`, async function () {
-      await testContext.addContextItem(this, 'testIdentifier', 'goToConfigurationPage', baseContext);
-
-      await boModuleManagerPage.goToConfigurationPage(page, dataModules.blockwishlist.tag);
-
-      const pageTitle = await modBlockwishlistBoMain.getPageTitle(page);
-      expect(pageTitle).to.eq(modBlockwishlistBoMain.pageTitle);
-
-      const isConfigurationTabActive = await modBlockwishlistBoMain.isTabActive(page, 'Configuration');
-      expect(isConfigurationTabActive).to.eq(true);
-
-      const wishlistDefaultTitle = await modBlockwishlistBoMain.getInputValue(page, 'wishlistDefaultTitle');
-      expect(wishlistDefaultTitle).to.equals(modBlockwishlistBoMain.defaultValueWishlistDefaultTitle);
-    });
-
-    it('should change the configuration in the module', async function () {
-      await testContext.addContextItem(this, 'testIdentifier', 'changeConfiguration', baseContext);
-
-      const textResult = await modBlockwishlistBoMain.setFormWording(page, 'Test');
-      expect(textResult).to.contains(modBlockwishlistBoMain.successfulUpdateMessage);
-    });
   });
 
   [
-    true,
     false,
-  ].forEach((argKeepData: boolean, index: number) => {
-    describe(`API : Check Data with keepData = ${argKeepData}`, async () => {
-      it('should request the endpoint /module/{technicalName}/reset', async function () {
+    true,
+  ].forEach((argStatus: boolean, index: number) => {
+    describe(`API : Check Data with status = ${argStatus}`, async () => {
+      it('should request the endpoint /module/{technicalName}/status', async function () {
         await testContext.addContextItem(this, 'testIdentifier', `requestEndpoint${index}`, baseContext);
 
-        // keepData == true => trigger onReset method (if exists, else keepData == false)
-        // keepData == false => trigger uninstall & install method
-        const apiResponse = await apiContext.patch(`module/${moduleInfo.technicalName}/reset`, {
+        const apiResponse = await apiContext.put(`module/${moduleInfo.technicalName}/status`, {
           headers: {
             Authorization: `Bearer ${accessToken}`,
           },
           data: {
-            keepData: argKeepData,
+            enabled: argStatus,
           },
         });
         expect(apiResponse.status()).to.eq(200);
@@ -207,7 +182,8 @@ describe('API : PATCH /module/{technicalName}/reset', async () => {
         expect(jsonResponse).to.have.all.keys(
           'moduleId',
           'technicalName',
-          'version',
+          'moduleVersion',
+          'installedVersion',
           'enabled',
           'installed',
         );
@@ -218,7 +194,7 @@ describe('API : PATCH /module/{technicalName}/reset', async () => {
 
         expect(jsonResponse).to.have.property('moduleId');
         expect(jsonResponse.moduleId).to.be.a('number');
-        expect(jsonResponse.moduleId).to.be.gt(moduleInfo.moduleId);
+        expect(jsonResponse.moduleId).to.be.equal(moduleInfo.moduleId);
       });
 
       it('should check the JSON Response : `technicalName`', async function () {
@@ -229,12 +205,20 @@ describe('API : PATCH /module/{technicalName}/reset', async () => {
         expect(jsonResponse.technicalName).to.be.equal(moduleInfo.technicalName);
       });
 
-      it('should check the JSON Response : `version`', async function () {
-        await testContext.addContextItem(this, 'testIdentifier', `checkResponseVersion${index}`, baseContext);
+      it('should check the JSON Response : `moduleVersion`', async function () {
+        await testContext.addContextItem(this, 'testIdentifier', `checkResponseModuleVersion${index}`, baseContext);
 
-        expect(jsonResponse).to.have.property('version');
-        expect(jsonResponse.version).to.be.a('string');
-        expect(jsonResponse.version).to.be.equal(moduleInfo.version);
+        expect(jsonResponse).to.have.property('moduleVersion');
+        expect(jsonResponse.moduleVersion).to.be.a('string');
+        expect(jsonResponse.moduleVersion).to.be.equal(moduleInfo.version);
+      });
+
+      it('should check the JSON Response : `installedVersion`', async function () {
+        await testContext.addContextItem(this, 'testIdentifier', `checkResponseInstalledVersion${index}`, baseContext);
+
+        expect(jsonResponse).to.have.property('installedVersion');
+        expect(jsonResponse.installedVersion).to.be.a('string');
+        expect(jsonResponse.installedVersion).to.be.equal(moduleInfo.version);
       });
 
       it('should check the JSON Response : `enabled`', async function () {
@@ -242,7 +226,7 @@ describe('API : PATCH /module/{technicalName}/reset', async () => {
 
         expect(jsonResponse).to.have.property('enabled');
         expect(jsonResponse.enabled).to.be.a('boolean');
-        expect(jsonResponse.enabled).to.be.equal(moduleInfo.enabled);
+        expect(jsonResponse.enabled).to.be.equal(argStatus);
       });
 
       it('should check the JSON Response : `installed`', async function () {
@@ -253,23 +237,29 @@ describe('API : PATCH /module/{technicalName}/reset', async () => {
         expect(jsonResponse.installed).to.be.equal(moduleInfo.installed);
       });
 
-      it('should check the module is reset', async function () {
-        await testContext.addContextItem(this, 'testIdentifier', `checkConfiguration${index}`, baseContext);
+      it('should reload the \'Modules > Module Manager\' page', async function () {
+        await testContext.addContextItem(this, 'testIdentifier', `returnToModulesPage${index}`, baseContext);
 
-        await modBlockwishlistBoMain.reloadPage(page);
+        await boDashboardPage.goToSubMenu(page, boDashboardPage.modulesParentLink, boDashboardPage.moduleManagerLink);
+        await boDashboardPage.reloadPage(page);
 
-        const value = await modBlockwishlistBoMain.getInputValue(page, 'wishlistDefaultTitle');
-        expect(value).to.equals(modBlockwishlistBoMain.defaultValueWishlistDefaultTitle);
+        const pageTitle = await boModuleManagerPage.getPageTitle(page);
+        expect(pageTitle).to.contains(boModuleManagerPage.pageTitle);
       });
 
-      if (index === 0) {
-        it('should change the configuration in the module', async function () {
-          await testContext.addContextItem(this, 'testIdentifier', `changeConfiguration${index}`, baseContext);
+      it('should search the module', async function () {
+        await testContext.addContextItem(this, 'testIdentifier', `searchModule${index}`, baseContext);
 
-          const textResult = await modBlockwishlistBoMain.setFormWording(page, 'Test');
-          expect(textResult).to.contains(modBlockwishlistBoMain.successfulUpdateMessage);
-        });
-      }
+        const isModuleVisible = await boModuleManagerPage.searchModule(page, dataModules.blockwishlist);
+        expect(isModuleVisible).to.be.equal(true);
+      });
+
+      it(`should check the module is ${argStatus ? 'enabled' : 'disabled'}`, async function () {
+        await testContext.addContextItem(this, 'testIdentifier', `checkStatus${index}`, baseContext);
+
+        const moduleStatus = await boModuleManagerPage.getModuleInformationNth(page, 1);
+        expect(moduleStatus.enabled).to.equal(argStatus);
+      });
     });
   });
 

@@ -1492,7 +1492,7 @@ class ProductController extends PrestaShopAdminController
             'warningMessage' => $warningMessage,
             'showContentHeader' => false,
             'modalTitle' => $this->trans('Select a store', [], 'Admin.Catalog.Feature'),
-            'shopSelector' => $this->createForm(ShopSelectorType::class),
+            'shopSelectorForm' => $this->createForm(ShopSelectorType::class)->createView(),
             'productId' => $productId,
             'productShopIds' => array_map(static function (ShopId $shopId) {
                 return $shopId->getValue();

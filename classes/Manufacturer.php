@@ -24,6 +24,8 @@
  * @license   https://opensource.org/licenses/OSL-3.0 Open Software License (OSL 3.0)
  */
 
+use PrestaShopBundle\Form\Admin\Type\FormattedTextareaType;
+
 /**
  * Class ManufacturerCore.
  */
@@ -55,9 +57,6 @@ class ManufacturerCore extends ObjectModel
     /** @var string|array<int, string> Meta title */
     public $meta_title;
 
-    /** @var string|array<int, string> Meta keywords */
-    public $meta_keywords;
-
     /** @var string|array<int, string> Meta description */
     public $meta_description;
 
@@ -78,11 +77,10 @@ class ManufacturerCore extends ObjectModel
             'date_upd' => ['type' => self::TYPE_DATE],
 
             /* Lang fields */
-            'description' => ['type' => self::TYPE_HTML, 'lang' => true, 'validate' => 'isCleanHtml', 'size' => 4194303],
-            'short_description' => ['type' => self::TYPE_HTML, 'lang' => true, 'validate' => 'isCleanHtml', 'size' => 4194303],
+            'description' => ['type' => self::TYPE_HTML, 'lang' => true, 'validate' => 'isCleanHtml', 'size' => FormattedTextareaType::LIMIT_MEDIUMTEXT_UTF8_MB4],
+            'short_description' => ['type' => self::TYPE_HTML, 'lang' => true, 'validate' => 'isCleanHtml', 'size' => FormattedTextareaType::LIMIT_MEDIUMTEXT_UTF8_MB4],
             'meta_title' => ['type' => self::TYPE_STRING, 'lang' => true, 'validate' => 'isGenericName', 'size' => 255],
             'meta_description' => ['type' => self::TYPE_STRING, 'lang' => true, 'validate' => 'isGenericName', 'size' => 512],
-            'meta_keywords' => ['type' => self::TYPE_STRING, 'lang' => true, 'validate' => 'isGenericName', 'size' => 255],
         ],
     ];
 
@@ -447,7 +445,7 @@ class ManufacturerCore extends ObjectModel
 
         $sql = 'SELECT p.*, product_shop.*, stock.out_of_stock, IFNULL(stock.quantity, 0) as quantity'
             . (Combination::isFeatureActive() ? ', product_attribute_shop.minimal_quantity AS product_attribute_minimal_quantity, IFNULL(product_attribute_shop.`id_product_attribute`,0) id_product_attribute' : '') . '
-			, pl.`description`, pl.`description_short`, pl.`link_rewrite`, pl.`meta_description`, pl.`meta_keywords`,
+			, pl.`description`, pl.`description_short`, pl.`link_rewrite`, pl.`meta_description`,
 			pl.`meta_title`, pl.`name`, pl.`available_now`, pl.`available_later`, image_shop.`id_image` id_image, il.`legend`, m.`name` AS manufacturer_name,
 				DATEDIFF(
 					product_shop.`date_add`,

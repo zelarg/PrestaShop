@@ -49,7 +49,8 @@ class GetModuleInfosHandler implements GetModuleInfosHandlerInterface
         return new ModuleInfos(
             $module->database->get('id'),
             $module->get('name'),
-            $module->get('version'),
+            $module->disk->get('version'),
+            $module->database->get('version', null),
             $module->isActive(),
             $module->isInstalled(),
         );

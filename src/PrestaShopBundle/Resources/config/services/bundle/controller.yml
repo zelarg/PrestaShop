@@ -101,13 +101,6 @@ services:
     parent: PrestaShopBundle\Controller\Api\ApiController
     public: true
 
-  prestashop.core.admin.multistore:
-    class: PrestaShopBundle\Controller\Admin\MultistoreController
-    public: true
-    lazy: true
-    autoconfigure: true
-    autowire: true
-
   PrestaShopBundle\Controller\Admin\SecuredFileReaderController:
     arguments:
       $uploadDir: !php/const _PS_UPLOAD_DIR_

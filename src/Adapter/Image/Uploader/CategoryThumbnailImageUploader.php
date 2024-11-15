@@ -29,6 +29,7 @@ namespace PrestaShop\PrestaShop\Adapter\Image\Uploader;
 use ImageManager;
 use ImageType;
 use PrestaShop\PrestaShop\Core\Image\Exception\ImageOptimizationException;
+use PrestaShop\PrestaShop\Core\Image\ImageFormatConfiguration;
 use PrestaShop\PrestaShop\Core\Image\Uploader\Exception\ImageUploadException;
 use PrestaShop\PrestaShop\Core\Image\Uploader\Exception\MemoryLimitException;
 use PrestaShop\PrestaShop\Core\Image\Uploader\Exception\UploadedImageConstraintException;
@@ -40,6 +41,11 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
  */
 final class CategoryThumbnailImageUploader extends AbstractImageUploader implements ImageUploaderInterface
 {
+    public function __construct(
+        private readonly ImageFormatConfiguration $imageFormatConfiguration,
+    ) {
+    }
+
     /**
      * {@inheritdoc}
      *
@@ -117,17 +123,21 @@ final class CategoryThumbnailImageUploader extends AbstractImageUploader impleme
             return;
         }
 
+        $configuredImageFormats = $this->imageFormatConfiguration->getGenerationFormats();
         $imagesTypes = ImageType::getImagesTypes('categories');
         foreach ($imagesTypes as $k => $imageType) {
-            $generated = ImageManager::resize(
-                _PS_CAT_IMG_DIR_ . $id . '_thumb.jpg',
-                _PS_CAT_IMG_DIR_ . $id . '_thumb-' . stripslashes($imageType['name']) . '.jpg',
-                (int) $imageType['width'],
-                (int) $imageType['height']
-            );
+            foreach ($configuredImageFormats as $imageFormat) {
+                $generated = ImageManager::resize(
+                    _PS_CAT_IMG_DIR_ . $id . '_thumb.jpg',
+                    _PS_CAT_IMG_DIR_ . $id . '_thumb-' . stripslashes($imageType['name']) . '.' . $imageFormat,
+                    (int) $imageType['width'],
+                    (int) $imageType['height'],
+                    $imageFormat
+                );
 
-            if (!$generated) {
-                throw new ImageUploadException('Error occurred when uploading category thumbnail image');
+                if (!$generated) {
+                    throw new ImageUploadException('Error occurred when uploading category thumbnail image');
+                }
             }
         }
     }

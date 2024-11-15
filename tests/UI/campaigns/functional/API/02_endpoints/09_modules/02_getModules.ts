@@ -3,6 +3,7 @@ import testContext from '@utils/testContext';
 
 // Import commonTests
 import {deleteAPIClientTest} from '@commonTests/BO/advancedParameters/authServer';
+import {ModuleApiInfo} from '@data/types/module';
 
 import {
   type APIRequestContext,
@@ -14,7 +15,6 @@ import {
   type BrowserContext,
   FakerAPIClient,
   FakerModule,
-  type ModuleInfo,
   type Page,
   utilsAPI,
   utilsPlaywright,
@@ -30,7 +30,7 @@ describe('API : GET /modules', async () => {
   let clientSecret: string;
   let accessToken: string;
   let jsonResponse: any;
-  const jsonResponseItems: ModuleInfo [] = [];
+  const jsonResponseItems: ModuleApiInfo[] = [];
 
   const clientScope: string = 'module_read';
   const clientData: FakerAPIClient = new FakerAPIClient({
@@ -160,17 +160,19 @@ describe('API : GET /modules', async () => {
       it(`should check the JSON Response keys (page ${arg.page})`, async function () {
         await testContext.addContextItem(this, 'testIdentifier', `checkResponseKeys${index}`, baseContext);
 
+        // All keys are visible for modules event offset and orderBy when they are null
+        // That is because we want null values in module infos to be displayed (like the installedVersion)
+        // But we can't fine tune ApiPlatform enough to select which nullable fields are displayed, so they are all visible
         const keys = [
           'totalItems',
           'sortOrder',
+          'orderBy',
           'limit',
+          'offset',
           'filters',
           'items',
         ];
 
-        if (arg.page > 0) {
-          keys.push('offset');
-        }
         expect(jsonResponse).to.have.all.keys(keys);
 
         expect(jsonResponse.items.length).to.be.gt(0);
@@ -184,7 +186,8 @@ describe('API : GET /modules', async () => {
           expect(jsonResponse.items[i]).to.have.all.keys(
             'moduleId',
             'technicalName',
-            'version',
+            'moduleVersion',
+            'installedVersion',
             'enabled',
           );
           jsonResponseItems.push(jsonResponse.items[i]);
@@ -222,7 +225,8 @@ describe('API : GET /modules', async () => {
         const moduleInfos = await boModuleManagerPage.getModuleInformationNth(page, 1);
         expect(moduleInfos.moduleId).to.equal(jsonResponseItems[idxItem].moduleId);
         expect(moduleInfos.technicalName).to.equal(jsonResponseItems[idxItem].technicalName);
-        expect(moduleInfos.version).to.equal(jsonResponseItems[idxItem].version);
+        expect(moduleInfos.version).to.equal(jsonResponseItems[idxItem].moduleVersion);
+        expect(moduleInfos.version).to.equal(jsonResponseItems[idxItem].installedVersion);
         expect(moduleInfos.enabled).to.equal(jsonResponseItems[idxItem].enabled);
       }
     });
