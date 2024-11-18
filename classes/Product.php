@@ -5541,10 +5541,6 @@ class ProductCore extends ObjectModel
         $row['packItems'] = $row['pack'] ? Pack::getItemTable($row['id_product'], $id_lang) : [];
         $row['nopackprice'] = $row['pack'] ? Pack::noPackPrice($row['id_product']) : 0;
 
-        if ($row['pack'] && !Pack::isInStock($row['id_product'], $quantityToUseForPriceCalculations, $context->cart)) {
-            $row['quantity'] = 0;
-        }
-
         if (!isset($row['attributes'])) {
             $attributes = Product::getAttributesParams($row['id_product'], $row['id_product_attribute']);
 
