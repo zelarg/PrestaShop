@@ -3610,7 +3610,7 @@ class ProductCore extends ObjectModel
             || !(
                 $specific_price['price'] >= 0
                 && $specific_price['id_currency']
-                && $id_currency === $specific_price['id_currency']
+                && (int) $id_currency === (int) $specific_price['id_currency']
             )
         ) {
             $price = Tools::convertPrice($price, $id_currency);
