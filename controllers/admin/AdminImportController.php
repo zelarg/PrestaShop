@@ -806,7 +806,7 @@ class AdminImportControllerCore extends AdminController
         $html .= '</tr></thead><tbody>';
 
         AdminImportController::setLocale();
-        for ($current_line = 0; $current_line < 10 && $line = fgetcsv($handle, MAX_LINE_SIZE, $glue); ++$current_line) {
+        for ($current_line = 0; $current_line < 10 && $line = fgetcsv($handle, MAX_LINE_SIZE, $glue, '"', ''); ++$current_line) {
             /* UTF-8 conversion */
             if ($this->convert) {
                 $line = $this->utf8EncodeArray($line);
@@ -909,7 +909,7 @@ class AdminImportControllerCore extends AdminController
             return [];
         }
 
-        $tab = fgetcsv($fd, MAX_LINE_SIZE, $separator);
+        $tab = fgetcsv($fd, MAX_LINE_SIZE, $separator, '"', '');
         fclose($fd);
         if ($uniqid_path !== false && file_exists($uniqid_path)) {
             @unlink($uniqid_path);
@@ -1117,7 +1117,7 @@ class AdminImportControllerCore extends AdminController
         }
 
         $line_count = 0;
-        for ($current_line = 0; ($line = fgetcsv($handle, MAX_LINE_SIZE, $this->separator)) && (!$limit || $current_line < $limit); ++$current_line) {
+        for ($current_line = 0; ($line = fgetcsv($handle, MAX_LINE_SIZE, $this->separator, '"', '')) && (!$limit || $current_line < $limit); ++$current_line) {
             ++$line_count;
             if ($this->convert) {
                 $line = $this->utf8EncodeArray($line);
@@ -1420,7 +1420,7 @@ class AdminImportControllerCore extends AdminController
         }
 
         $line_count = 0;
-        for ($current_line = 0; ($line = fgetcsv($handle, MAX_LINE_SIZE, $this->separator)) && (!$limit || $current_line < $limit); ++$current_line) {
+        for ($current_line = 0; ($line = fgetcsv($handle, MAX_LINE_SIZE, $this->separator, '"', '')) && (!$limit || $current_line < $limit); ++$current_line) {
             ++$line_count;
             if ($this->convert) {
                 $line = $this->utf8EncodeArray($line);
@@ -2166,7 +2166,7 @@ class AdminImportControllerCore extends AdminController
         $shop_is_feature_active = Shop::isFeatureActive();
 
         $line_count = 0;
-        for ($current_line = 0; ($line = fgetcsv($handle, MAX_LINE_SIZE, $this->separator)) && (!$limit || $current_line < $limit); ++$current_line) {
+        for ($current_line = 0; ($line = fgetcsv($handle, MAX_LINE_SIZE, $this->separator, '"', '')) && (!$limit || $current_line < $limit); ++$current_line) {
             ++$line_count;
 
             if ($this->convert) {
@@ -2611,7 +2611,7 @@ class AdminImportControllerCore extends AdminController
         $force_ids = Tools::getValue('forceIDs');
 
         $line_count = 0;
-        for ($current_line = 0; ($line = fgetcsv($handle, MAX_LINE_SIZE, $this->separator)) && (!$limit || $current_line < $limit); ++$current_line) {
+        for ($current_line = 0; ($line = fgetcsv($handle, MAX_LINE_SIZE, $this->separator, '"', '')) && (!$limit || $current_line < $limit); ++$current_line) {
             ++$line_count;
             if ($this->convert) {
                 $line = $this->utf8EncodeArray($line);
@@ -2873,7 +2873,7 @@ class AdminImportControllerCore extends AdminController
         $force_ids = Tools::getValue('forceIDs');
 
         $line_count = 0;
-        for ($current_line = 0; ($line = fgetcsv($handle, MAX_LINE_SIZE, $this->separator)) && (!$limit || $current_line < $limit); ++$current_line) {
+        for ($current_line = 0; ($line = fgetcsv($handle, MAX_LINE_SIZE, $this->separator, '"', '')) && (!$limit || $current_line < $limit); ++$current_line) {
             ++$line_count;
             if ($this->convert) {
                 $line = $this->utf8EncodeArray($line);
@@ -3191,7 +3191,7 @@ class AdminImportControllerCore extends AdminController
         $force_ids = Tools::getValue('forceIDs');
 
         $line_count = 0;
-        for ($current_line = 0; ($line = fgetcsv($handle, MAX_LINE_SIZE, $this->separator)) && (!$limit || $current_line < $limit); ++$current_line) {
+        for ($current_line = 0; ($line = fgetcsv($handle, MAX_LINE_SIZE, $this->separator, '"', '')) && (!$limit || $current_line < $limit); ++$current_line) {
             ++$line_count;
             if ($this->convert) {
                 $line = $this->utf8EncodeArray($line);
@@ -3306,7 +3306,7 @@ class AdminImportControllerCore extends AdminController
         $force_ids = Tools::getValue('forceIDs');
 
         $line_count = 0;
-        for ($current_line = 0; ($line = fgetcsv($handle, MAX_LINE_SIZE, $this->separator)) && (!$limit || $current_line < $limit); ++$current_line) {
+        for ($current_line = 0; ($line = fgetcsv($handle, MAX_LINE_SIZE, $this->separator, '"', '')) && (!$limit || $current_line < $limit); ++$current_line) {
             ++$line_count;
             if ($this->convert) {
                 $line = $this->utf8EncodeArray($line);
@@ -3414,7 +3414,7 @@ class AdminImportControllerCore extends AdminController
         $force_ids = Tools::getValue('forceIDs');
 
         $line_count = 0;
-        for ($current_line = 0; ($line = fgetcsv($handle, MAX_LINE_SIZE, $this->separator)) && (!$limit || $current_line < $limit); ++$current_line) {
+        for ($current_line = 0; ($line = fgetcsv($handle, MAX_LINE_SIZE, $this->separator, '"', '')) && (!$limit || $current_line < $limit); ++$current_line) {
             ++$line_count;
             if ($this->convert) {
                 $line = $this->utf8EncodeArray($line);
@@ -3492,7 +3492,7 @@ class AdminImportControllerCore extends AdminController
         $regenerate = Tools::getValue('regenerate');
 
         $line_count = 0;
-        for ($current_line = 0; ($line = fgetcsv($handle, MAX_LINE_SIZE, $this->separator)) && (!$limit || $current_line < $limit); ++$current_line) {
+        for ($current_line = 0; ($line = fgetcsv($handle, MAX_LINE_SIZE, $this->separator, '"', '')) && (!$limit || $current_line < $limit); ++$current_line) {
             ++$line_count;
             if ($this->convert) {
                 $line = $this->utf8EncodeArray($line);
@@ -3693,7 +3693,7 @@ class AdminImportControllerCore extends AdminController
         if (!is_resource($handle)) {
             return false;
         }
-        $tmp = fgetcsv($handle, MAX_LINE_SIZE, $glue);
+        $tmp = fgetcsv($handle, MAX_LINE_SIZE, $glue, '"', '');
         AdminImportController::rewindBomAware($handle);
 
         return count($tmp);
@@ -3732,7 +3732,7 @@ class AdminImportControllerCore extends AdminController
             $toSkip += $offset;
         }
         for ($i = 0; $i < $toSkip; ++$i) {
-            $line = fgetcsv($handle, MAX_LINE_SIZE, $this->separator);
+            $line = fgetcsv($handle, MAX_LINE_SIZE, $this->separator, '"', '');
             if ($line === false) {
                 return false; // reached end of file
             }
@@ -4047,7 +4047,7 @@ class AdminImportControllerCore extends AdminController
                     $handle = $this->openCsvFile(0);
                     if ($handle) {
                         $count = 0;
-                        while (fgetcsv($handle, MAX_LINE_SIZE, $this->separator)) {
+                        while (fgetcsv($handle, MAX_LINE_SIZE, $this->separator, '"', '')) {
                             ++$count;
                         }
                         $results['totalCount'] = $count;
