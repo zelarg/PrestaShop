@@ -1,8 +1,8 @@
 import {expect} from 'chai';
 import testContext from '@utils/testContext';
-import brandsPage from '@pages/BO/catalog/brands';
 
 import {
+  boBrandsPage,
   boDashboardPage,
   boLoginPage,
   type BrowserContext,
@@ -50,39 +50,39 @@ function opsBulkDeleteBrands(brandName: string, baseContext: string = 'commonTes
         boDashboardPage.catalogParentLink,
         boDashboardPage.brandsAndSuppliersLink,
       );
-      await brandsPage.closeSfToolBar(page);
+      await boBrandsPage.closeSfToolBar(page);
 
-      const pageTitle = await brandsPage.getPageTitle(page);
-      expect(pageTitle).to.contains(brandsPage.pageTitle);
+      const pageTitle = await boBrandsPage.getPageTitle(page);
+      expect(pageTitle).to.contains(boBrandsPage.pageTitle);
     });
 
     it('should reset all filters', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'resetFilter', baseContext);
 
-      numberOfBrands = await brandsPage.resetAndGetNumberOfLines(page, 'manufacturer');
+      numberOfBrands = await boBrandsPage.resetAndGetNumberOfLines(page, 'manufacturer');
       expect(numberOfBrands).to.gt(0);
     });
 
     it(`should filter by brand name '${brandName}'`, async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'filterToBulkDelete', baseContext);
 
-      await brandsPage.filterBrands(page, 'input', 'name', brandName);
+      await boBrandsPage.filterBrands(page, 'input', 'name', brandName);
 
-      numberOfBrandsToDelete = await brandsPage.getNumberOfElementInGrid(page, 'manufacturer');
+      numberOfBrandsToDelete = await boBrandsPage.getNumberOfElementInGrid(page, 'manufacturer');
       expect(numberOfBrandsToDelete).to.be.above(0);
     });
 
     it('should delete brands by Bulk Actions and check result', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'bulkDeleteFeatures', baseContext);
 
-      const textResult = await brandsPage.deleteWithBulkActions(page, 'manufacturer');
-      expect(textResult).to.be.contains(brandsPage.successfulDeleteMessage);
+      const textResult = await boBrandsPage.deleteWithBulkActions(page, 'manufacturer');
+      expect(textResult).to.be.contains(boBrandsPage.successfulDeleteMessage);
     });
 
     it('should reset all filters', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'resetFilter', baseContext);
 
-      const numberOfBrandsAfterDelete = await brandsPage.resetAndGetNumberOfLines(page, 'manufacturer');
+      const numberOfBrandsAfterDelete = await boBrandsPage.resetAndGetNumberOfLines(page, 'manufacturer');
       expect(numberOfBrandsAfterDelete).to.equal(numberOfBrands - numberOfBrandsToDelete);
     });
   });
