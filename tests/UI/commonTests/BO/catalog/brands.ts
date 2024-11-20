@@ -57,7 +57,7 @@ function opsBulkDeleteBrands(brandName: string, baseContext: string = 'commonTes
     });
 
     it('should reset all filters', async function () {
-      await testContext.addContextItem(this, 'testIdentifier', 'resetFilter', baseContext);
+      await testContext.addContextItem(this, 'testIdentifier', 'resetFilterBefore', baseContext);
 
       numberOfBrands = await boBrandsPage.resetAndGetNumberOfLines(page, 'manufacturer');
       expect(numberOfBrands).to.gt(0);
@@ -80,7 +80,7 @@ function opsBulkDeleteBrands(brandName: string, baseContext: string = 'commonTes
     });
 
     it('should reset all filters', async function () {
-      await testContext.addContextItem(this, 'testIdentifier', 'resetFilter', baseContext);
+      await testContext.addContextItem(this, 'testIdentifier', 'resetFilterAfter', baseContext);
 
       const numberOfBrandsAfterDelete = await boBrandsPage.resetAndGetNumberOfLines(page, 'manufacturer');
       expect(numberOfBrandsAfterDelete).to.equal(numberOfBrands - numberOfBrandsToDelete);

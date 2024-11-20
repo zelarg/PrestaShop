@@ -223,7 +223,7 @@ describe('BO - Shop Parameters - Search: Weight', async () => {
       });
 
       it('should reset all filters and get number of categories in BO', async function () {
-        await testContext.addContextItem(this, 'testIdentifier', 'resetFirst', baseContext);
+        await testContext.addContextItem(this, 'testIdentifier', 'resetFiltersCategories', baseContext);
 
         numberOfCategories = await boCategoriesPage.resetAndGetNumberOfLines(page);
         expect(numberOfCategories).to.be.above(0);
@@ -265,7 +265,7 @@ describe('BO - Shop Parameters - Search: Weight', async () => {
       });
 
       it('should reset all filters', async function () {
-        await testContext.addContextItem(this, 'testIdentifier', 'resetFiltersFirst', baseContext);
+        await testContext.addContextItem(this, 'testIdentifier', 'resetFiltersBrands', baseContext);
 
         numberOfBrands = await boBrandsPage.resetAndGetNumberOfLines(page, brandsTable);
         expect(numberOfBrands).to.be.above(0);
@@ -307,7 +307,7 @@ describe('BO - Shop Parameters - Search: Weight', async () => {
       });
 
       it('should reset all filters and get number of attributes in BO', async function () {
-        await testContext.addContextItem(this, 'testIdentifier', 'resetFilterFirst', baseContext);
+        await testContext.addContextItem(this, 'testIdentifier', 'resetFiltersAttributes', baseContext);
 
         numberOfAttributes = await boAttributesPage.resetAndGetNumberOfLines(page);
         expect(numberOfAttributes).to.be.above(0);
@@ -374,7 +374,7 @@ describe('BO - Shop Parameters - Search: Weight', async () => {
 
     describe('Create feature', async () => {
       it('should go to \'Catalog > Attributes & Features\' page', async function () {
-        await testContext.addContextItem(this, 'testIdentifier', 'goToAttributesPage', baseContext);
+        await testContext.addContextItem(this, 'testIdentifier', 'goToAttributesFeaturesPage', baseContext);
 
         await boDashboardPage.goToSubMenu(
           page,
@@ -397,7 +397,7 @@ describe('BO - Shop Parameters - Search: Weight', async () => {
       });
 
       it('should reset all filters and get number of features in BO', async function () {
-        await testContext.addContextItem(this, 'testIdentifier', 'resetFilterFirst', baseContext);
+        await testContext.addContextItem(this, 'testIdentifier', 'resetFiltersFeatures', baseContext);
 
         numberOfFeatures = await boFeaturesPage.resetAndGetNumberOfLines(page);
         expect(numberOfFeatures).to.be.above(0);
@@ -466,7 +466,7 @@ describe('BO - Shop Parameters - Search: Weight', async () => {
       });
 
       it('should reset all filters and get number of products', async function () {
-        await testContext.addContextItem(this, 'testIdentifier', 'resetFiltersBeforeCreate', baseContext);
+        await testContext.addContextItem(this, 'testIdentifier', 'resetFiltersProducts', baseContext);
 
         const numberOfProducts = await boProductsPage.resetAndGetNumberOfLines(page);
         expect(numberOfProducts).to.be.above(0);
@@ -483,7 +483,7 @@ describe('BO - Shop Parameters - Search: Weight', async () => {
             });
 
             it(`should choose '${product.type} product'`, async function () {
-              await testContext.addContextItem(this, 'testIdentifier', 'chooseStandardProduct', baseContext);
+              await testContext.addContextItem(this, 'testIdentifier', `chooseStandardProduct${index}`, baseContext);
 
               await boProductsPage.selectProductType(page, product.type);
 
@@ -542,7 +542,7 @@ describe('BO - Shop Parameters - Search: Weight', async () => {
             });
 
             it('should close combinations generation modal', async function () {
-              await testContext.addContextItem(this, 'testIdentifier', 'generateCombinationsModalIsClosed2', baseContext);
+              await testContext.addContextItem(this, 'testIdentifier', 'generateCombinationsModalIsClosed', baseContext);
 
               const isModalClosed = await combinationsTab.generateCombinationModalIsClosed(page);
               expect(isModalClosed).to.be.eq(true);
@@ -562,7 +562,7 @@ describe('BO - Shop Parameters - Search: Weight', async () => {
 
     describe('Search : Re-build the entire index', async () => {
       it('should go to \'Shop Parameters > Search\' page', async function () {
-        await testContext.addContextItem(this, 'testIdentifier', 'returnToSearchPage', baseContext);
+        await testContext.addContextItem(this, 'testIdentifier', 'goToSearchPage2', baseContext);
 
         await boDashboardPage.goToSubMenu(
           page,
@@ -582,7 +582,7 @@ describe('BO - Shop Parameters - Search: Weight', async () => {
       });
 
       it('should view my shop', async function () {
-        await testContext.addContextItem(this, 'testIdentifier', 'viewMyShop2', baseContext);
+        await testContext.addContextItem(this, 'testIdentifier', 'viewMyShop', baseContext);
 
         page = await boSearchPage.viewMyShop(page);
         await foClassicHomePage.changeLanguage(page, 'en');
@@ -610,7 +610,7 @@ describe('BO - Shop Parameters - Search: Weight', async () => {
       });
 
       it('should close the search page', async function () {
-        await testContext.addContextItem(this, 'testIdentifier', 'returnToSearchPage', baseContext);
+        await testContext.addContextItem(this, 'testIdentifier', 'closeSearchPage2', baseContext);
 
         page = await foClassicSearchResultsPage.closePage(browserContext, page, 0);
 
@@ -621,7 +621,7 @@ describe('BO - Shop Parameters - Search: Weight', async () => {
 
     describe('Search : Change weight for checking order', async () => {
       it('should change weight', async function () {
-        await testContext.addContextItem(this, 'testIdentifier', 'returnToSearchPage', baseContext);
+        await testContext.addContextItem(this, 'testIdentifier', 'changeWeightOrder', baseContext);
 
         const resultProductName = await boSearchPage.setWeightInputValue(page, 'Product name weight', 1);
         expect(resultProductName).to.equals(boSearchPage.settingsUpdateMessage);
@@ -652,14 +652,14 @@ describe('BO - Shop Parameters - Search: Weight', async () => {
       });
 
       it('should click on "Re-build the entire index"', async function () {
-        await testContext.addContextItem(this, 'testIdentifier', 'clickRebuildEntireIndex', baseContext);
+        await testContext.addContextItem(this, 'testIdentifier', 'clickRebuildEntireIndexWeightOrder', baseContext);
 
         const result = await boSearchPage.clickRebuildEntireIndex(page);
         expect(result).to.contains(boSearchPage.successfulUpdateMessage);
       });
 
       it('should view my shop', async function () {
-        await testContext.addContextItem(this, 'testIdentifier', 'viewMyShop2', baseContext);
+        await testContext.addContextItem(this, 'testIdentifier', 'viewMyShopWeightOrder', baseContext);
 
         page = await boSearchPage.viewMyShop(page);
         await foClassicHomePage.changeLanguage(page, 'en');
@@ -669,7 +669,7 @@ describe('BO - Shop Parameters - Search: Weight', async () => {
       });
 
       it('should check the search page', async function () {
-        await testContext.addContextItem(this, 'testIdentifier', 'checkSearchPage', baseContext);
+        await testContext.addContextItem(this, 'testIdentifier', 'checkSearchPageWeightOrder', baseContext);
 
         await foClassicHomePage.searchProduct(page, searchValue);
 
@@ -687,7 +687,7 @@ describe('BO - Shop Parameters - Search: Weight', async () => {
       });
 
       it('should go to the result #1', async function () {
-        await testContext.addContextItem(this, 'testIdentifier', 'goToCreatedProductPage', baseContext);
+        await testContext.addContextItem(this, 'testIdentifier', 'goToProductPage1', baseContext);
 
         await foClassicSearchResultsPage.goToProductPage(page, 1);
 
@@ -696,7 +696,7 @@ describe('BO - Shop Parameters - Search: Weight', async () => {
       });
 
       it('should return search results page', async function () {
-        await testContext.addContextItem(this, 'testIdentifier', 'goToBrandsPageAfterViewCreatedBrand', baseContext);
+        await testContext.addContextItem(this, 'testIdentifier', 'returnSearchResults', baseContext);
 
         await foClassicProductPage.goToPreviousPage(page);
 
@@ -708,7 +708,7 @@ describe('BO - Shop Parameters - Search: Weight', async () => {
       });
 
       it('should go to the result #5', async function () {
-        await testContext.addContextItem(this, 'testIdentifier', 'goToCreatedProductPage', baseContext);
+        await testContext.addContextItem(this, 'testIdentifier', 'goToProductPage5', baseContext);
 
         await foClassicSearchResultsPage.goToProductPage(page, 5);
 
@@ -717,7 +717,7 @@ describe('BO - Shop Parameters - Search: Weight', async () => {
       });
 
       it('should return search results page', async function () {
-        await testContext.addContextItem(this, 'testIdentifier', 'goToBrandsPageAfterViewCreatedBrand', baseContext);
+        await testContext.addContextItem(this, 'testIdentifier', 'returnSearchResults2', baseContext);
 
         await foClassicProductPage.goToPreviousPage(page);
 
@@ -729,7 +729,7 @@ describe('BO - Shop Parameters - Search: Weight', async () => {
       });
 
       it('should go to the result #9', async function () {
-        await testContext.addContextItem(this, 'testIdentifier', 'goToCreatedProductPage', baseContext);
+        await testContext.addContextItem(this, 'testIdentifier', 'goToProductPage9', baseContext);
 
         await foClassicSearchResultsPage.goToProductPage(page, 9);
 
@@ -738,7 +738,7 @@ describe('BO - Shop Parameters - Search: Weight', async () => {
       });
 
       it('should close the search page', async function () {
-        await testContext.addContextItem(this, 'testIdentifier', 'returnToSearchPage', baseContext);
+        await testContext.addContextItem(this, 'testIdentifier', 'closeSearchPage3', baseContext);
 
         page = await foClassicSearchResultsPage.closePage(browserContext, page, 0);
 
@@ -749,7 +749,7 @@ describe('BO - Shop Parameters - Search: Weight', async () => {
 
     describe('Search : Change weight for reversing order', async () => {
       it('should change weight', async function () {
-        await testContext.addContextItem(this, 'testIdentifier', 'returnToSearchPage', baseContext);
+        await testContext.addContextItem(this, 'testIdentifier', 'changeWeightReverseOrder', baseContext);
 
         const resultProductName = await boSearchPage.setWeightInputValue(page, 'Product name weight', 9);
         expect(resultProductName).to.equals(boSearchPage.settingsUpdateMessage);
@@ -780,14 +780,14 @@ describe('BO - Shop Parameters - Search: Weight', async () => {
       });
 
       it('should click on "Re-build the entire index"', async function () {
-        await testContext.addContextItem(this, 'testIdentifier', 'clickRebuildEntireIndex', baseContext);
+        await testContext.addContextItem(this, 'testIdentifier', 'clickRebuildEntireIndexWeightReverseOrder', baseContext);
 
         const result = await boSearchPage.clickRebuildEntireIndex(page);
         expect(result).to.contains(boSearchPage.successfulUpdateMessage);
       });
 
       it('should view my shop', async function () {
-        await testContext.addContextItem(this, 'testIdentifier', 'viewMyShop2', baseContext);
+        await testContext.addContextItem(this, 'testIdentifier', 'viewMyShopReverseOrder', baseContext);
 
         page = await boSearchPage.viewMyShop(page);
         await foClassicHomePage.changeLanguage(page, 'en');
@@ -797,7 +797,7 @@ describe('BO - Shop Parameters - Search: Weight', async () => {
       });
 
       it('should check the search page', async function () {
-        await testContext.addContextItem(this, 'testIdentifier', 'checkSearchPage', baseContext);
+        await testContext.addContextItem(this, 'testIdentifier', 'checkSearchPageReverseOrder', baseContext);
 
         await foClassicHomePage.searchProduct(page, searchValue);
 
@@ -815,7 +815,7 @@ describe('BO - Shop Parameters - Search: Weight', async () => {
       });
 
       it('should go to the result #1', async function () {
-        await testContext.addContextItem(this, 'testIdentifier', 'goToCreatedProductPage', baseContext);
+        await testContext.addContextItem(this, 'testIdentifier', 'goToProductPage', baseContext);
 
         await foClassicSearchResultsPage.goToProductPage(page, 1);
 
@@ -824,7 +824,7 @@ describe('BO - Shop Parameters - Search: Weight', async () => {
       });
 
       it('should return search results page', async function () {
-        await testContext.addContextItem(this, 'testIdentifier', 'goToBrandsPageAfterViewCreatedBrand', baseContext);
+        await testContext.addContextItem(this, 'testIdentifier', 'returnSearchResults4', baseContext);
 
         await foClassicProductPage.goToPreviousPage(page);
 
@@ -836,7 +836,7 @@ describe('BO - Shop Parameters - Search: Weight', async () => {
       });
 
       it('should go to the result #2', async function () {
-        await testContext.addContextItem(this, 'testIdentifier', 'goToCreatedProductPage', baseContext);
+        await testContext.addContextItem(this, 'testIdentifier', 'goToProductPage2', baseContext);
 
         await foClassicSearchResultsPage.goToProductPage(page, 2);
 
@@ -845,7 +845,7 @@ describe('BO - Shop Parameters - Search: Weight', async () => {
       });
 
       it('should return search results page', async function () {
-        await testContext.addContextItem(this, 'testIdentifier', 'goToBrandsPageAfterViewCreatedBrand', baseContext);
+        await testContext.addContextItem(this, 'testIdentifier', 'returnSearchResults5', baseContext);
 
         await foClassicProductPage.goToPreviousPage(page);
 
@@ -857,7 +857,7 @@ describe('BO - Shop Parameters - Search: Weight', async () => {
       });
 
       it('should go to the result #8', async function () {
-        await testContext.addContextItem(this, 'testIdentifier', 'goToCreatedProductPage', baseContext);
+        await testContext.addContextItem(this, 'testIdentifier', 'goToProductPage8', baseContext);
 
         await foClassicSearchResultsPage.goToProductPage(page, 8);
 
@@ -866,7 +866,7 @@ describe('BO - Shop Parameters - Search: Weight', async () => {
       });
 
       it('should close the search page', async function () {
-        await testContext.addContextItem(this, 'testIdentifier', 'returnToSearchPage', baseContext);
+        await testContext.addContextItem(this, 'testIdentifier', 'closeSearchPage4', baseContext);
 
         page = await foClassicSearchResultsPage.closePage(browserContext, page, 0);
 
@@ -877,21 +877,21 @@ describe('BO - Shop Parameters - Search: Weight', async () => {
 
     describe('Search : Empty weight for product name', async () => {
       it('should change weight', async function () {
-        await testContext.addContextItem(this, 'testIdentifier', 'returnToSearchPage', baseContext);
+        await testContext.addContextItem(this, 'testIdentifier', 'setWeight0', baseContext);
 
         const resultProductName = await boSearchPage.setWeightInputValue(page, 'Product name weight', 0);
         expect(resultProductName).to.equals(boSearchPage.settingsUpdateMessage);
       });
 
       it('should click on "Re-build the entire index"', async function () {
-        await testContext.addContextItem(this, 'testIdentifier', 'clickRebuildEntireIndex', baseContext);
+        await testContext.addContextItem(this, 'testIdentifier', 'clickRebuildEntireIndexEmptyWeight', baseContext);
 
         const result = await boSearchPage.clickRebuildEntireIndex(page);
         expect(result).to.contains(boSearchPage.successfulUpdateMessage);
       });
 
       it('should view my shop', async function () {
-        await testContext.addContextItem(this, 'testIdentifier', 'viewMyShop2', baseContext);
+        await testContext.addContextItem(this, 'testIdentifier', 'viewMyShopEmptyWeight', baseContext);
 
         page = await boSearchPage.viewMyShop(page);
         await foClassicHomePage.changeLanguage(page, 'en');
@@ -901,7 +901,7 @@ describe('BO - Shop Parameters - Search: Weight', async () => {
       });
 
       it('should check the search page', async function () {
-        await testContext.addContextItem(this, 'testIdentifier', 'checkSearchPage', baseContext);
+        await testContext.addContextItem(this, 'testIdentifier', 'checkSearchPageEmptyWeight', baseContext);
 
         await foClassicHomePage.searchProduct(page, searchValue);
 
@@ -925,7 +925,7 @@ describe('BO - Shop Parameters - Search: Weight', async () => {
       });
 
       it('should close the search page', async function () {
-        await testContext.addContextItem(this, 'testIdentifier', 'returnToSearchPage', baseContext);
+        await testContext.addContextItem(this, 'testIdentifier', 'closeSearchPage', baseContext);
 
         page = await foClassicSearchResultsPage.closePage(browserContext, page, 0);
 
@@ -936,7 +936,7 @@ describe('BO - Shop Parameters - Search: Weight', async () => {
 
     describe('Search : Reset weight', async () => {
       it('should change weight', async function () {
-        await testContext.addContextItem(this, 'testIdentifier', 'returnToSearchPage', baseContext);
+        await testContext.addContextItem(this, 'testIdentifier', 'resetWeight', baseContext);
 
         const resultProductName = await boSearchPage.setWeightInputValue(page, 'Product name weight', 6);
         expect(resultProductName).to.equals(boSearchPage.settingsUpdateMessage);

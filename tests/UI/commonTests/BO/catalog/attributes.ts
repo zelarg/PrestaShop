@@ -56,7 +56,7 @@ function opsBulkDeleteAttributes(attributeName: string, baseContext: string = 'c
     });
 
     it('should reset all filters', async function () {
-      await testContext.addContextItem(this, 'testIdentifier', 'resetFilter', baseContext);
+      await testContext.addContextItem(this, 'testIdentifier', 'resetFilterBefore', baseContext);
 
       numberOfAttributes = await boAttributesPage.resetAndGetNumberOfLines(page);
       expect(numberOfAttributes).to.gt(0);
@@ -79,7 +79,7 @@ function opsBulkDeleteAttributes(attributeName: string, baseContext: string = 'c
     });
 
     it('should reset all filters', async function () {
-      await testContext.addContextItem(this, 'testIdentifier', 'resetFilter', baseContext);
+      await testContext.addContextItem(this, 'testIdentifier', 'resetFilterAfter', baseContext);
 
       const numberOfAttributesAfterDelete = await boAttributesPage.resetAndGetNumberOfLines(page);
       expect(numberOfAttributesAfterDelete).to.equal(numberOfAttributes - numberOfAttributesToDelete);
