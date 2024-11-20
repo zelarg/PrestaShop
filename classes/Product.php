@@ -2626,39 +2626,25 @@ class ProductCore extends ObjectModel
     }
 
     /**
+     * Returns information about product images that are paired to specific combination
+     *
      * @param int $id_lang Language identifier
      *
      * @return array|false
      */
     public function getCombinationImages($id_lang)
     {
+        // If combination feature is disabled, no need to do any queries
         if (!Combination::isFeatureActive()) {
             return false;
         }
 
-        $product_attributes = Db::getInstance()->executeS(
-            'SELECT `id_product_attribute`
-            FROM `' . _DB_PREFIX_ . 'product_attribute`
-            WHERE `id_product` = ' . (int) $this->id
-        );
-
-        if (!$product_attributes) {
-            return false;
-        }
-
-        $ids = [];
-
-        foreach ($product_attributes as $product_attribute) {
-            $ids[] = (int) $product_attribute['id_product_attribute'];
-        }
-
         $result = Db::getInstance()->executeS(
-            '
-            SELECT pai.`id_image`, pai.`id_product_attribute`, il.`legend`
+            'SELECT pai.`id_image`, pai.`id_product_attribute`, il.`legend`
             FROM `' . _DB_PREFIX_ . 'product_attribute_image` pai
             LEFT JOIN `' . _DB_PREFIX_ . 'image_lang` il ON (il.`id_image` = pai.`id_image`)
-            LEFT JOIN `' . _DB_PREFIX_ . 'image` i ON (i.`id_image` = pai.`id_image`)
-            WHERE pai.`id_product_attribute` IN (' . implode(', ', $ids) . ') AND il.`id_lang` = ' . (int) $id_lang . ' ORDER by i.`position`'
+            INNER JOIN `' . _DB_PREFIX_ . 'image` i ON (i.`id_image` = pai.`id_image`)
+            WHERE i.`id_product` = ' . (int) $this->id . ' AND il.`id_lang` = ' . (int) $id_lang . ' ORDER by i.`position`'
         );
 
         if (!$result) {
@@ -3624,7 +3610,7 @@ class ProductCore extends ObjectModel
             || !(
                 $specific_price['price'] >= 0
                 && $specific_price['id_currency']
-                && $id_currency === $specific_price['id_currency']
+                && (int) $id_currency === (int) $specific_price['id_currency']
             )
         ) {
             $price = Tools::convertPrice($price, $id_currency);
@@ -5540,10 +5526,6 @@ class ProductCore extends ObjectModel
         $row['pack'] = (!isset($row['cache_is_pack']) ? Pack::isPack($row['id_product']) : (int) $row['cache_is_pack']);
         $row['packItems'] = $row['pack'] ? Pack::getItemTable($row['id_product'], $id_lang) : [];
         $row['nopackprice'] = $row['pack'] ? Pack::noPackPrice($row['id_product']) : 0;
-
-        if ($row['pack'] && !Pack::isInStock($row['id_product'], $quantityToUseForPriceCalculations, $context->cart)) {
-            $row['quantity'] = 0;
-        }
 
         if (!isset($row['attributes'])) {
             $attributes = Product::getAttributesParams($row['id_product'], $row['id_product_attribute']);

@@ -155,7 +155,7 @@ final class SecurityAttributeLinterCommand extends Command
     /**
      * {@inheritdoc}
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $actionToPerform = $input->getArgument('action');
 
