@@ -142,6 +142,7 @@ class AdminImportControllerCore extends AdminController
                     'minimal_quantity' => ['label' => $this->trans('Minimal quantity', [], 'Admin.Advparameters.Feature')],
                     'low_stock_threshold' => ['label' => $this->trans('Low stock level', [], 'Admin.Catalog.Feature')],
                     'low_stock_alert' => ['label' => $this->trans('Receive a low stock alert by email', [], 'Admin.Catalog.Feature')],
+                    'location' => ['label' => $this->trans('Stock location', [], 'Admin.Catalog.Feature')],
                     'weight' => ['label' => $this->trans('Impact on weight', [], 'Admin.Catalog.Feature')],
                     'default_on' => ['label' => $this->trans('Default (0 = No, 1 = Yes)', [], 'Admin.Advparameters.Feature')],
                     'available_date' => ['label' => $this->trans('Combination availability date', [], 'Admin.Advparameters.Feature')],
@@ -169,6 +170,7 @@ class AdminImportControllerCore extends AdminController
                     'minimal_quantity' => 1,
                     'low_stock_threshold' => null,
                     'low_stock_alert' => false,
+                    'location' => '',
                     'weight' => 0,
                     'default_on' => null,
                     'available_date' => date('Y-m-d'),
@@ -257,6 +259,7 @@ class AdminImportControllerCore extends AdminController
                     'minimal_quantity' => ['label' => $this->trans('Minimal quantity', [], 'Admin.Advparameters.Feature')],
                     'low_stock_threshold' => ['label' => $this->trans('Low stock level', [], 'Admin.Catalog.Feature')],
                     'low_stock_alert' => ['label' => $this->trans('Receive a low stock alert by email', [], 'Admin.Catalog.Feature')],
+                    'location' => ['label' => $this->trans('Stock location', [], 'Admin.Catalog.Feature')],
                     'visibility' => ['label' => $this->trans('Visibility', [], 'Admin.Catalog.Feature')],
                     'additional_shipping_cost' => ['label' => $this->trans('Additional shipping cost', [], 'Admin.Advparameters.Feature')],
                     'unity' => ['label' => $this->trans('Unit for the price per unit', [], 'Admin.Advparameters.Feature')],
@@ -318,6 +321,7 @@ class AdminImportControllerCore extends AdminController
                     'minimal_quantity' => 1,
                     'low_stock_threshold' => null,
                     'low_stock_alert' => false,
+                    'location' => '',
                     'price' => 0,
                     'id_tax_rules_group' => 0,
                     'description_short' => [(int) Configuration::get('PS_LANG_DEFAULT') => ''],
@@ -2091,9 +2095,15 @@ class AdminImportControllerCore extends AdminController
                 if ($shop_is_feature_active) {
                     foreach ($shops as $shop) {
                         StockAvailable::setQuantity((int) $product->id, 0, (int) $product->quantity, (int) $shop);
+                        if (strlen($product->location) > 0) {
+                            StockAvailable::setLocation((int) $product->id, pSQL($product->location), (int) $shop);
+                        }
                     }
                 } else {
                     StockAvailable::setQuantity((int) $product->id, 0, (int) $product->quantity, (int) $this->context->shop->id);
+                    if (strlen($product->location) > 0) {
+                        StockAvailable::setLocation((int) $product->id, pSQL($product->location), (int) $this->context->shop->id);
+                    }
                 }
             }
 
@@ -2569,9 +2579,15 @@ class AdminImportControllerCore extends AdminController
                 if ($shop_is_feature_active) {
                     foreach ($id_shop_list as $shop) {
                         StockAvailable::setQuantity((int) $product->id, $id_product_attribute, (int) $info['quantity'], (int) $shop);
+                        if (strlen($info['location']) > 0) {
+                            StockAvailable::setLocation((int) $product->id, pSQL($info['location']), (int) $shop, $id_product_attribute);
+                        }
                     }
                 } else {
-                    StockAvailable::setQuantity((int) $product->id, $id_product_attribute, (int) $info['quantity'], $this->context->shop->id);
+                    StockAvailable::setQuantity((int) $product->id, $id_product_attribute, (int) $info['quantity'], (int) $this->context->shop->id);
+                    if (strlen($info['location']) > 0) {
+                        StockAvailable::setLocation((int) $product->id, pSQL($info['location']), (int) $this->context->shop->id, $id_product_attribute);
+                    }
                 }
             }
 
