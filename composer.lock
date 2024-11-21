@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "c4e96763d84a33afcb1eeb54a1ffad92",
+    "content-hash": "f9f94c62f136e0909dac1aa1794667c1",
     "packages": [
         {
             "name": "api-platform/core",
@@ -5676,16 +5676,16 @@
         },
         {
             "name": "prestashop/ps_apiresources",
-            "version": "dev-install-uninstall-module",
+            "version": "dev-update-module",
             "source": {
                 "type": "git",
-                "url": "https://github.com/jolelievre/ps_apiresources.git",
-                "reference": "566a92a61e7419d58348c3768d5b90d978fb75de"
+                "url": "https://github.com/dylanDenizonPresta/ps_apiresources.git",
+                "reference": "d0c49b52b3b02101fde960daf2913e1fc621e280"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/jolelievre/ps_apiresources/zipball/566a92a61e7419d58348c3768d5b90d978fb75de",
-                "reference": "566a92a61e7419d58348c3768d5b90d978fb75de",
+                "url": "https://api.github.com/repos/dylanDenizonPresta/ps_apiresources/zipball/d0c49b52b3b02101fde960daf2913e1fc621e280",
+                "reference": "d0c49b52b3b02101fde960daf2913e1fc621e280",
                 "shasum": ""
             },
             "require": {
@@ -5738,9 +5738,9 @@
             "description": "PrestaShop - API Resources",
             "homepage": "https://github.com/PrestaShop/ps_apiresources",
             "support": {
-                "source": "https://github.com/jolelievre/ps_apiresources/tree/install-uninstall-module"
+                "source": "https://github.com/dylanDenizonPresta/ps_apiresources/tree/update-module"
             },
-            "time": "2024-11-06T14:43:11+00:00"
+            "time": "2024-11-20T18:30:50+00:00"
         },
         {
             "name": "prestashop/ps_banner",
@@ -18301,7 +18301,7 @@
         "ext-simplexml": "*",
         "ext-zip": "*"
     },
-    "platform-dev": {},
+    "platform-dev": [],
     "platform-overrides": {
         "php": "8.1.0"
     },
