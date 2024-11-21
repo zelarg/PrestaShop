@@ -315,12 +315,6 @@ class ProductControllerCore extends ProductPresentingFrontControllerCore
     public function initContent(): void
     {
         if (!$this->errors) {
-            if (Pack::isPack((int) $this->product->id)
-                && !Pack::isInStock((int) $this->product->id, $this->product->minimal_quantity, $this->context->cart)
-            ) {
-                $this->product->quantity = 0;
-            }
-
             $this->product->description = $this->transformDescriptionWithImg($this->product->description);
 
             $priceDisplay = Product::getTaxCalculationMethod((int) $this->context->cookie->id_customer);
@@ -365,11 +359,12 @@ class ProductControllerCore extends ProductPresentingFrontControllerCore
 
             // Presenting pack items
             $pack_items = Pack::isPack($this->product->id) ? Pack::getItemTable($this->product->id, $this->context->language->id, true) : [];
+            $pack_items = $assembler->assembleProducts($pack_items);
             $presentedPackItems = [];
             foreach ($pack_items as $item) {
                 $presentedPackItems[] = $presenter->present(
                     $this->getProductPresentationSettings(),
-                    $assembler->assembleProduct($item),
+                    $item,
                     $this->context->language
                 );
             }
@@ -385,10 +380,11 @@ class ProductControllerCore extends ProductPresentingFrontControllerCore
             // Assign accessories
             $accessories = $this->product->getAccessories($this->context->language->id);
             if (is_array($accessories)) {
+                $accessories = $assembler->assembleProducts($accessories);
                 foreach ($accessories as &$accessory) {
                     $accessory = $presenter->present(
                         $presentationSettings,
-                        $assembler->assembleProduct($accessory),
+                        $accessory,
                         $this->context->language
                     );
                 }
@@ -609,7 +605,7 @@ class ProductControllerCore extends ProductPresentingFrontControllerCore
         $groups = [];
         $this->combinations = [];
 
-        /** @todo (RM) should only get groups and not all declination ? */
+        /** @todo (RM) should only get groups and not all combinations ? */
         $attributes_groups = $this->product->getAttributesGroups($this->context->language->id);
         if (is_array($attributes_groups) && $attributes_groups) {
             $combination_images = $this->product->getCombinationImages($this->context->language->id);
