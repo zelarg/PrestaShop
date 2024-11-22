@@ -1572,6 +1572,7 @@ class ToolsCore
      *
      * @param float $value
      * @param int $precision
+     * @param int<0,5>|null $round_mode
      *
      * @return float
      */
@@ -1595,10 +1596,9 @@ class ToolsCore
             case PS_ROUND_HALF_ODD:
             case PS_ROUND_HALF_UP:
             default:
-            // PHP rounding mode is Prestashop rounding mode - 1, see config/defines.inc.php
-            $phpRoundingMode = $round_mode - 1;
-
-            return round($value, $precision, $phpRoundingMode);
+                // PHP rounding mode is Prestashop rounding mode - 1, see config/defines.inc.php
+                /* @phpstan-ignore-next-line */
+                return round($value, $precision, $round_mode - 1);
         }
     }
 
