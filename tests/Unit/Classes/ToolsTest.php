@@ -441,11 +441,13 @@ class ToolsTest extends TestCase
         $this->assertSame($expectedResult, Tools::round_helper($value, $mode));
     }
 
-    public function providerMathRound(): array
+    public function providerPsRound(): array
     {
         return [
             // 0 precision
-            [25, 25.32, 0, self::PS_ROUND_UP],
+            [25, 25.32, 0, self::PS_ROUND_DOWN],
+            [25, 25.52, 0, self::PS_ROUND_DOWN],
+            [26, 25.32, 0, self::PS_ROUND_UP],
             [26, 25.52, 0, self::PS_ROUND_UP],
             [25, 25.32, 0, self::PS_ROUND_HALF_DOWN],
             [25, 25.50, 0, self::PS_ROUND_HALF_DOWN],
@@ -456,7 +458,9 @@ class ToolsTest extends TestCase
             [26, 25.51, 0, self::PS_ROUND_HALF_ODD],
             [25, 25.49, 0, self::PS_ROUND_HALF_ODD],
             // 2 precision
-            [25.32, 25.321, 2, self::PS_ROUND_UP],
+            [25.32, 25.321, 2, self::PS_ROUND_DOWN],
+            [25.52, 25.525, 2, self::PS_ROUND_DOWN],
+            [25.33, 25.321, 2, self::PS_ROUND_UP],
             [25.53, 25.525, 2, self::PS_ROUND_UP],
             [25.32, 25.325, 2, self::PS_ROUND_HALF_DOWN],
             [25.5, 25.505, 2, self::PS_ROUND_HALF_DOWN],
@@ -470,11 +474,11 @@ class ToolsTest extends TestCase
     }
 
     /**
-     * @dataProvider providerMathRound
+     * @dataProvider providerPsRound
      */
-    public function testMathRound(float $expectedResult, float $value, int $precision, int $mode): void
+    public function testPsRound(float $expectedResult, float $value, int $precision, int $mode): void
     {
-        $this->assertSame($expectedResult, Tools::math_round($value, $precision, $mode));
+        $this->assertSame($expectedResult, Tools::ps_round($value, $precision, $mode));
     }
 
     public function providerFloorF(): array
