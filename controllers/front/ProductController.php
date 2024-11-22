@@ -315,7 +315,6 @@ class ProductControllerCore extends ProductPresentingFrontControllerCore
     public function initContent(): void
     {
         if (!$this->errors) {
-            $this->product->description = $this->transformDescriptionWithImg($this->product->description);
 
             $priceDisplay = Product::getTaxCalculationMethod((int) $this->context->cookie->id_customer);
             $productPrice = 0;
@@ -1191,6 +1190,7 @@ class ProductControllerCore extends ProductPresentingFrontControllerCore
         $extraContentFinder = new ProductExtraContentFinder();
 
         $product = $this->objectPresenter->present($this->product);
+        $product['description'] = $this->transformDescriptionWithImg($this->product->description);
         $product['out_of_stock'] = (int) $this->product->out_of_stock;
         $product['id_product_attribute'] = $this->getIdProductAttributeByGroupOrRequestOrDefault();
         $product['minimal_quantity'] = $this->getProductMinimalQuantity($product);
