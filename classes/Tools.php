@@ -1619,10 +1619,7 @@ class ToolsCore
      */
     public static function math_round($value, $places, $mode = PS_ROUND_HALF_UP)
     {
-        // PHP rounding mode is Prestashop rounding mode - 1, see config/defines.inc.php
-        $phpRoundingMode = $mode - 1;
-
-        return round($value, $places, $phpRoundingMode);
+        return Tools::ps_round($value, $places, $mode);
     }
 
     /**

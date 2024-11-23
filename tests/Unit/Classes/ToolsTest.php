@@ -479,6 +479,9 @@ class ToolsTest extends TestCase
     public function testPsRound(float $expectedResult, float $value, int $precision, int $mode): void
     {
         $this->assertSame($expectedResult, Tools::ps_round($value, $precision, $mode));
+
+        // This method is deprecated and will be removed in 10.0.0, we just keep the tests to avoid regressions
+        $this->assertSame($expectedResult, Tools::math_round($value, $precision, $mode));
     }
 
     public function providerFloorF(): array
