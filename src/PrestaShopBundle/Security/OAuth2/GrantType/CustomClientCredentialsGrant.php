@@ -30,6 +30,7 @@ declare(strict_types=1);
 namespace PrestaShopBundle\Security\OAuth2\GrantType;
 
 use DateInterval;
+use League\OAuth2\Server\Entities\AccessTokenEntityInterface;
 use League\OAuth2\Server\Entities\ClientEntityInterface;
 use League\OAuth2\Server\Grant\ClientCredentialsGrant;
 use PrestaShopBundle\Security\OAuth2\Entity\Client;
@@ -40,8 +41,12 @@ use PrestaShopBundle\Security\OAuth2\Entity\Client;
  */
 class CustomClientCredentialsGrant extends ClientCredentialsGrant
 {
-    protected function issueAccessToken(DateInterval $accessTokenTTL, ClientEntityInterface $client, $userIdentifier, array $scopes = [])
-    {
+    protected function issueAccessToken(
+        DateInterval $accessTokenTTL,
+        ClientEntityInterface $client,
+        ?string $userIdentifier,
+        array $scopes = []
+    ): AccessTokenEntityInterface {
         /** @var Client $client */
         if ($client->getLifetime() !== null) {
             $accessTokenTTL = DateInterval::createFromDateString($client->getLifetime() . ' seconds');
