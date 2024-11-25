@@ -529,11 +529,7 @@ class ToolsTest extends TestCase
     {
         $message = 'The password generated ' . $passwordGenerated . ' no match with ' . $expectedPassword;
 
-        if (method_exists($this, 'assertMatchesRegularExpression')) {
-            $this->assertMatchesRegularExpression($expectedPassword, $passwordGenerated, $message);
-        } else {
-            $this->assertRegExp($expectedPassword, $passwordGenerated, $message);
-        }
+        $this->assertMatchesRegularExpression($expectedPassword, $passwordGenerated, $message);
     }
 
     public function passwordGenProvider(): array
@@ -845,17 +841,9 @@ class ToolsTest extends TestCase
         $rule = "~$rule~";
         foreach ($testCases as $setName => $case) {
             if ($case['shouldMatch']) {
-                if (method_exists($this, 'assertMatchesRegularExpression')) {
-                    $this->assertMatchesRegularExpression($rule, $case['uri'], "The uri segment is expected to match the pattern, but it doesn't");
-                } else {
-                    $this->assertRegExp($rule, $case['uri'], "The uri segment is expected to match the pattern, but it doesn't");
-                }
+                $this->assertMatchesRegularExpression($rule, $case['uri'], "The uri segment is expected to match the pattern, but it doesn't");
             } else {
-                if (method_exists($this, 'assertDoesNotMatchRegularExpression')) {
-                    $this->assertDoesNotMatchRegularExpression($rule, $case['uri'], 'The uri segment is expected NOT to match the pattern, but it does');
-                } else {
-                    $this->assertNotRegExp($rule, $case['uri'], 'The uri segment is expected NOT to match the pattern, but it does');
-                }
+                $this->assertDoesNotMatchRegularExpression($rule, $case['uri'], 'The uri segment is expected NOT to match the pattern, but it does');
             }
 
             if ($case['shouldMatch']) {

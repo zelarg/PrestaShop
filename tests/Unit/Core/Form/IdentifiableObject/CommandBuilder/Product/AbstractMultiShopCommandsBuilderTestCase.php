@@ -23,32 +23,21 @@
  * @copyright Since 2007 PrestaShop SA and Contributors
  * @license   https://opensource.org/licenses/OSL-3.0 Open Software License (OSL 3.0)
  */
-
 declare(strict_types=1);
 
 namespace Tests\Unit\Core\Form\IdentifiableObject\CommandBuilder\Product;
 
-use PrestaShop\PrestaShop\Core\Domain\Product\ValueObject\ProductId;
+use PHPUnit\Framework\TestCase;
+use PrestaShop\PrestaShop\Core\Domain\Shop\ValueObject\ShopConstraint;
 
-/**
- * Base class to test a product command builder
- */
-abstract class AbstractProductCommandBuilderTest extends AbstractMultiShopCommandsBuilderTest
+abstract class AbstractMultiShopCommandsBuilderTestCase extends TestCase
 {
-    /**
-     * @var ProductId
-     */
-    private $productId;
+    protected const SHOP_ID = 1;
 
-    /**
-     * @return ProductId
-     */
-    protected function getProductId(): ProductId
+    protected const MODIFY_ALL_SHOPS_PREFIX = 'modify_all_shops_';
+
+    protected function getSingleShopConstraint(): ShopConstraint
     {
-        if (null === $this->productId) {
-            $this->productId = new ProductId(42);
-        }
-
-        return $this->productId;
+        return ShopConstraint::shop(self::SHOP_ID);
     }
 }

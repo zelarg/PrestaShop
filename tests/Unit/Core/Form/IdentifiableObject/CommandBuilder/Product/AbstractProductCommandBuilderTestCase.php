@@ -26,30 +26,29 @@
 
 declare(strict_types=1);
 
-namespace Tests\Unit\Core\Form\IdentifiableObject\CommandBuilder\Product\Combination;
+namespace Tests\Unit\Core\Form\IdentifiableObject\CommandBuilder\Product;
 
-use PrestaShop\PrestaShop\Core\Domain\Product\Combination\ValueObject\CombinationId;
-use Tests\Unit\Core\Form\IdentifiableObject\CommandBuilder\Product\AbstractMultiShopCommandsBuilderTest;
+use PrestaShop\PrestaShop\Core\Domain\Product\ValueObject\ProductId;
 
 /**
- * Base class to test a combination command builder
+ * Base class to test a product command builder
  */
-abstract class AbstractCombinationCommandBuilderTest extends AbstractMultiShopCommandsBuilderTest
+abstract class AbstractProductCommandBuilderTestCase extends AbstractMultiShopCommandsBuilderTestCase
 {
     /**
-     * @var CombinationId
+     * @var ProductId
      */
-    private $combinationId;
+    private $productId;
 
     /**
-     * @return CombinationId
+     * @return ProductId
      */
-    protected function getCombinationId(): CombinationId
+    protected function getProductId(): ProductId
     {
-        if (null === $this->combinationId) {
-            $this->combinationId = new CombinationId(43);
+        if (null === $this->productId) {
+            $this->productId = new ProductId(42);
         }
 
-        return $this->combinationId;
+        return $this->productId;
     }
 }
