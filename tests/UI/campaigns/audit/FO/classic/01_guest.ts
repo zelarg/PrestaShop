@@ -4,6 +4,8 @@ import {newProductsPage} from '@pages/FO/classic/newProducts';
 import {bestSalesPage} from '@pages/FO/classic/bestSales';
 import {deliveryPage} from '@pages/FO/classic/delivery';
 import {legalNoticePage} from '@pages/FO/classic/legalNotice';
+import {guestOrderTrackingPage} from '@pages/FO/classic/orderTracking/guestOrderTracking';
+import {createAccountPage} from '@pages/FO/classic/myAccount/add';
 import {termsAndConditionsOfUsePage} from '@pages/FO/classic/termsAndConditionsOfUse';
 import {securePaymentPage} from '@pages/FO/classic/securePayment';
 import {siteMapPage} from '@pages/FO/classic/siteMap';
@@ -18,6 +20,7 @@ import {
   foClassicCategoryPage,
   foClassicContactUsPage,
   foClassicHomePage,
+  foClassicLoginPage,
   foClassicProductPage,
   foClassicSearchResultsPage,
   type Page,
@@ -142,6 +145,29 @@ describe('FO - Pages in guest mode', async () => {
 
         const jsErrors = utilsPlaywright.getJsErrors();
         expect(jsErrors.length).to.equals(0);
+      });
+    });
+  });
+
+  describe('Check \'Your Account\' footer links', async () => {
+    [
+      {linkSelector: 'Order tracking', pageTitle: guestOrderTrackingPage.pageTitle},
+      {linkSelector: 'Sign in', pageTitle: foClassicLoginPage.pageTitle},
+      {linkSelector: 'Create account', pageTitle: createAccountPage.formTitle},
+    ].forEach((args, index: number) => {
+      it(`should check '${args.linkSelector}' footer links`, async function () {
+        await testContext.addContextItem(this, 'testIdentifier', `checkYourAccountFooterLinks${index}`, baseContext);
+
+        await foClassicHomePage.goToFooterLink(page, args.linkSelector);
+
+        let pageTitle: string = '';
+
+        if (args.linkSelector === 'Create account') {
+          pageTitle = await createAccountPage.getHeaderTitle(page);
+        } else {
+          pageTitle = await foClassicHomePage.getPageTitle(page);
+        }
+        expect(pageTitle).to.equal(args.pageTitle);
       });
     });
   });
