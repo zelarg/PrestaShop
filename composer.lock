@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "b2de44866e8660ae267693510618abc4",
+    "content-hash": "3a96b8bd769fe82394378d0fadb42502",
     "packages": [
         {
             "name": "api-platform/core",
@@ -5676,16 +5676,16 @@
         },
         {
             "name": "prestashop/ps_apiresources",
-            "version": "dev-update-module",
+            "version": "dev-dev",
             "source": {
                 "type": "git",
-                "url": "https://github.com/dylanDenizonPresta/ps_apiresources.git",
-                "reference": "d0c49b52b3b02101fde960daf2913e1fc621e280"
+                "url": "https://github.com/PrestaShop/ps_apiresources.git",
+                "reference": "d75f2b0f485cc844052a453c65e71e3eae793155"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/dylanDenizonPresta/ps_apiresources/zipball/d0c49b52b3b02101fde960daf2913e1fc621e280",
-                "reference": "d0c49b52b3b02101fde960daf2913e1fc621e280",
+                "url": "https://api.github.com/repos/PrestaShop/ps_apiresources/zipball/d75f2b0f485cc844052a453c65e71e3eae793155",
+                "reference": "d75f2b0f485cc844052a453c65e71e3eae793155",
                 "shasum": ""
             },
             "require": {
@@ -5694,9 +5694,10 @@
             "require-dev": {
                 "czproject/git-php": "^4.2",
                 "friendsofphp/php-cs-fixer": "^v3",
-                "phpunit/phpunit": "^9.6",
+                "phpunit/phpunit": "^10",
                 "prestashop/php-dev-tools": "^4.3"
             },
+            "default-branch": true,
             "type": "prestashop-module",
             "autoload": {
                 "psr-4": {
@@ -5738,9 +5739,9 @@
             "description": "PrestaShop - API Resources",
             "homepage": "https://github.com/PrestaShop/ps_apiresources",
             "support": {
-                "source": "https://github.com/dylanDenizonPresta/ps_apiresources/tree/update-module"
+                "source": "https://github.com/PrestaShop/ps_apiresources/tree/dev"
             },
-            "time": "2024-11-20T18:30:50+00:00"
+            "time": "2024-11-25T14:30:45+00:00"
         },
         {
             "name": "prestashop/ps_banner",
