@@ -5,6 +5,8 @@ import newProductsPage from '@pages/FO/hummingbird/newProducts';
 import bestSalesPage from '@pages/FO/hummingbird/bestSales';
 import deliveryPage from '@pages/FO/hummingbird/delivery';
 import legalNoticePage from '@pages/FO/hummingbird/legalNotice';
+import createAccountPage from '@pages/FO/hummingbird/myAccount/add';
+import guestOrderTrackingPage from '@pages/FO/hummingbird/orderTracking/guestOrderTracking';
 import termsAndConditionsOfUsePage from '@pages/FO/hummingbird/termsAndConditionsOfUse';
 import securePaymentPage from '@pages/FO/hummingbird/securePayment';
 import siteMapPage from '@pages/FO/hummingbird/siteMap';
@@ -19,6 +21,7 @@ import {
   foHummingbirdCategoryPage,
   foHummingbirdContactUsPage,
   foHummingbirdHomePage,
+  foHummingbirdLoginPage,
   foHummingbirdProductPage,
   foHummingbirdSearchResultsPage,
   type Page,
@@ -147,6 +150,29 @@ describe('FO - Pages in guest mode', async () => {
 
           const jsErrors = utilsPlaywright.getJsErrors();
           expect(jsErrors.length).to.equals(0);
+        });
+      });
+    });
+
+    describe('Check \'Your Account\' footer links', async () => {
+      [
+        {linkSelector: 'Order tracking', pageTitle: guestOrderTrackingPage.pageTitle},
+        {linkSelector: 'Sign in', pageTitle: foHummingbirdLoginPage.pageTitle},
+        {linkSelector: 'Create account', pageTitle: createAccountPage.formTitle},
+      ].forEach((args, index: number) => {
+        it(`should check '${args.linkSelector}' footer links`, async function () {
+          await testContext.addContextItem(this, 'testIdentifier', `checkYourAccountFooterLinks${index}`, baseContext);
+
+          await foHummingbirdHomePage.goToFooterLink(page, args.linkSelector);
+
+          let pageTitle: string = '';
+
+          if (args.linkSelector === 'Create account') {
+            pageTitle = await createAccountPage.getHeaderTitle(page);
+          } else {
+            pageTitle = await foHummingbirdHomePage.getPageTitle(page);
+          }
+          expect(pageTitle).to.equal(args.pageTitle);
         });
       });
     });
