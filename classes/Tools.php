@@ -2422,7 +2422,6 @@ FileETag none
 
         // List of friendly rewrites on the shop blocked from crawling
         if (count($robots_content['Directories'])) {
-
             // For this, we will need language iso codes for the URLs
             $prefixesForGeneration = [];
 
@@ -2442,7 +2441,6 @@ FileETag none
             // We don't care about the domain, we are doing relative paths
             foreach (self::getDomains() as $uriList) {
                 foreach ($uriList as $uri) {
-
                     // And start a new section
                     fwrite($write_fd, sprintf("\n# Rules for %s%s", $uri['physical'], PHP_EOL));
                     fwrite($write_fd, "# Directories blocked from crawling\n");
@@ -2492,7 +2490,7 @@ FileETag none
         if (file_exists($sitemap_file) && filesize($sitemap_file)) {
             fwrite($write_fd, "\n# Sitemap\n");
             $sitemap_filename = basename($sitemap_file);
-            fwrite($write_fd, "Sitemap: " . static::getProtocol((bool) Configuration::get('PS_SSL_ENABLED')) . $_SERVER['SERVER_NAME']
+            fwrite($write_fd, 'Sitemap: ' . static::getProtocol((bool) Configuration::get('PS_SSL_ENABLED')) . $_SERVER['SERVER_NAME']
                 . __PS_BASE_URI__ . $sitemap_filename . PHP_EOL);
         }
 
