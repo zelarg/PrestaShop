@@ -65,7 +65,8 @@ final class GroupByIdChoiceProvider implements FormChoiceProviderInterface
         return FormChoiceFormatter::formatFormChoices(
             $this->groupDataProvider->getGroups($this->langId),
             'id_group',
-            'name'
+            'name',
+            false
         );
     }
 }
