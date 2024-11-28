@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "3a96b8bd769fe82394378d0fadb42502",
+    "content-hash": "84c736aeb649ad63cd1703efa11da9ee",
     "packages": [
         {
             "name": "api-platform/core",
@@ -6001,26 +6001,27 @@
         },
         {
             "name": "prestashop/ps_distributionapiclient",
-            "version": "v1.1.1",
+            "version": "v2.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/PrestaShop/ps_distributionapiclient.git",
-                "reference": "4db438b616fb26b9281607db436e60f382fb2391"
+                "reference": "dc1d457fdc28f9a39ab54f1c5eda8d6e078ac885"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/PrestaShop/ps_distributionapiclient/zipball/4db438b616fb26b9281607db436e60f382fb2391",
-                "reference": "4db438b616fb26b9281607db436e60f382fb2391",
+                "url": "https://api.github.com/repos/PrestaShop/ps_distributionapiclient/zipball/dc1d457fdc28f9a39ab54f1c5eda8d6e078ac885",
+                "reference": "dc1d457fdc28f9a39ab54f1c5eda8d6e078ac885",
                 "shasum": ""
             },
             "require": {
                 "doctrine/cache": "^2.1",
-                "php": ">=7.2.5",
-                "prestashop/circuit-breaker": "^4.0"
+                "php": ">=8.1",
+                "prestashop/circuit-breaker": "^4.0",
+                "symfony/http-client": "6.4.*"
             },
             "require-dev": {
                 "phpstan/phpstan": "^1.4",
-                "phpunit/phpunit": "^8.5",
+                "phpunit/phpunit": "^10",
                 "prestashop/php-dev-tools": "^4.2"
             },
             "type": "prestashop-module",
@@ -6046,9 +6047,9 @@
             "homepage": "https://github.com/PrestaShop/ps_distributionapiclient",
             "support": {
                 "issues": "https://github.com/PrestaShop/ps_distributionapiclient/issues",
-                "source": "https://github.com/PrestaShop/ps_distributionapiclient/tree/v1.1.1"
+                "source": "https://github.com/PrestaShop/ps_distributionapiclient/tree/v2.0.0"
             },
-            "time": "2024-01-19T16:20:17+00:00"
+            "time": "2024-11-28T20:20:42+00:00"
         },
         {
             "name": "prestashop/ps_emailalerts",
