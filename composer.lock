@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "2a00028436fbcac3671017a3079af21a",
+    "content-hash": "936a1f77145ed6fe708d2f5740f64c46",
     "packages": [
         {
             "name": "api-platform/core",
@@ -4277,16 +4277,16 @@
         },
         {
             "name": "phpoffice/phpspreadsheet",
-            "version": "1.29.1",
+            "version": "1.29.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/PHPOffice/PhpSpreadsheet.git",
-                "reference": "59ee38f7480904cd6487e5cbdea4d80ff2758719"
+                "reference": "727cb704d5479fe4ddc291497ee471c4ec08f1b6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/PHPOffice/PhpSpreadsheet/zipball/59ee38f7480904cd6487e5cbdea4d80ff2758719",
-                "reference": "59ee38f7480904cd6487e5cbdea4d80ff2758719",
+                "url": "https://api.github.com/repos/PHPOffice/PhpSpreadsheet/zipball/727cb704d5479fe4ddc291497ee471c4ec08f1b6",
+                "reference": "727cb704d5479fe4ddc291497ee471c4ec08f1b6",
                 "shasum": ""
             },
             "require": {
@@ -4376,9 +4376,9 @@
             ],
             "support": {
                 "issues": "https://github.com/PHPOffice/PhpSpreadsheet/issues",
-                "source": "https://github.com/PHPOffice/PhpSpreadsheet/tree/1.29.1"
+                "source": "https://github.com/PHPOffice/PhpSpreadsheet/tree/1.29.5"
             },
-            "time": "2024-09-03T00:55:32+00:00"
+            "time": "2024-11-22T05:57:44+00:00"
         },
         {
             "name": "pimple/pimple",
@@ -4638,7 +4638,7 @@
         },
         {
             "name": "prestashop/classic",
-            "version": "dev-develop",
+            "version": "3.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/PrestaShop/classic-theme.git",
@@ -4654,7 +4654,6 @@
                 "symfony/console": "~4.4 || ^5.0",
                 "symfony/yaml": "~4.4 || ^5.0"
             },
-            "default-branch": true,
             "type": "prestashop-theme",
             "notification-url": "https://packagist.org/downloads/",
             "license": [
@@ -4672,7 +4671,7 @@
             ],
             "description": "Classic theme for develop PrestaShop version",
             "support": {
-                "source": "https://github.com/PrestaShop/classic-theme/tree/develop"
+                "source": "https://github.com/PrestaShop/classic-theme/tree/3.0.0"
             },
             "time": "2024-09-30T15:02:54+00:00"
         },
@@ -5058,23 +5057,22 @@
         },
         {
             "name": "prestashop/hummingbird",
-            "version": "dev-develop",
+            "version": "v1.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/PrestaShop/hummingbird.git",
-                "reference": "48a6a85a39356e4c3a3641ce16e47f9005c5ae33"
+                "reference": "fbb97bcfb0184b1620a959cf32fb9f0e428ae474"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/PrestaShop/hummingbird/zipball/48a6a85a39356e4c3a3641ce16e47f9005c5ae33",
-                "reference": "48a6a85a39356e4c3a3641ce16e47f9005c5ae33",
+                "url": "https://api.github.com/repos/PrestaShop/hummingbird/zipball/fbb97bcfb0184b1620a959cf32fb9f0e428ae474",
+                "reference": "fbb97bcfb0184b1620a959cf32fb9f0e428ae474",
                 "shasum": ""
             },
             "require-dev": {
                 "symfony/console": "~4.4 || ^5.0 || ^6.4",
                 "symfony/yaml": "~4.4 || ^5.0 || ^6.4"
             },
-            "default-branch": true,
             "type": "prestashop-theme",
             "notification-url": "https://packagist.org/downloads/",
             "license": [
@@ -5093,9 +5091,9 @@
             "description": "Hummingbird theme for develop PrestaShop version",
             "support": {
                 "issues": "https://github.com/PrestaShop/hummingbird/issues",
-                "source": "https://github.com/PrestaShop/hummingbird/tree/develop"
+                "source": "https://github.com/PrestaShop/hummingbird/tree/v1.0.0"
             },
-            "time": "2024-09-30T15:03:15+00:00"
+            "time": "2024-11-29T13:23:35+00:00"
         },
         {
             "name": "prestashop/laminas-code-lts",
@@ -8233,16 +8231,16 @@
         },
         {
             "name": "smarty/smarty",
-            "version": "v4.3.4",
+            "version": "v4.5.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/smarty-php/smarty.git",
-                "reference": "3931d8f54b8f7a4ffab538582d34d4397ba8daa5"
+                "reference": "c4851c12e34ff80073ddeb7d98b059d57dea9de2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/smarty-php/smarty/zipball/3931d8f54b8f7a4ffab538582d34d4397ba8daa5",
-                "reference": "3931d8f54b8f7a4ffab538582d34d4397ba8daa5",
+                "url": "https://api.github.com/repos/smarty-php/smarty/zipball/c4851c12e34ff80073ddeb7d98b059d57dea9de2",
+                "reference": "c4851c12e34ff80073ddeb7d98b059d57dea9de2",
                 "shasum": ""
             },
             "require": {
@@ -8293,9 +8291,9 @@
             "support": {
                 "forum": "https://github.com/smarty-php/smarty/discussions",
                 "issues": "https://github.com/smarty-php/smarty/issues",
-                "source": "https://github.com/smarty-php/smarty/tree/v4.3.4"
+                "source": "https://github.com/smarty-php/smarty/tree/v4.5.5"
             },
-            "time": "2023-09-14T10:59:08+00:00"
+            "time": "2024-11-21T22:06:22+00:00"
         },
         {
             "name": "soundasleep/html2text",
@@ -11897,6 +11895,82 @@
             "time": "2024-09-09T11:45:10+00:00"
         },
         {
+            "name": "symfony/polyfill-php81",
+            "version": "v1.31.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/symfony/polyfill-php81.git",
+                "reference": "4a4cfc2d253c21a5ad0e53071df248ed48c6ce5c"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony/polyfill-php81/zipball/4a4cfc2d253c21a5ad0e53071df248ed48c6ce5c",
+                "reference": "4a4cfc2d253c21a5ad0e53071df248ed48c6ce5c",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.2"
+            },
+            "type": "library",
+            "extra": {
+                "thanks": {
+                    "name": "symfony/polyfill",
+                    "url": "https://github.com/symfony/polyfill"
+                }
+            },
+            "autoload": {
+                "files": [
+                    "bootstrap.php"
+                ],
+                "psr-4": {
+                    "Symfony\\Polyfill\\Php81\\": ""
+                },
+                "classmap": [
+                    "Resources/stubs"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Nicolas Grekas",
+                    "email": "p@tchwork.com"
+                },
+                {
+                    "name": "Symfony Community",
+                    "homepage": "https://symfony.com/contributors"
+                }
+            ],
+            "description": "Symfony polyfill backporting some PHP 8.1+ features to lower PHP versions",
+            "homepage": "https://symfony.com",
+            "keywords": [
+                "compatibility",
+                "polyfill",
+                "portable",
+                "shim"
+            ],
+            "support": {
+                "source": "https://github.com/symfony/polyfill-php81/tree/v1.31.0"
+            },
+            "funding": [
+                {
+                    "url": "https://symfony.com/sponsor",
+                    "type": "custom"
+                },
+                {
+                    "url": "https://github.com/fabpot",
+                    "type": "github"
+                },
+                {
+                    "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
+                    "type": "tidelift"
+                }
+            ],
+            "time": "2024-09-09T11:45:10+00:00"
+        },
+        {
             "name": "symfony/polyfill-php83",
             "version": "v1.31.0",
             "source": {
@@ -14150,20 +14224,20 @@
         },
         {
             "name": "tecnickcom/tcpdf",
-            "version": "6.4.4",
+            "version": "6.7.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/tecnickcom/TCPDF.git",
-                "reference": "42cd0f9786af7e5db4fcedaa66f717b0d0032320"
+                "reference": "cfbc0028cc23f057f2baf9e73bdc238153c22086"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/tecnickcom/TCPDF/zipball/42cd0f9786af7e5db4fcedaa66f717b0d0032320",
-                "reference": "42cd0f9786af7e5db4fcedaa66f717b0d0032320",
+                "url": "https://api.github.com/repos/tecnickcom/TCPDF/zipball/cfbc0028cc23f057f2baf9e73bdc238153c22086",
+                "reference": "cfbc0028cc23f057f2baf9e73bdc238153c22086",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.3.0"
+                "php": ">=5.5.0"
             },
             "type": "library",
             "autoload": {
@@ -14188,7 +14262,7 @@
             },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
-                "LGPL-3.0-only"
+                "LGPL-3.0-or-later"
             ],
             "authors": [
                 {
@@ -14210,7 +14284,7 @@
             ],
             "support": {
                 "issues": "https://github.com/tecnickcom/TCPDF/issues",
-                "source": "https://github.com/tecnickcom/TCPDF/tree/6.4.4"
+                "source": "https://github.com/tecnickcom/TCPDF/tree/6.7.7"
             },
             "funding": [
                 {
@@ -14218,7 +14292,7 @@
                     "type": "custom"
                 }
             ],
-            "time": "2021-12-31T08:39:24+00:00"
+            "time": "2024-10-26T12:15:02+00:00"
         },
         {
             "name": "tijsverkoyen/css-to-inline-styles",
@@ -14473,30 +14547,38 @@
         },
         {
             "name": "twig/twig",
-            "version": "v3.8.0",
+            "version": "v3.16.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/twigphp/Twig.git",
-                "reference": "9d15f0ac07f44dc4217883ec6ae02fd555c6f71d"
+                "reference": "475ad2dc97d65d8631393e721e7e44fb544f0561"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/twigphp/Twig/zipball/9d15f0ac07f44dc4217883ec6ae02fd555c6f71d",
-                "reference": "9d15f0ac07f44dc4217883ec6ae02fd555c6f71d",
+                "url": "https://api.github.com/repos/twigphp/Twig/zipball/475ad2dc97d65d8631393e721e7e44fb544f0561",
+                "reference": "475ad2dc97d65d8631393e721e7e44fb544f0561",
                 "shasum": ""
             },
             "require": {
-                "php": ">=7.2.5",
+                "php": ">=8.0.2",
+                "symfony/deprecation-contracts": "^2.5|^3",
                 "symfony/polyfill-ctype": "^1.8",
                 "symfony/polyfill-mbstring": "^1.3",
-                "symfony/polyfill-php80": "^1.22"
+                "symfony/polyfill-php81": "^1.29"
             },
             "require-dev": {
+                "phpstan/phpstan": "^2.0",
                 "psr/container": "^1.0|^2.0",
-                "symfony/phpunit-bridge": "^5.4.9|^6.3|^7.0"
+                "symfony/phpunit-bridge": "^5.4.9|^6.4|^7.0"
             },
             "type": "library",
             "autoload": {
+                "files": [
+                    "src/Resources/core.php",
+                    "src/Resources/debug.php",
+                    "src/Resources/escaper.php",
+                    "src/Resources/string_loader.php"
+                ],
                 "psr-4": {
                     "Twig\\": "src/"
                 }
@@ -14529,7 +14611,7 @@
             ],
             "support": {
                 "issues": "https://github.com/twigphp/Twig/issues",
-                "source": "https://github.com/twigphp/Twig/tree/v3.8.0"
+                "source": "https://github.com/twigphp/Twig/tree/v3.16.0"
             },
             "funding": [
                 {
@@ -14541,7 +14623,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2023-11-21T18:54:41+00:00"
+            "time": "2024-11-29T08:27:05+00:00"
         },
         {
             "name": "willdurand/jsonp-callback-validator",
@@ -17511,82 +17593,6 @@
             "time": "2024-11-13T15:06:22+00:00"
         },
         {
-            "name": "symfony/polyfill-php81",
-            "version": "v1.31.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/symfony/polyfill-php81.git",
-                "reference": "4a4cfc2d253c21a5ad0e53071df248ed48c6ce5c"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/symfony/polyfill-php81/zipball/4a4cfc2d253c21a5ad0e53071df248ed48c6ce5c",
-                "reference": "4a4cfc2d253c21a5ad0e53071df248ed48c6ce5c",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=7.2"
-            },
-            "type": "library",
-            "extra": {
-                "thanks": {
-                    "name": "symfony/polyfill",
-                    "url": "https://github.com/symfony/polyfill"
-                }
-            },
-            "autoload": {
-                "files": [
-                    "bootstrap.php"
-                ],
-                "psr-4": {
-                    "Symfony\\Polyfill\\Php81\\": ""
-                },
-                "classmap": [
-                    "Resources/stubs"
-                ]
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Nicolas Grekas",
-                    "email": "p@tchwork.com"
-                },
-                {
-                    "name": "Symfony Community",
-                    "homepage": "https://symfony.com/contributors"
-                }
-            ],
-            "description": "Symfony polyfill backporting some PHP 8.1+ features to lower PHP versions",
-            "homepage": "https://symfony.com",
-            "keywords": [
-                "compatibility",
-                "polyfill",
-                "portable",
-                "shim"
-            ],
-            "support": {
-                "source": "https://github.com/symfony/polyfill-php81/tree/v1.31.0"
-            },
-            "funding": [
-                {
-                    "url": "https://symfony.com/sponsor",
-                    "type": "custom"
-                },
-                {
-                    "url": "https://github.com/fabpot",
-                    "type": "github"
-                },
-                {
-                    "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
-                    "type": "tidelift"
-                }
-            ],
-            "time": "2024-09-09T11:45:10+00:00"
-        },
-        {
             "name": "symfony/stopwatch",
             "version": "v6.4.13",
             "source": {
@@ -17840,8 +17846,6 @@
     "aliases": [],
     "minimum-stability": "dev",
     "stability-flags": {
-        "prestashop/classic": 20,
-        "prestashop/hummingbird": 20,
         "prestashop/ps_apiresources": 20
     },
     "prefer-stable": true,
