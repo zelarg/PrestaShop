@@ -944,7 +944,7 @@ class ToolsCore
                     }
                 }
 
-                if ($delete_self && file_exists($dirname)) {
+                if ($delete_self) {
                     if (!rmdir($dirname)) {
                         return false;
                     }
@@ -2546,8 +2546,8 @@ FileETag none
                 FROM ' . _DB_PREFIX_ . 'meta m
                 INNER JOIN ' . _DB_PREFIX_ . 'meta_lang ml ON ml.id_meta = m.id_meta
                 INNER JOIN ' . _DB_PREFIX_ . 'lang l ON l.id_lang = ml.id_lang
-                WHERE l.active = 1 AND 
-                m.page IN (\'' . implode('\', \'', $disallow_controllers) . '\') AND 
+                WHERE l.active = 1 AND
+                m.page IN (\'' . implode('\', \'', $disallow_controllers) . '\') AND
                 ml.url_rewrite IS NOT NULL AND ml.url_rewrite != \'\'';
             if ($results = Db::getInstance(_PS_USE_SQL_SLAVE_)->executeS($sql)) {
                 foreach ($results as $row) {
