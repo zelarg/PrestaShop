@@ -1,4 +1,3 @@
-<?php
 /**
  * Copyright since 2007 PrestaShop SA and Contributors
  * PrestaShop is an International Registered Trademark & Property of PrestaShop SA
@@ -24,19 +23,12 @@
  * @license   https://opensource.org/licenses/OSL-3.0 Open Software License (OSL 3.0)
  */
 
-namespace PrestaShop\PrestaShop\Core\Domain\Alias\CommandHandler;
+import AliasesCollectionManager from '@pages/alias/components/aliases-collection-manager';
+import FormSubmitButton from '@components/form-submit-button';
 
-use PrestaShop\PrestaShop\Core\Domain\Alias\Command\BulkUpdateAliasStatusCommand;
+const {$} = window;
 
-/**
- * Defines contract to handle @see BulkUpdateAliasStatusCommand
- */
-interface BulkUpdateAliasStatusHandlerInterface
-{
-    /**
-     * @param BulkUpdateAliasStatusCommand $command
-     *
-     * @return void
-     */
-    public function handle(BulkUpdateAliasStatusCommand $command): void;
-}
+$(() => {
+  new FormSubmitButton();
+  new AliasesCollectionManager();
+});

@@ -24,32 +24,23 @@
  * @license   https://opensource.org/licenses/OSL-3.0 Open Software License (OSL 3.0)
  */
 
-declare(strict_types=1);
+namespace PrestaShop\PrestaShop\Core\Domain\Alias\CommandHandler;
 
-namespace PrestaShop\PrestaShop\Adapter\Alias\CommandHandler;
+use PrestaShop\PrestaShop\Core\Domain\Alias\Command\AddSearchTermAliasesCommand;
+use PrestaShop\PrestaShop\Core\Domain\Alias\ValueObject\AliasId;
+use PrestaShop\PrestaShop\Core\Exception\CoreException;
 
-use PrestaShop\PrestaShop\Adapter\Alias\Repository\AliasRepository;
-use PrestaShop\PrestaShop\Core\CommandBus\Attributes\AsCommandHandler;
-use PrestaShop\PrestaShop\Core\Domain\Alias\Command\UpdateAliasCommand;
-use PrestaShop\PrestaShop\Core\Domain\Alias\CommandHandler\UpdateAliasHandlerInterface;
-
-#[AsCommandHandler]
-class UpdateAliasHandler implements UpdateAliasHandlerInterface
+/**
+ * Interface for services that handle command which adds new alias
+ */
+interface AddSearchTermAliasesHandlerInterface
 {
-    public function __construct(
-        protected AliasRepository $aliasRepository
-    ) {
-    }
-
     /**
-     * @param UpdateAliasCommand $command
+     * @param AddSearchTermAliasesCommand $command
+     *
+     * @return AliasId[]
+     *
+     * @throws CoreException
      */
-    public function handle(UpdateAliasCommand $command): void
-    {
-        $existingAlias = $this->aliasRepository->get($command->getAliasId());
-
-        // We need to delete existing aliases to add new alias entries
-        $this->aliasRepository->deleteAliasesBySearchTerm($existingAlias->search);
-        $this->aliasRepository->create($command->getSearchTerm(), $command->getAliases());
-    }
+    public function handle(AddSearchTermAliasesCommand $command): array;
 }

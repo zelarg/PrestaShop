@@ -26,25 +26,40 @@
 
 declare(strict_types=1);
 
-namespace PrestaShop\PrestaShop\Adapter\Alias\CommandHandler;
+namespace PrestaShop\PrestaShop\Core\Form\IdentifiableObject\DataProvider;
 
-use PrestaShop\PrestaShop\Adapter\Alias\Repository\AliasRepository;
-use PrestaShop\PrestaShop\Core\CommandBus\Attributes\AsCommandHandler;
-use PrestaShop\PrestaShop\Core\Domain\Alias\Command\DeleteAliasCommand;
-use PrestaShop\PrestaShop\Core\Domain\Alias\CommandHandler\DeleteAliasHandlerInterface;
+use PrestaShop\PrestaShop\Core\CommandBus\CommandBusInterface;
+use PrestaShop\PrestaShop\Core\Domain\Alias\Query\GetAliasesBySearchTermForEditing;
+use PrestaShop\PrestaShop\Core\Domain\Alias\QueryResult\AliasForEditing;
 
-#[AsCommandHandler]
-class DeleteAliasHandler implements DeleteAliasHandlerInterface
+class AliasFormDataProvider implements FormDataProviderInterface
 {
-    public function __construct(private readonly AliasRepository $aliasRepository)
-    {
+    public function __construct(
+        protected readonly CommandBusInterface $queryBus
+    ) {
     }
 
     /**
      * {@inheritdoc}
      */
-    public function handle(DeleteAliasCommand $command): void
+    public function getData($searchTerm): array
     {
-        $this->aliasRepository->delete($command->getAliasId());
+        /**
+         * @var AliasForEditing $aliases
+         */
+        $aliases = $this->queryBus->handle(new GetAliasesBySearchTermForEditing((string) $searchTerm));
+
+        return [
+            'search' => $aliases->getSearchTerm(),
+            'aliases' => $aliases->getAliases(),
+        ];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getDefaultData(): array
+    {
+        return [];
     }
 }

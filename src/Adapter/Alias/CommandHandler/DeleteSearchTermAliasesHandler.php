@@ -24,33 +24,27 @@
  * @license   https://opensource.org/licenses/OSL-3.0 Open Software License (OSL 3.0)
  */
 
-namespace PrestaShop\PrestaShop\Core\Form\IdentifiableObject\Builder;
+declare(strict_types=1);
 
-use Symfony\Component\Form\FormInterface;
+namespace PrestaShop\PrestaShop\Adapter\Alias\CommandHandler;
 
-/**
- * Defines contract for identifiable object form factories.
- */
-interface FormBuilderInterface
+use PrestaShop\PrestaShop\Adapter\Alias\Repository\AliasRepository;
+use PrestaShop\PrestaShop\Core\CommandBus\Attributes\AsCommandHandler;
+use PrestaShop\PrestaShop\Core\Domain\Alias\Command\DeleteSearchTermAliasesCommand;
+use PrestaShop\PrestaShop\Core\Domain\Alias\CommandHandler\DeleteSearchTermAliasesHandlerInterface;
+
+#[AsCommandHandler]
+class DeleteSearchTermAliasesHandler implements DeleteSearchTermAliasesHandlerInterface
 {
-    /**
-     * Create new form.
-     *
-     * @param array $data
-     * @param array $options
-     *
-     * @return FormInterface
-     */
-    public function getForm(array $data = [], array $options = []);
+    public function __construct(private readonly AliasRepository $aliasRepository)
+    {
+    }
 
     /**
-     * Create new form for given object.
-     *
-     * @param int|string $id
-     * @param array $data
-     * @param array $options
-     *
-     * @return FormInterface
+     * {@inheritdoc}
      */
-    public function getFormFor($id, array $data = [], array $options = []);
+    public function handle(DeleteSearchTermAliasesCommand $command): void
+    {
+        $this->aliasRepository->deleteAliasesBySearchTerm($command->getSearchTerm());
+    }
 }

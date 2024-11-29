@@ -30,33 +30,20 @@ namespace PrestaShop\PrestaShop\Adapter\Alias\CommandHandler;
 
 use PrestaShop\PrestaShop\Adapter\Alias\Repository\AliasRepository;
 use PrestaShop\PrestaShop\Core\CommandBus\Attributes\AsCommandHandler;
-use PrestaShop\PrestaShop\Core\Domain\Alias\Command\UpdateAliasStatusCommand;
-use PrestaShop\PrestaShop\Core\Domain\Alias\CommandHandler\UpdateAliasStatusHandlerInterfaces;
-use PrestaShop\PrestaShop\Core\Domain\Alias\Exception\CannotUpdateAliasException;
+use PrestaShop\PrestaShop\Core\Domain\Alias\Command\UpdateSearchTermAliasesCommand;
+use PrestaShop\PrestaShop\Core\Domain\Alias\CommandHandler\UpdateSearchTermAliasesHandlerInterface;
 
-/**
- * Toggles alias status
- */
 #[AsCommandHandler]
-class UpdateAliasStatusHandler implements UpdateAliasStatusHandlerInterfaces
+class UpdateSearchTermAliasesHandler implements UpdateSearchTermAliasesHandlerInterface
 {
-    /**
-     * @param AliasRepository $aliasRepository
-     */
     public function __construct(
         protected AliasRepository $aliasRepository
     ) {
     }
 
-    /**
-     * @param UpdateAliasStatusCommand $command
-     *
-     * @return void
-     */
-    public function handle(UpdateAliasStatusCommand $command): void
+    public function handle(UpdateSearchTermAliasesCommand $command): void
     {
-        $alias = $this->aliasRepository->get($command->getAliasId());
-        $alias->active = $command->isEnabled();
-        $this->aliasRepository->partialUpdate($alias, ['active'], CannotUpdateAliasException::class);
+        $this->aliasRepository->deleteAliasesBySearchTerm($command->getOldSearchTerm());
+        $this->aliasRepository->addAliases($command->getNewSearchTerm()->getValue(), $command->getAliases());
     }
 }

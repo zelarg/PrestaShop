@@ -24,17 +24,34 @@
  * @license   https://opensource.org/licenses/OSL-3.0 Open Software License (OSL 3.0)
  */
 
-namespace PrestaShop\PrestaShop\Core\Domain\Alias\CommandHandler;
+declare(strict_types=1);
 
-use PrestaShop\PrestaShop\Core\Domain\Alias\Command\UpdateAliasCommand;
+namespace PrestaShop\PrestaShop\Core\Domain\Alias\Command;
+
+use PrestaShop\PrestaShop\Core\Domain\Alias\ValueObject\SearchTerm;
 
 /**
- * Defines contract to handle @see UpdateAliasCommand
+ * Delete all aliases by multiple given search terms.
  */
-interface UpdateAliasHandlerInterface
+class BulkDeleteSearchTermsAliasesCommand
 {
     /**
-     * @param UpdateAliasCommand $command
+     * @var SearchTerm[]
      */
-    public function handle(UpdateAliasCommand $command): void;
+    private array $searchTerms;
+
+    public function __construct(array $searchTerms)
+    {
+        foreach ($searchTerms as $searchTerm) {
+            $this->searchTerms[] = new SearchTerm($searchTerm);
+        }
+    }
+
+    /**
+     * @return SearchTerm[]
+     */
+    public function getSearchTerms(): array
+    {
+        return $this->searchTerms;
+    }
 }

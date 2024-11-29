@@ -24,17 +24,17 @@
  * @license   https://opensource.org/licenses/OSL-3.0 Open Software License (OSL 3.0)
  */
 
-namespace PrestaShop\PrestaShop\Core\Domain\Alias\CommandHandler;
+namespace PrestaShop\PrestaShop\Core\Grid\Column\Type\Common;
 
-use PrestaShop\PrestaShop\Core\Domain\Alias\Command\BulkDeleteAliasCommand;
+use PrestaShop\PrestaShop\Core\Grid\Column\AbstractColumn;
 
-/**
- * Defines contract to handle @see BulkDeleteAliasCommand
- */
-interface BulkDeleteAliasHandlerInterface
+final class AliasesColumn extends AbstractColumn
 {
     /**
-     * @param BulkDeleteAliasCommand $command
+     * {@inheritdoc}
      */
-    public function handle(BulkDeleteAliasCommand $command): void;
+    public function getType()
+    {
+        return 'aliases';
+    }
 }

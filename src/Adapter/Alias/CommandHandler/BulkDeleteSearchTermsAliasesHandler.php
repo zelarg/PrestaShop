@@ -31,18 +31,18 @@ namespace PrestaShop\PrestaShop\Adapter\Alias\CommandHandler;
 use PrestaShop\PrestaShop\Adapter\Alias\Repository\AliasRepository;
 use PrestaShop\PrestaShop\Core\CommandBus\Attributes\AsCommandHandler;
 use PrestaShop\PrestaShop\Core\Domain\AbstractBulkCommandHandler;
-use PrestaShop\PrestaShop\Core\Domain\Alias\Command\BulkDeleteAliasCommand;
-use PrestaShop\PrestaShop\Core\Domain\Alias\CommandHandler\BulkDeleteAliasHandlerInterface;
+use PrestaShop\PrestaShop\Core\Domain\Alias\Command\BulkDeleteSearchTermsAliasesCommand;
+use PrestaShop\PrestaShop\Core\Domain\Alias\CommandHandler\BulkDeleteSearchTermsAliasesHandlerInterface;
 use PrestaShop\PrestaShop\Core\Domain\Alias\Exception\AliasException;
 use PrestaShop\PrestaShop\Core\Domain\Alias\Exception\BulkAliasException;
-use PrestaShop\PrestaShop\Core\Domain\Alias\ValueObject\AliasId;
+use PrestaShop\PrestaShop\Core\Domain\Alias\ValueObject\SearchTerm;
 use PrestaShop\PrestaShop\Core\Domain\Exception\BulkCommandExceptionInterface;
 
 /**
- * Handles command which deletes aliases in bulk action
+ * Handles command which deletes aliases related to search term in bulk action
  */
 #[AsCommandHandler]
-class BulkDeleteAliasHandler extends AbstractBulkCommandHandler implements BulkDeleteAliasHandlerInterface
+class BulkDeleteSearchTermsAliasesHandler extends AbstractBulkCommandHandler implements BulkDeleteSearchTermsAliasesHandlerInterface
 {
     public function __construct(protected AliasRepository $aliasRepository)
     {
@@ -51,20 +51,20 @@ class BulkDeleteAliasHandler extends AbstractBulkCommandHandler implements BulkD
     /**
      * {@inheritdoc}
      */
-    public function handle(BulkDeleteAliasCommand $command): void
+    public function handle(BulkDeleteSearchTermsAliasesCommand $command): void
     {
-        $this->handleBulkAction($command->getAliasIds(), AliasException::class);
+        $this->handleBulkAction($command->getSearchTerms(), AliasException::class);
     }
 
     /**
-     * @param AliasId $id
+     * @param SearchTerm $term
      * @param mixed $command
      *
      * @return void
      */
-    protected function handleSingleAction(mixed $id, mixed $command): void
+    protected function handleSingleAction(mixed $term, mixed $command): void
     {
-        $this->aliasRepository->delete($id);
+        $this->aliasRepository->deleteAliasesBySearchTerm($term);
     }
 
     /**
@@ -81,8 +81,8 @@ class BulkDeleteAliasHandler extends AbstractBulkCommandHandler implements BulkD
     /**
      * {@inheritDoc}
      */
-    protected function supports(mixed $id): bool
+    protected function supports(mixed $term): bool
     {
-        return $id instanceof AliasId;
+        return $term instanceof SearchTerm;
     }
 }

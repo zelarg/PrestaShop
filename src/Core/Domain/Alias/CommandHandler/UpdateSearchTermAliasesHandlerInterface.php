@@ -24,33 +24,17 @@
  * @license   https://opensource.org/licenses/OSL-3.0 Open Software License (OSL 3.0)
  */
 
-namespace PrestaShop\PrestaShop\Core\Form\IdentifiableObject\Builder;
+namespace PrestaShop\PrestaShop\Core\Domain\Alias\CommandHandler;
 
-use Symfony\Component\Form\FormInterface;
+use PrestaShop\PrestaShop\Core\Domain\Alias\Command\UpdateSearchTermAliasesCommand;
 
 /**
- * Defines contract for identifiable object form factories.
+ * Defines contract to handle @see UpdateSearchTermAliasesCommand
  */
-interface FormBuilderInterface
+interface UpdateSearchTermAliasesHandlerInterface
 {
     /**
-     * Create new form.
-     *
-     * @param array $data
-     * @param array $options
-     *
-     * @return FormInterface
+     * @param UpdateSearchTermAliasesCommand $command
      */
-    public function getForm(array $data = [], array $options = []);
-
-    /**
-     * Create new form for given object.
-     *
-     * @param int|string $id
-     * @param array $data
-     * @param array $options
-     *
-     * @return FormInterface
-     */
-    public function getFormFor($id, array $data = [], array $options = []);
+    public function handle(UpdateSearchTermAliasesCommand $command): void;
 }

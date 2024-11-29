@@ -26,38 +26,24 @@
 
 declare(strict_types=1);
 
-namespace PrestaShop\PrestaShop\Adapter\Alias\CommandHandler;
+namespace PrestaShop\PrestaShop\Core\Domain\Alias\Command;
 
-use PrestaShop\PrestaShop\Adapter\Alias\Repository\AliasRepository;
-use PrestaShop\PrestaShop\Core\CommandBus\Attributes\AsCommandHandler;
-use PrestaShop\PrestaShop\Core\Domain\Alias\Command\AddAliasCommand;
-use PrestaShop\PrestaShop\Core\Domain\Alias\CommandHandler\AddAliasHandlerInterface;
+use PrestaShop\PrestaShop\Core\Domain\Alias\ValueObject\SearchTerm;
 
-#[AsCommandHandler]
-class AddAliasHandler implements AddAliasHandlerInterface
+/**
+ * Delete all aliases by given search term.
+ */
+class DeleteSearchTermAliasesCommand
 {
-    /**
-     * @var AliasRepository
-     */
-    private $aliasRepository;
+    private SearchTerm $searchTerm;
 
-    /**
-     * @param AliasRepository $aliasRepository
-     */
-    public function __construct(
-        AliasRepository $aliasRepository
-    ) {
-        $this->aliasRepository = $aliasRepository;
+    public function __construct(string $searchTerm)
+    {
+        $this->searchTerm = new SearchTerm($searchTerm);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function handle(AddAliasCommand $command): array
+    public function getSearchTerm(): SearchTerm
     {
-        return $this->aliasRepository->create(
-            $command->getSearchTerm(),
-            $command->getAliases()
-        );
+        return $this->searchTerm;
     }
 }

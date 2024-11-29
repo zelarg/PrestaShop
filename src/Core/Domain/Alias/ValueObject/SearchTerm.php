@@ -24,64 +24,36 @@
  * @license   https://opensource.org/licenses/OSL-3.0 Open Software License (OSL 3.0)
  */
 
-declare(strict_types=1);
+namespace PrestaShop\PrestaShop\Core\Domain\Alias\ValueObject;
 
-namespace PrestaShop\PrestaShop\Core\Domain\Alias\Command;
-
-use PrestaShop\PrestaShop\Core\Domain\Alias\ValueObject\AliasId;
+use PrestaShop\PrestaShop\Core\Domain\Alias\Exception\AliasConstraintException;
 
 /**
- * Edits alias with given data
+ * Defines alias search term with it's constraints.
  */
-class UpdateAliasCommand
+class SearchTerm
 {
-    private AliasId $aliasId;
-
-    /**
-     * @var string[]
-     */
-    private array $aliases;
-
-    private string $searchTerm;
-
-    /**
-     * @param int $aliasId
-     * @param string[] $aliases this input is array of string aliases that are returned from the form input
-     * @param string $searchTerm
-     */
     public function __construct(
-        int $aliasId,
-        array $aliases,
-        string $searchTerm,
+        private string $searchTerm
     ) {
-        $this->aliasId = new AliasId($aliasId);
-        $this->aliases = $aliases;
-        $this->searchTerm = $searchTerm;
-    }
-
-    /**
-     * @return AliasId
-     */
-    public function getAliasId(): AliasId
-    {
-        return $this->aliasId;
-    }
-
-    /**
-     * Returns array of string aliases that are used in the alias form input.
-     *
-     * @return string[]
-     */
-    public function getAliases(): array
-    {
-        return $this->aliases;
+        $this->assertStringNotEmpty($searchTerm);
     }
 
     /**
      * @return string
      */
-    public function getSearchTerm(): string
+    public function getValue(): string
     {
         return $this->searchTerm;
+    }
+
+    private function assertStringNotEmpty(string $searchTerm): void
+    {
+        if (empty($searchTerm)) {
+            throw new AliasConstraintException(
+                'Search term cannot be empty.',
+                AliasConstraintException::INVALID_SEARCH
+            );
+        }
     }
 }

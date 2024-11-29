@@ -24,29 +24,20 @@
  * @license   https://opensource.org/licenses/OSL-3.0 Open Software License (OSL 3.0)
  */
 
-declare(strict_types=1);
+namespace PrestaShop\PrestaShop\Core\Domain\Alias\QueryHandler;
 
-namespace PrestaShop\PrestaShop\Core\Domain\Alias\Command;
-
-use PrestaShop\PrestaShop\Core\Domain\Alias\ValueObject\AliasId;
+use PrestaShop\PrestaShop\Core\Domain\Alias\Query\GetAliasesBySearchTermForEditing;
+use PrestaShop\PrestaShop\Core\Domain\Alias\QueryResult\AliasForEditing;
 
 /**
- * Deletes given alias.
+ * Interface defines contract for GetAliasesBySearchTermForEditingHandler
  */
-class DeleteAliasCommand
+interface GetAliasesBySearchTermForEditingHandlerInterface
 {
-    private AliasId $aliasId;
-
-    public function __construct(int $aliasId)
-    {
-        $this->aliasId = new AliasId($aliasId);
-    }
-
     /**
-     * @return AliasId
+     * @param GetAliasesBySearchTermForEditing $query
+     *
+     * @return AliasForEditing
      */
-    public function getAliasId(): AliasId
-    {
-        return $this->aliasId;
-    }
+    public function handle(GetAliasesBySearchTermForEditing $query): AliasForEditing;
 }

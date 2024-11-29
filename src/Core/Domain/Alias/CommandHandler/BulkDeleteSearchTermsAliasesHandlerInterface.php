@@ -24,40 +24,17 @@
  * @license   https://opensource.org/licenses/OSL-3.0 Open Software License (OSL 3.0)
  */
 
-declare(strict_types=1);
+namespace PrestaShop\PrestaShop\Core\Domain\Alias\CommandHandler;
 
-namespace PrestaShop\PrestaShop\Core\Domain\Alias\Command;
-
-use PrestaShop\PrestaShop\Core\Domain\Alias\Exception\AliasConstraintException;
-use PrestaShop\PrestaShop\Core\Domain\Alias\ValueObject\AliasId;
+use PrestaShop\PrestaShop\Core\Domain\Alias\Command\BulkDeleteSearchTermsAliasesCommand;
 
 /**
- * Deletes multiple aliases
+ * Defines contract to handle @see BulkDeleteSearchTermsAliasesCommand
  */
-class BulkDeleteAliasCommand
+interface BulkDeleteSearchTermsAliasesHandlerInterface
 {
     /**
-     * @var AliasId[]
+     * @param BulkDeleteSearchTermsAliasesCommand $command
      */
-    private array $aliasIds;
-
-    /**
-     * @param int[] $aliasIds
-     *
-     * @throws AliasConstraintException
-     */
-    public function __construct(array $aliasIds)
-    {
-        foreach ($aliasIds as $aliasId) {
-            $this->aliasIds[] = new AliasId($aliasId);
-        }
-    }
-
-    /**
-     * @return AliasId[]
-     */
-    public function getAliasIds(): array
-    {
-        return $this->aliasIds;
-    }
+    public function handle(BulkDeleteSearchTermsAliasesCommand $command): void;
 }
