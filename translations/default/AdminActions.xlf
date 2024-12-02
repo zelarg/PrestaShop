@@ -242,17 +242,17 @@
       <trans-unit id="ede4759c9afae620fd586628789fa304">
         <source>Enable selection</source>
         <target>Enable selection</target>
-        <note>Line: 3012</note>
+        <note>Line: 3013</note>
       </trans-unit>
       <trans-unit id="ab7fd6e250b64a46027a996088fdff74">
         <source>Disable selection</source>
         <target>Disable selection</target>
-        <note>Line: 3016</note>
+        <note>Line: 3017</note>
       </trans-unit>
       <trans-unit id="f7931413dee107ddf5289c8886baf7ec">
         <source>Edit: %s</source>
         <target>Edit: %s</target>
-        <note>Line: 1652</note>
+        <note>Line: 1653</note>
       </trans-unit>
     </body>
   </file>
