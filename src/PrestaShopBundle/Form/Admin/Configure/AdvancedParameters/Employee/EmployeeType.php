@@ -125,7 +125,7 @@ final class EmployeeType extends AbstractType
         $maxLength = $this->configuration->get(PasswordPolicyConfiguration::CONFIGURATION_MAXIMUM_LENGTH);
         $minLength = $this->configuration->get(PasswordPolicyConfiguration::CONFIGURATION_MINIMUM_LENGTH);
 
-        $profileId = $builder->getData()['profile'] ?? $this->superAdminProfileId;
+        $profileId = $builder->getData()['profile'] ?? reset($this->profilesChoices);
         $viewableTabs = $this->tabDataProvider->getViewableTabs($profileId, $this->languageContext->getId());
 
         $tabChoices = $this->formatTabs($viewableTabs);
