@@ -234,6 +234,7 @@ final class EmployeeType extends AbstractType
                     'Admin.Advparameters.Help'
                 ),
                 'autocomplete' => true,
+                'autocomplete_minimum_choices' => 5,
                 'choices' => $tabChoices,
             ])
         ;
